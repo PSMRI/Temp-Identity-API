@@ -20,7 +20,7 @@ public class CryptoUtil {
 
 	public String encrypt(String value) throws Exception {
 		SecretKey secretKey = new SecretKeySpec(SECRET_KEY.getBytes(StandardCharsets.UTF_8), ALGORITHM);
-		Cipher cipher = Cipher.getInstance(ALGORITHM + "/ECB/PKCS5Padding");
+		Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
 		cipher.init(Cipher.ENCRYPT_MODE, secretKey);
 		byte[] encryptedBytes = cipher.doFinal(addPadding(value).getBytes(StandardCharsets.UTF_8));
 		return Base64.getEncoder().encodeToString(encryptedBytes);
@@ -29,7 +29,7 @@ public class CryptoUtil {
 	public String decrypt(String encryptedValue) {
 		try {
 			SecretKey secretKey = new SecretKeySpec(SECRET_KEY.getBytes(StandardCharsets.UTF_8), ALGORITHM);
-			Cipher cipher = Cipher.getInstance(ALGORITHM + "/ECB/PKCS5Padding");
+			Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
 			cipher.init(Cipher.DECRYPT_MODE, secretKey);
 			byte[] decryptedBytes = cipher.doFinal(Base64.getDecoder().decode(encryptedValue));
 			return removePadding(new String(decryptedBytes, StandardCharsets.UTF_8));
