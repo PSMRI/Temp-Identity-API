@@ -1,6 +1,3 @@
-target/
-!.mvn/wrapper/maven-wrapper.jar
-
 ### STS ###
 .apt_generated
 .classpath
@@ -8,6 +5,7 @@ target/
 .project
 .settings
 .springBeans
+.sts4-cache
 
 ### IntelliJ IDEA ###
 .idea
@@ -22,3 +20,8 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
+
+### Other Entries ###
+mvnw
+mvnw.cmd
+.mvn
