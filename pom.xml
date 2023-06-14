@@ -31,6 +31,7 @@
 		<target-properties>target/classes/application.properties</target-properties>
 		<source-properties>src/main/environment/common_${environment}.properties</source-properties>
 		<maven.test.skip>true</maven.test.skip>
+		<sonar.java.binaries>target</sonar.java.binaries>
 	</properties>
 	<dependencies>
 		<dependency>

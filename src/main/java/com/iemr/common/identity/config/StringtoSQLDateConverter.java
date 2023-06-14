@@ -27,7 +27,6 @@ public class StringtoSQLDateConverter implements Converter<String, java.sql.Time
 				}
 			}
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			logger.error(e.getMessage());
 		}
 		return timestamp;

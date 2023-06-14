@@ -75,8 +75,6 @@ public class IdentityController {
 			JsonElement json = new JsonParser().parse(searchFilter);
 			IdentitySearchDTO searchParams = InputMapper.getInstance().gson().fromJson(json, IdentitySearchDTO.class);
 
-			// SUNIL TODO: advance search here
-			// getResponseString(list)
 			List<BeneficiariesDTO> list = svc.getBeneficiaries(searchParams);
 			list.removeIf(Objects::isNull);
 			Collections.sort(list);
@@ -181,7 +179,6 @@ public class IdentityController {
 			phoneNumValue = phoneNum;
 
 			List<BeneficiariesDTO> list = svc.getBeneficiariesByPhoneNum(phoneNumValue);
-			// list.removeAll(null);
 			list.removeIf(Objects::isNull);
 			Collections.sort(list);
 			response = getSuccessResponseString(list, 200, "success", "getIdentityByAgent");
@@ -214,7 +211,6 @@ public class IdentityController {
 			healthIDValue = healthID;
 
 			List<BeneficiariesDTO> list = svc.getBeneficiaryByHealthID_AbhaAddress(healthIDValue);
-			// list.removeAll(null);
 			list.removeIf(Objects::isNull);
 			Collections.sort(list);
 			response = getSuccessResponseString(list, 200, "success", "getIdentityByAgent");
@@ -248,7 +244,6 @@ public class IdentityController {
 			healthIDNoValue = healthIDNo;
 
 			List<BeneficiariesDTO> list = svc.getBeneficiaryByHealthIDNo_AbhaIdNo(healthIDNoValue);
-			// list.removeAll(null);
 			list.removeIf(Objects::isNull);
 			Collections.sort(list);
 			response = getSuccessResponseString(list, 200, "success", "getIdentityByAgent");
@@ -280,7 +275,6 @@ public class IdentityController {
 			}
 
 			List<BeneficiariesDTO> list = svc.searhBeneficiaryByFamilyId(familyId);
-			// list.removeAll(null);
 			list.removeIf(Objects::isNull);
 			Collections.sort(list);
 			response = getSuccessResponseString(list, 200, "success", "getIdentityByAgent");
@@ -311,7 +305,6 @@ public class IdentityController {
 			}
 
 			List<BeneficiariesDTO> list = svc.searhBeneficiaryByGovIdentity(identity);
-			// list.removeAll(null);
 			list.removeIf(Objects::isNull);
 			Collections.sort(list);
 			response = getSuccessResponseString(list, 200, "success", "getIdentityByAgent");
@@ -649,7 +642,6 @@ public class IdentityController {
 		String data = InputMapper.getInstance().gson().toJson(list).toString();
 		String response = getSuccessResponseString(data, 200, "success", "getBeneficiariesByBenRegIds");
 
-//		logger.info("IdentityController.getBeneficiariesByBenRegIds - end response: " + response);
 		logger.info("IdentityController.getBeneficiariesByBenRegIds - end ");
 		return response;
 	}
@@ -680,7 +672,6 @@ public class IdentityController {
 		Collections.sort(list);
 		String response = getSuccessResponseString(list, 200, "success", "getBeneficiariesByBenRegIds");
 
-//		logger.info("IdentityController.getBeneficiariesByBenRegIds - end response: " + response);
 		logger.info("IdentityController.getBeneficiariesByBenRegIds - end : ");
 		return response;
 	}
@@ -697,7 +688,6 @@ public class IdentityController {
 			String methodName) {
 		logger.info("IdentityController.getResponseString of map parameter - start");
 		BeneficiariesDTO bdto = mapper.MBeneficiarymappingToBeneficiariesDTO(map);
-		// bdto.setBeneficiaryDetails(mapper.MBeneficiarydetailToBenDetailDTO(map.getMBeneficiarydetail()));
 		bdto.setBeneficiaryFamilyTags(
 				mapper.mBeneficiaryfamilymappingListToBenFamilyDTOList(map.getMBeneficiaryfamilymappings()));
 		bdto.setBeneficiaryIdentites(
@@ -729,9 +719,6 @@ public class IdentityController {
 	private String getSuccessResponseString(String data, Integer statusCode, String statusMsg, String methodName) {
 		logger.info("IdentityController.getResponseString of string parameter - start");
 
-		// String data =
-		// InputMapper.getInstance().gson().toJson(bdto).toString();
-//		logger.info("data: " + data);
 
 		OutputResponse response = new OutputResponse.Builder().setDataJsonType("JsonObject.class")
 				.setStatusCode(statusCode).setStatusMessage(statusMsg)
@@ -749,8 +736,6 @@ public class IdentityController {
 		}.getType();
 		String data = OutputMapper.getInstance().gson().toJson(list, typeOfSrc);
 		logger.info("data response size:" + (list != null ? list.size() : "No Beneficiary Found"));
-//		logger.info("data: " + data);
-//		logger.info("data.toStr: " + data.toString());
 		OutputResponse response = new OutputResponse.Builder().setDataJsonType("JsonObject.class")
 				.setStatusCode(statusCode).setStatusMessage(statusMsg)
 				.setDataObjectType(this.getClass().getSimpleName()).setMethodName(methodName).setData(data).build();
@@ -822,15 +807,12 @@ public class IdentityController {
 			response = getSuccessResponseString(list, 200, "success", "getFiniteBeneficiaries");
 			logger.info("IdentityController.getFiniteBeneficiaries - end");
 		} catch (NoResultException e) {
-			// TODO Auto-generated catch block
 			logger.error(e.getMessage());
 			response = getErrorResponseString(e.getLocalizedMessage(), 5000, "failure", "");
 		} catch (QueryTimeoutException e) {
-			// TODO Auto-generated catch block
 			logger.error(e.getMessage());
 			response = getErrorResponseString(e.getLocalizedMessage(), 5000, "failure", "");
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			logger.error(e.getMessage());
 			response = getErrorResponseString(e.getLocalizedMessage(), 5000, "failure", "");
 		}
@@ -967,7 +949,6 @@ public class IdentityController {
 		}
 
 		IdentityEditDTO identity = InputMapper.getInstance().gson().fromJson(json, IdentityEditDTO.class);
-		// MBeneficiarymapping map;
 		try {
 			svc.editIdentityEducationOrCommunity(identity);
 			String response = getSuccessResponseString("Updated successfully", 200, "success", "editIdentityByAgent");
