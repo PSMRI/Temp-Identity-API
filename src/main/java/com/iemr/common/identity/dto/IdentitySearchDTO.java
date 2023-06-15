@@ -56,7 +56,6 @@ public class IdentitySearchDTO {
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Timestamp dob;
 
-	// new column added for D2D, 21-01-2021
 	private Long houseHoldID;
 	private Boolean isD2D;
 

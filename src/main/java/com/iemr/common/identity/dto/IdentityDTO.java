@@ -35,7 +35,6 @@ import lombok.Data;
 public class IdentityDTO {
 
 	private String eventTypeName; // created, reserved, registered, modified,
-									// deleted
 	private Timestamp eventTypeDate;
 	private Integer agentId;
 	private String agentName;
@@ -49,7 +48,6 @@ public class IdentityDTO {
 	private String stateName;
 	private Integer providerServiceMapId;
 
-	// details
 	private Integer areaId;
 	private Integer beneficiaryId;
 	private Integer beneficiaryRegId;
@@ -90,7 +88,6 @@ public class IdentityDTO {
 	private String title;
 	private Integer zoneId;
 
-	// address
 	private Address currentAddress;
 	private Address permanentAddress;
 	private Address emergencyAddress;
@@ -100,21 +97,16 @@ public class IdentityDTO {
 	private Boolean isEmerAddrSameAsPermAddr;
 	private String addressType;
 
-	// contacts
 	private String preferredEmailId;
 	private Contact contact;
 
-	// family tagging
 	List<BenFamilyDTO> benFamilyDTOs;
 
-	// identities
 	private List<Identity> identities;
 
-	// Start 1097
 	private Integer sexualOrientationID;
 	private String sexualOrientationType;
 	private String isHIVPositive;
-	// End 1097
 
 	
 	private String bankName;
@@ -127,7 +119,6 @@ public class IdentityDTO {
 	private Integer ageAtMarriage;
 	private Integer incomeStatusId;
 	private String incomeStatus;
-	// End
 
 	@Expose
 	private Integer vanID;

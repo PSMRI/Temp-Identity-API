@@ -41,10 +41,6 @@ import com.google.gson.annotations.Expose;
 
 import lombok.Data;
 
-/**
- * The persistent class for the m_beneficiarydetails database table.
- * 
- */
 @Entity
 @Table(name = "i_beneficiarydetails")
 @NamedQuery(name = "MBeneficiarydetail.findAll", query = "SELECT m FROM MBeneficiarydetail m order by beneficiaryDetailsId asc")
@@ -236,16 +232,10 @@ public class MBeneficiarydetail implements Serializable {
 	@Column(name = "VanSerialNo", updatable = false)
 	private BigInteger vanSerialNo;
 
-	/**
-	 * Default constructor
-	 */
 	public MBeneficiarydetail() {
 
 	}
 
-	/**
-	 * Constructor for retrieving partial beneficiary details
-	 */
 	public MBeneficiarydetail(BigInteger beneficiaryDetailsId, String firstName, String lastName, String middleName,
 			String fatherName, String spouseName) {
 
