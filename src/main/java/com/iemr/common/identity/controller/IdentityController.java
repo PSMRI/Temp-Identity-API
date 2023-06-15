@@ -458,7 +458,6 @@ public class IdentityController {
 		}
 
 		IdentityEditDTO identity = InputMapper.getInstance().gson().fromJson(json, IdentityEditDTO.class);
-		// MBeneficiarymapping map;
 		try {
 			svc.editIdentity(identity);
 			String response = getSuccessResponseString("Updated successfully", 200, "success", "editIdentityByAgent");

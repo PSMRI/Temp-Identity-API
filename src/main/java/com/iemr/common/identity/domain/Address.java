@@ -45,7 +45,6 @@ public @Data class Address {
 	 */
 	private Integer zoneID;
 	private String zoneName;
-	// private Integer parkingPlaceID;
 	private String parkingPlaceName;
 	private Integer servicePointID;
 	private String servicePointName;

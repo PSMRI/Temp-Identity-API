@@ -107,10 +107,6 @@ public class MBeneficiaryservicemapping implements Serializable {
 	@Column(length = 45)
 	private String stateName;
 
-	// bi-directional many-to-one association to MBeneficiarymapping
-//	@ManyToOne(/* fetch = FetchType.EAGER */) /* (fetch = FetchType.LAZY) */
-//	@JoinColumn(name = "BenMapId")
-//	private MBeneficiarymapping MBeneficiarymapping;
 	
 	@Column(name = "BenMapId", insertable = true, updatable = true)
 	private BigInteger benMapId;

@@ -72,19 +72,10 @@ public class BenDetailRepoImpl implements BenDetailRepoCustom
 		/**
 		 * Beneficiary ID is present, no need for other criteria
 		 */
-		// if(filterDTO.getBeneficiaryId().isPresent()) {
-		// //filterDTO.getBeneficiaryId().get();
-		// MBeneficiaryregidmapping regId = regIdRepo.findByBeneficiaryID(filterDTO.getBeneficiaryId().get());
-		// predicates.add(criteriaBuilder.equal(root.get("beneficiaryRegID"), regId.getBenRegId()));
-		// }
 
 		/**
 		 * Beneficiary Reg ID is present, no need for other criteria
 		 */
-		// if(filterDTO.getBeneficiaryRegId().isPresent()) {
-		// //filterDTO.getBeneficiaryRegId().get();
-		// predicates.add(criteriaBuilder.equal(root.get("beneficiaryRegID"), filterDTO.getBeneficiaryRegId().get()));
-		// }
 
 		/**
 		 * First Name is present, additional criteria needed
@@ -173,9 +164,6 @@ public class BenDetailRepoImpl implements BenDetailRepoCustom
 		/**
 		 * Contact Number is present, additional criteria needed
 		 */
-		// if(filterDTO.getContactNumber().isPresent()){
-		// predicates.add(criteriaBuilder.equal(root.get("contactNumber"), filterDTO.getPinCode().get()));
-		// }
 
 		criteriaQuery.select(root).where(predicates.toArray(new Predicate[] {}))
 				.orderBy(criteriaBuilder.asc(root.get("benMapId")));

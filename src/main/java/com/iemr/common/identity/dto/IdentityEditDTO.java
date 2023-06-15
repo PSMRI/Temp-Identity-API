@@ -65,7 +65,6 @@ public class IdentityEditDTO {
 	private String gender;
 	private Integer titleId;
 	private String title;
-	// private Integer parkingPlaceId;
 	private String literacyStatus;
 
 	// self address
@@ -109,13 +108,6 @@ public class IdentityEditDTO {
 	// family details
 	private Boolean changeInFamilyDetails = false;
 	List<BenFamilyDTO> benFamilyDTOs;
-	// private Boolean isEmergencyContact;
-	// private String relationshipToSelf;
-	// private BigInteger associatedBenRegId; // Family mapping must be a list
-
-	// List<BenFamilyDTO> benFamilyDTOs;
-
-	// MMU/TM details
 	private Boolean changeInAssociations = false;
 
 	private Integer zoneId;

@@ -125,8 +125,6 @@ public class MBeneficiarydetail implements Serializable {
 	@Column(length = 50)
 	private String modifiedBy;
 
-	// private Integer parkingPlaceID;
-
 	private Integer occupationId;
 
 	@Column(length = 45)
@@ -238,11 +236,6 @@ public class MBeneficiarydetail implements Serializable {
 	@Column(name = "VanSerialNo", updatable = false)
 	private BigInteger vanSerialNo;
 
-//	@Expose
-//	@Column(name = "familyid", updatable = true)
-//	private String familyid;
-
-	// END OF new column added for data sync
 	/**
 	 * Default constructor
 	 */
@@ -342,9 +335,4 @@ public class MBeneficiarydetail implements Serializable {
 		return isHIVPositive;
 	}
 
-	// public static void main(String[] args)
-	// {
-	// Timestamp dob = new Timestamp(10, 07, 10,0,0,0,0);
-	// System.out.println(calculateAge(dob));
-	// }
 }

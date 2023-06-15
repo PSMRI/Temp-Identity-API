@@ -80,7 +80,6 @@ public class MBeneficiaryregidmapping implements Serializable {
 	@Column(name = "VehicalNo")
 	private String vehicalNo;
 
-	// private Integer ParkingPlaceID;
 
 	private String syncedBy;
 
@@ -88,24 +87,6 @@ public class MBeneficiaryregidmapping implements Serializable {
 
 	private String reservedForChange;
 
-	// //bi-directional one-to-one association to MBeneficiarydetail
-	// @OneToOne(fetch=FetchType.LAZY)
-	// @JoinColumn(name="BenRegId", referencedColumnName="BeneficiaryRegID",
-	// nullable=false, insertable=false, updatable=false)
-	// private MBeneficiarydetail MBeneficiarydetail;
-	//
-	// //bi-directional one-to-one association to MBeneficiarymapping
-	// @OneToOne(fetch=FetchType.LAZY)
-	// @JoinColumn(name="BenRegId", referencedColumnName="BenRegId", nullable=false,
-	// insertable=false, updatable=false)
-	// private MBeneficiarymapping MBeneficiarymapping;
-	//
-	// //bi-directional many-to-one association to MBeneficiaryfamilymapping
-	// @OneToMany(mappedBy="MBeneficiaryregid")
-	// private List<MBeneficiaryfamilymapping> MBeneficiaryfamilymappings;
-
-	// new column added for data sync
-	// 17-06-2018
 	@Expose
 	@Column(name = "vanID")
 	private Integer vanID;
@@ -117,5 +98,4 @@ public class MBeneficiaryregidmapping implements Serializable {
 	@Column(name = "VanSerialNo")
 	private BigInteger vanSerialNo;
 
-	// END OF new column added for data sync
 }

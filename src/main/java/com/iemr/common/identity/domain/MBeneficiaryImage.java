@@ -21,7 +21,6 @@
 */
 package com.iemr.common.identity.domain;
 
-import java.math.BigInteger;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
@@ -74,7 +73,6 @@ public class MBeneficiaryImage {
 	@Column(name = "VehicalNo")
 	private String vehicalNo;
 	// @Column(name = "ParkingPlaceID")
-	// private Integer parkingPlaceID;
 	@Column(name = "SyncedBy")
 	private String syncedBy;
 	@Column(name = "SyncedDate", unique = true, nullable = false)

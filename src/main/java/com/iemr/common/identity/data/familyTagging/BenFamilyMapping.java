@@ -119,9 +119,6 @@ public class BenFamilyMapping {
 	@Transient
 	private Integer blockId;
 
-//	@Transient
-//	private BenFamilyMapping memberList[];
-
 	@Transient
 	private Long beneficiaryRegId;
 

@@ -26,20 +26,14 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-// import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.iemr.common.identity.domain.MBeneficiaryaddress;
-// import com.iemr.common.identity.domain.MBeneficiaryaddress;
-// import com.iemr.common.identity.domain.MBeneficiaryconsent;
 import com.iemr.common.identity.domain.MBeneficiarycontact;
 import com.iemr.common.identity.domain.MBeneficiarydetail;
-// import com.iemr.common.identity.domain.MBeneficiarydetail;
-// import com.iemr.common.identity.domain.MBeneficiaryfamilymapping;
-// import com.iemr.common.identity.domain.MBeneficiaryidentity;
 import com.iemr.common.identity.domain.MBeneficiarymapping;
 import com.iemr.common.identity.domain.MBeneficiaryregidmapping;
 
@@ -54,17 +48,6 @@ public interface BenMappingRepo extends CrudRepository<MBeneficiarymapping, BigI
 	List<MBeneficiarymapping> findByMBeneficiaryregidmappingOrderByBenMapIdAsc(
 			MBeneficiaryregidmapping MBeneficiaryregidmapping);
 
-	// @Query("select m from MBeneficiarymapping m where
-	// m.mBeneficiarycontact.benContactsID = :benContactsID")
-	// MBeneficiarymapping findByBenContactsID(@Param("benContactsID")
-	// BigInteger benContactsID);
-	// List<MBeneficiarymapping>
-	// findByMBeneficiaryregidmapping(MBeneficiaryregidmapping
-	// MBeneficiaryregidmapping);
-	// MBeneficiarymapping findByMBeneficiaryaddress(MBeneficiaryaddress
-	// MBeneficiaryaddress);
-	// List<MBeneficiarymapping> findByMBeneficiarycontact(MBeneficiarycontact
-	// MBeneficiarycontact);
 
 	List<MBeneficiarymapping> findByMBeneficiarydetailOrderByBenMapIdAsc(MBeneficiarydetail mBeneficiarydetail);
 
@@ -91,65 +74,6 @@ public interface BenMappingRepo extends CrudRepository<MBeneficiarymapping, BigI
 	@Query("select t from MBeneficiarymapping t where t.benRegId = :benRegID")
 	MBeneficiarymapping getBenImageIdByBenRegID(@Param("benRegID") BigInteger benRegID);
 
-	// List<MBeneficiarymapping> findByMBeneficiaryconsent(MBeneficiaryconsent
-	// MBeneficiaryconsent);
-
-	// @Query("select m from MBeneficiarymapping m where
-	// m.MBeneficiaryRegIdMapping.benRegId = :benRegId")
-	// List<MBeneficiarymapping> findByBeneficiaryRegId(BigInteger benRegId);
-	// @Query("select m from MBeneficiarymapping m where
-	// m.MBeneficiaryaddress.benAddressID = :benAddressID")
-	// List<MBeneficiarymapping> findByBeneficiaryAddressId(BigInteger
-	// benAddressID);
-	// @Query("select m from MBeneficiarymapping m where
-	// m.MBeneficiarycontact.benContactsID = :benContactsID")
-	// List<MBeneficiarymapping> findByBeneficiaryContactId(BigInteger
-	// benContactsID);
-	// @Query("select m from MBeneficiarymapping m where
-	// m.MBeneficiaryconsent.benConsentID = :benConsentID")
-	// List<MBeneficiarymapping> findByBeneficiaryConsentId(BigInteger
-	// benConsentID);
-	// @Query("select m from MBeneficiarymapping m where
-	// m.MBeneficiarydetail.beneficiaryDetailsId =
-	// :beneficiaryDetailsId")
-	// List<MBeneficiarymapping> findByBeneficiaryDetailId(BigInteger
-	// beneficiaryDetailsId);
-	//
-	//
-	// @Query("select m from MBeneficiarymapping m where m.deleted = b'1'")
-	// List<MBeneficiarymapping> findByDeleted();
-	//
-	// @Query("select m from MBeneficiarymapping m where m.reserved = b'1'")
-	// List<MBeneficiarymapping> findByReserved();
-	//
-	// @Query("select m from MBeneficiarymapping m where
-	// m.MBeneficiaryregidmapping.beneficiaryID = :BeneficiaryID")
-	// List<MBeneficiarymapping> findByBeneficiaryId(BigInteger BeneficiaryID);
-	//
-	// @Query("select m from MBeneficiarymapping m where
-	// m.MBeneficiaryidentities.MBeneficiaryidentity =
-	// :MBeneficiaryidentity")
-	// List<MBeneficiarymapping> findByMBeneficiaryidentity(MBeneficiaryidentity
-	// MBeneficiaryidentity);
-	//
-	// @Query("select m from MBeneficiarymapping m where
-	// m.MBeneficiaryfamilymappings.MBeneficiaryfamilymapping =
-	// :MBeneficiaryfamilymapping")
-	// List<MBeneficiarymapping>
-	// findByMBeneficiaryfamilymapping(MBeneficiaryfamilymapping
-	// MBeneficiaryfamilymapping);
-	//
-	// @Query("select m from MBeneficiarymapping m where
-	// m.MBeneficiaryfamilymappings.MBeneficiaryservicemapping =
-	// :MBeneficiaryservicemapping")
-	// List<MBeneficiarymapping>
-	// findByMBeneficiaryservicemapping(MBeneficiaryservicemapping
-	// MBeneficiaryservicemapping);
-	//
-	// @Query("select m from MBeneficiarymapping m where
-	// m.TBendataaccesses.tBendataaccess = :tBendataaccess")
-	// List<MBeneficiarymapping> findByTBendataaccess(TBendataaccess
-	// tBendataaccess);
 
 	@Transactional
 	@Modifying
@@ -162,14 +86,12 @@ public interface BenMappingRepo extends CrudRepository<MBeneficiarymapping, BigI
 			+ " WHERE t.benRegId = :benRegID ORDER BY t.benMapId Desc ")
 	public List<Object[]> getBenMappingByRegID(@Param("benRegID") BigInteger benRegID);
 
-	// old code 1.0
 	@Query("SELECT t.benMapId, t.benAddressId, t.benConsentId, t.benContactsId, t.benDetailsId, "
 			+ " t.benRegId, t.benImageId, t.benAccountID, t.vanID, t.vanSerialNo, "
 			+ " t.createdBy, t.createdDate FROM MBeneficiarymapping t "
 			+ "  WHERE t.benContactsId IN :contactIDList  ORDER BY t.benMapId Desc ")
 	public List<Object[]> getBenMappingByBenContactIdList(@Param("contactIDList") List<BigInteger> contactIDList);
 
-	// new code 1.0
 	@Query("SELECT t.benMapId, t.benAddressId, t.benConsentId, t.benContactsId, t.benDetailsId, "
 			+ " t.benRegId, t.benImageId, t.benAccountID, t.vanID, t.vanSerialNo, "
 			+ " t.createdBy, t.createdDate FROM MBeneficiarymapping t "
@@ -177,7 +99,6 @@ public interface BenMappingRepo extends CrudRepository<MBeneficiarymapping, BigI
 	public List<Object[]> getBenMappingByBenContactIdListNew(@Param("benContactId") BigInteger benContactId,
 			@Param("vanID") Integer vanID);
 
-	// 19-12-2018, neeraj
 	@Query("SELECT t.benMapId, t.benAddressId, t.benConsentId, t.benContactsId, t.benDetailsId, "
 			+ " t.benRegId, t.benImageId, t.benAccountID, t.vanID, t.vanSerialNo, "
 			+ " t.createdBy, t.createdDate FROM MBeneficiarymapping t "
@@ -190,7 +111,6 @@ public interface BenMappingRepo extends CrudRepository<MBeneficiarymapping, BigI
 	@Query("SELECT t.benRegId FROM MBeneficiarymapping t WHERE t.benDetailsId =:benDetailsId AND vanID = :vanID")
 	public BigInteger getBenRegId(@Param("benDetailsId") BigInteger benDetailsId, @Param("vanID") Integer vanID);
 
-	// 12-09-2022
 	@Query("SELECT t.benMapId, t.benAddressId, t.benConsentId, t.benContactsId, t.benDetailsId, "
 			+ " t.benRegId, t.benImageId, t.benAccountID, t.vanID, t.vanSerialNo, "
 			+ " t.createdBy, t.createdDate FROM MBeneficiarymapping t "
@@ -198,7 +118,6 @@ public interface BenMappingRepo extends CrudRepository<MBeneficiarymapping, BigI
 	public List<Object[]> getBenMappingByBenDetailsIds(@Param("benDetailsIds") List<BigInteger> benDetailsIds,
 			@Param("vanID") Integer vanID);
 
-	// 12-09-2022
 	@Query("SELECT t.benMapId, t.benAddressId, t.benConsentId, t.benContactsId, t.benDetailsId, "
 			+ " t.benRegId, t.benImageId, t.benAccountID, t.vanID, t.vanSerialNo, "
 			+ " t.createdBy, t.createdDate FROM MBeneficiarymapping t "

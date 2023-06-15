@@ -52,7 +52,6 @@ public class BeneficiariesDTO implements Comparable<BeneficiariesDTO> {
 	private String preferredEmailId; //
 	private BenDetailDTO beneficiaryDetails;
 	private List<BenFamilyDTO> beneficiaryFamilyTags;
-	// private List<BenFamilyDTO> benFamilyDTOs;
 	private List<BenIdentityDTO> beneficiaryIdentites;
 	private List<BenServiceDTO> beneficiaryServiceMap;
 	private List<Phone> contacts;
@@ -65,8 +64,6 @@ public class BeneficiariesDTO implements Comparable<BeneficiariesDTO> {
 		return this.benMapId.compareTo(ben.benMapId);
 	}
 
-	// Start Outreach
-	// New columns added for MMU integration 09-04-2018
 	private Timestamp marriageDate;
 	private Integer ageAtMarriage;
 	private String literacyStatus;

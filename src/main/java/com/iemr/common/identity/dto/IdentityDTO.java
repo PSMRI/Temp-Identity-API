@@ -28,7 +28,6 @@ import com.google.gson.annotations.Expose;
 import com.iemr.common.identity.domain.Address;
 import com.iemr.common.identity.domain.Contact;
 import com.iemr.common.identity.domain.Identity;
-// import com.iemr.common.identity.domain.Phone;
 
 import lombok.Data;
 
@@ -107,9 +106,6 @@ public class IdentityDTO {
 
 	// family tagging
 	List<BenFamilyDTO> benFamilyDTOs;
-	// private Boolean isEmergencyContact;
-	// private String relationshipToSelf;
-	// private BigInteger associatedBenRegId;
 
 	// identities
 	private List<Identity> identities;
@@ -120,9 +116,7 @@ public class IdentityDTO {
 	private String isHIVPositive;
 	// End 1097
 
-	/*
-	 * New columns added for MMU integration 11-04-2018
-	 */
+	
 	private String bankName;
 	private String branchName;
 	private String ifscCode;
@@ -135,12 +129,9 @@ public class IdentityDTO {
 	private String incomeStatus;
 	// End
 
-	// new column added for data sync
-	// 17-06-2018
 	@Expose
 	private Integer vanID;
 
-	// END OF new column added for data sync
 
 	@Expose
 	private Boolean beneficiaryConsent;

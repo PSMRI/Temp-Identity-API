@@ -41,8 +41,6 @@ public interface BenRegIdMappingRepo extends CrudRepository<MBeneficiaryregidmap
 
 	MBeneficiaryregidmapping findByBeneficiaryID(BigInteger beneficiaryID);
 
-	// List<MBeneficiaryregidmapping> findByMBeneficiarydetail(MBeneficiarydetail
-	// MBeneficiarydetail);
 	List<MBeneficiaryregidmapping> findByCreatedDateBetweenOrderByBenRegIdAsc(Timestamp fromDate, Timestamp toDate);
 
 	MBeneficiaryregidmapping findFirstByProvisionedAndReserved(Boolean isProvisioned, Boolean isReserved);

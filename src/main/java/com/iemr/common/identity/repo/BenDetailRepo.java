@@ -42,18 +42,12 @@ public interface BenDetailRepo extends CrudRepository<MBeneficiarydetail, BigInt
 	List<MBeneficiarydetail> findByCreatedDateBetweenOrderByBeneficiaryDetailsIdAsc(Timestamp fromDate,
 			Timestamp toDate);
 
-	// List<MBeneficiarydetail> findByMBeneficiaryregid(MBeneficiaryregidmapping
-	// MBeneficiaryregid);
 	List<MBeneficiarydetail> findByFirstNameAndLastNameOrderByBeneficiaryDetailsIdAsc(String fName, String mName);
 
-	// searching with criterias
 
 	@Query("select d from MBeneficiarydetail d " + "where d.mBeneficiarymapping.benRegId = :benRegId")
 	MBeneficiarydetail findByBenRegId(BigInteger benRegId);
 
-	// @Query("select d from MBeneficiarydetail d "
-	// + "where d.mBeneficiarymapping.beneficiaryID = :beneficiaryID")
-	// MBeneficiarydetail findByBeneficiaryID(BigInteger beneficiaryID);
 
 	@Query("select d from MBeneficiarydetail d where d.firstName = :fName and d.middleName = :mName and "
 			+ "d.lastName = :lName Order By d.beneficiaryDetailsId Asc")
@@ -84,17 +78,12 @@ public interface BenDetailRepo extends CrudRepository<MBeneficiarydetail, BigInt
 	@Query("select new MBeneficiarydetail(d.beneficiaryDetailsId, d.firstName, d.lastName, d.middleName, "
 			+ "d.fatherName, d.spouseName) "
 			+ "from MBeneficiarydetail d where d.mBeneficiarymapping.benRegId = :benRegId")
-	// + "in (select beneficiaryDetailsId from MBeneficiarymapping where benRegId =
-	// :benRegId)")
 	MBeneficiarydetail findPartialBeneficiaryDetailByBenRegId(@Param("benRegId") BigInteger benRegId);
 
 	@Query("select new MBeneficiarydetail(d.beneficiaryDetailsId, d.firstName, d.lastName, d.middleName, "
 			+ "d.fatherName, d.spouseName) "
 			+ "from MBeneficiarydetail d where d.mBeneficiarymapping.benRegId in :benRegIds")
 	List<MBeneficiarydetail> findPartialBeneficiaryDetailByBenRegId(@Param("benRegIds") List<BigInteger> benRegId);
-	// @Query("select d from MBeneficiarydetail d where d.MBeneficiaryregid.benRegId
-	// = :benRegid")
-	// List<MBeneficiarydetail> findByBeneficiaryRegid(BigInteger benRegid);
 
 	@Transactional
 	@Modifying

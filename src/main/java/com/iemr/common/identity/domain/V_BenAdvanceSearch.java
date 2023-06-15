@@ -97,7 +97,6 @@ public class V_BenAdvanceSearch {
 	@Column(name = "DOB")
 	private Timestamp dOB;
 
-	// new column added for D2D, 21-01-2021
 	@Expose
 	@Column(name = "houseoldId")
 	private Long houseHoldID;
@@ -144,7 +143,6 @@ public class V_BenAdvanceSearch {
 
 	public V_BenAdvanceSearch() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public BigInteger getBenMapID() {

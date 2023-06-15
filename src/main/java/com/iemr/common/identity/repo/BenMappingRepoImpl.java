@@ -339,8 +339,6 @@ public class BenMappingRepoImpl implements BenMappingRepoCustom {
 
 			predicates.add(criteriaBuilder.equal(benContact.get("preferredPhoneNum"),
 					identityDTO.getContact().getPreferredPhoneNum()));
-			// predicates.add(criteriaBuilder.or(benContact.get("phoneNum1"),
-			// identityDTO.getContact().getPreferredPhoneNum()));
 		}
 
 		criteriaQuery.select(root).where(predicates.toArray(new Predicate[] {}));

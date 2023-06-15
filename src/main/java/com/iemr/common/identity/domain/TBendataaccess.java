@@ -68,8 +68,6 @@ public class TBendataaccess implements Serializable
 	private String authId;
 
 	@Transient
-	// @Column(nullable=false, length=75) //SQL Error: 1054, SQLState: 42S22 Unknown column 'tbendataac0_.consentId' in
-	// 'field list'
 	private String consentId;
 
 	@Column(length = 4)
@@ -79,8 +77,6 @@ public class TBendataaccess implements Serializable
 	private Integer userAgentId;
 
 	@Transient
-	// @Column(nullable=false, length=20)// SQL Error: 1054, SQLState: 42S22 Unknown column
-	// 'tbendataac0_.userAgentIpAddr' in 'field list'
 	private String userAgentIpAddr;
 
 	@Column(nullable = false)
@@ -92,11 +88,6 @@ public class TBendataaccess implements Serializable
 	@Column(nullable = false)
 	private Integer userAgentServiceId;
 
-	// commented on 28-09-2018
-	// bi-directional many-to-one association to MBeneficiarymapping
-//	@ManyToOne(/*fetch = FetchType.EAGER*/) /* (fetch = FetchType.LAZY) */
-//	@JoinColumn(name = "BenMapId", nullable = false)
-//	private MBeneficiarymapping MBeneficiarymapping;
 	@Column(name = "BenMapId", insertable = true, updatable = true)
 	private BigInteger benMapId;
 

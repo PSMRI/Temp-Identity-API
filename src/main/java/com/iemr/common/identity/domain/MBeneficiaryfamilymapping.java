@@ -94,11 +94,6 @@ public class MBeneficiaryfamilymapping implements Serializable {
 
 	private Timestamp reservedOn;
 
-	// commented, 28-09-2018
-	// bi-directional many-to-one association to MBeneficiarymapping
-//	@ManyToOne(/* fetch = FetchType.EAGER */)
-//	@JoinColumn(name = "BenMapId", insertable = false, updatable = false)
-//	private MBeneficiarymapping MBeneficiarymapping;
 
 	@Column(name = "BenMapId", insertable = true, updatable = true)
 	private BigInteger benMapId;

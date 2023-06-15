@@ -298,7 +298,6 @@ public interface IdentityMapper {
 			@Mapping(source = "dto.parkingPlaceId", target = "parkingPlaceID") })
 	MBeneficiaryservicemapping identityDTOToMBeneficiaryservicemapping(IdentityDTO dto);
 
-	// SUNIL TODO: Change to order of target & source to maintain consistency
 	@Mappings({ @Mapping(target = "benMapId", source = "benMapId"),
 			@Mapping(target = "benId", source = "map.MBeneficiaryregidmapping.beneficiaryID"),
 			@Mapping(target = "benRegId", source = "map.MBeneficiaryregidmapping.benRegId"),
@@ -579,26 +578,12 @@ public interface IdentityMapper {
 
 	List<BenServiceDTO> mBeneficiaryservicemappingListToBenServiceDTOList(List<MBeneficiaryservicemapping> services);
 
-	// @Mapping(target = "MBeneficiaryservicemappings", expression =
-	// "java(Collections.singletonList(svcMapping))"),
-	// @Mapping(target = "MBeneficiaryfamilymappings", expression =
-	// "java(Collections.singletonList(familyMapping))")
-	// MBeneficiarymapping
-	// MBeneficiarymappingDTOToMBeneficiarymapping(MBeneficiarymappingDTOInbound
-	// dto);
-	// MBeneficiarymappingDTOInbound
-	// MBeneficiarymappingToMBeneficiarymappingDTO(MBeneficiarymapping map);
-
-	// Start outreach
-	// code specific for outreach
 	@Mappings({ @Mapping(source = "dto.bankName", target = "bankName"),
 			@Mapping(source = "dto.branchName", target = "branchName"),
 			@Mapping(source = "dto.ifscCode", target = "ifscCode"),
 			@Mapping(source = "dto.accountNo", target = "accountNo"),
 			@Mapping(source = "dto.agentName", target = "createdBy"),
 			@Mapping(source = "dto.eventTypeDate", target = "createdDate"),
-			// new mapping added for data sync(van ID & parking place ID)
-			// 17-09-2018
 			@Mapping(source = "dto.vanID", target = "vanID"),
 			@Mapping(source = "dto.parkingPlaceId", target = "parkingPlaceID"),
 			// End

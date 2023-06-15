@@ -353,12 +353,6 @@ public class RMNCHBeneficiaryDetailsRmnch {
 	@Expose
 	@Transient
 	private String stateName;
-//	@Expose
-//	@Transient
-//	private Integer districtId;
-//	@Expose
-//	@Transient
-//	private String districtName;
 	@Expose
 	@Transient
 	private Integer blockId;
