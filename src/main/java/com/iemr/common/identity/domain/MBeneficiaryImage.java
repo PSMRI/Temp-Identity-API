@@ -72,7 +72,6 @@ public class MBeneficiaryImage {
 
 	@Column(name = "VehicalNo")
 	private String vehicalNo;
-	// @Column(name = "ParkingPlaceID")
 	@Column(name = "SyncedBy")
 	private String syncedBy;
 	@Column(name = "SyncedDate", unique = true, nullable = false)

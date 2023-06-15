@@ -95,6 +95,8 @@ import com.iemr.common.identity.utils.response.OutputResponse;
 @Service
 public class IdentityService {
 	private static final Logger logger = LoggerFactory.getLogger(IdentityService.class);
+	// private ExecutorService executor = Executors
+	// .newFixedThreadPool(5)/* .newCachedThreadPool() */;
 
 	@Autowired
 	private DataSource dataSource;
@@ -168,24 +170,36 @@ public class IdentityService {
 		logger.debug("Mapping By Id: " + mappingRepo.findByBenMapIdOrderByBenMapIdAsc(new BigInteger("12")));
 	}
 
+	/**
+	 * 
+	 * @param searchDTO
+	 * @return
+	 */
 	public List<BeneficiariesDTO> getBeneficiaries(IdentitySearchDTO searchDTO)
 			throws NoResultException, QueryTimeoutException, Exception {
 		List<BeneficiariesDTO> list = new ArrayList<BeneficiariesDTO>();
 
-		
+		/**
+		 * if beneficiary Id present
+		 */
 		if (searchDTO.getBeneficiaryId() != null) {
 			logger.info("getting beneficiaries by ID for " + searchDTO.getBeneficiaryId());
 			List<BeneficiariesDTO> list1 = this.getBeneficiariesByBenId(searchDTO.getBeneficiaryId());
 			return list1;
 		}
 
+		/**
+		 * if beneficiary Reg Id present
+		 */
 		if (searchDTO.getBeneficiaryRegId() != null) {
 			logger.info("getting beneficiaries by reg ID for " + searchDTO.getBeneficiaryRegId());
 			List<BeneficiariesDTO> list2 = this.getBeneficiariesByBenRegId(searchDTO.getBeneficiaryRegId());
 			return list2;
 		}
 
-		
+		/**
+		 * if beneficiary Reg Id present
+		 */
 		if (searchDTO.getContactNumber() != null) {
 			logger.info("getting beneficiaries by contact no for " + searchDTO.getContactNumber());
 			List<BeneficiariesDTO> list3 = this.getBeneficiariesByPhoneNum(searchDTO.getContactNumber());
@@ -278,18 +292,29 @@ public class IdentityService {
 			return list3;
 		}
 
-		
+		/**
+		 * New logic for advance search, 03-10-2018
+		 */
 		List<V_BenAdvanceSearch> tmpList = mappingRepo.dynamicFilterSearchNew(searchDTO);
 		for (V_BenAdvanceSearch obj : tmpList) {
 			list.add(this.getBeneficiariesDTO(this.getBeneficiariesDTONew1(obj)));
 			logger.debug("benMapId: " + obj.getBenMapID());
 		}
-		
+		/**
+		 * End
+		 */
 
 		return list;
 	}
 
-	
+	/**
+	 * 
+	 * Check which parameters available Get BenMapID based on the parameter/set of
+	 * parameters Use BenMapID to retrieve all data for a Beneficiary
+	 * 
+	 * @param benId
+	 * @return
+	 */
 	public List<BeneficiariesDTO> getBeneficiariesByBenId(BigInteger benId)
 			throws NoResultException, QueryTimeoutException, Exception {
 		logger.info("IdentityService.getBeneficiariesByBenId - start, beneficiaryID : " + benId);
@@ -300,31 +325,40 @@ public class IdentityService {
 		if (regId != null && regId.getBenRegId() != null) {
 			List<Object[]> benMapObjArr = mappingRepo.getBenMappingByRegID(regId.getBenRegId());
 
+			// new logic, 27-08-2018
 			if (benMapObjArr != null && benMapObjArr.size() > 0) {
 				MBeneficiarymapping benMap = this.getBeneficiariesDTONew(benMapObjArr.get(0));
 				list.add(this.getBeneficiariesDTO(benMap));
 			}
 		}
 		logger.info("benMap size " + (list.size() == 0 ? "No Beneficiary Found" : list.size()));
+		// end new logic
 
 		logger.info("IdentityService.getBeneficiariesByBenId - end - beneficiaryID : " + benId);
 
 		return list;
 	}
 
-	
+	/**
+	 * 
+	 * @param BenRegId
+	 * @return
+	 */
 	public List<BeneficiariesDTO> getBeneficiariesByBenRegId(BigInteger benRegId)
 			throws NoResultException, QueryTimeoutException, Exception {
 		List<BeneficiariesDTO> list = new ArrayList<BeneficiariesDTO>();
 		logger.info("IdentityService.getBeneficiariesByBenRegId - start for benRegId " + benRegId);
 		try {
+			// new logic, 27-09-2018
 			List<Object[]> benMapObjArr = mappingRepo.getBenMappingByRegID(benRegId);
 
+			// new logic, 27-08-2018
 			if (benMapObjArr != null && benMapObjArr.size() > 0) {
 				MBeneficiarymapping benMap = this.getBeneficiariesDTONew(benMapObjArr.get(0));
 				list.add(this.getBeneficiariesDTO(benMap));
 			}
 			logger.info("benMap size" + (list.size() == 0 ? "No Beneficiary Found" : list.size()));
+			// end new logic
 
 			logger.info("IdentityService.getBeneficiariesByBenRegId - end for benRegId " + benRegId);
 		} catch (Exception e) {
@@ -335,10 +369,18 @@ public class IdentityService {
 		return list;
 	}
 
-	
+	/**
+	 * 
+	 * Check which parameters available Get BenMapID based on the parameter/set of
+	 * parameters Use BenMapID to retrieve all data for a Beneficiary
+	 * 
+	 * @param phoneNum
+	 * @return
+	 */
 
 	public List<BeneficiariesDTO> getBeneficiariesByPhoneNum(String phoneNum)
 			throws NoResultException, QueryTimeoutException, Exception {
+		// new logic, 27-09-2018
 		List<BeneficiariesDTO> list = new ArrayList<BeneficiariesDTO>();
 		try {
 			List<MBeneficiarycontact> benContact = contactRepo.findByAnyPhoneNum(phoneNum);
@@ -362,10 +404,20 @@ public class IdentityService {
 		}
 
 		logger.info("IdentityService.getBeneficiariesByPhoneNum - end");
+		// end
 		return list;
 	}
 
-	
+	/***
+	 * 
+	 * Search beneficiary by healthID / ABHA address
+	 * 
+	 * @param healthID
+	 * @return
+	 * @throws NoResultException
+	 * @throws QueryTimeoutException
+	 * @throws Exception
+	 */
 
 	public List<BeneficiariesDTO> getBeneficiaryByHealthID_AbhaAddress(String healthID)
 			throws NoResultException, QueryTimeoutException, Exception {
@@ -387,7 +439,16 @@ public class IdentityService {
 		return beneficiaryList;
 	}
 
-	
+	/***
+	 * 
+	 * Search beneficiary by healthIDNo / ABHA ID No
+	 * 
+	 * @param healthIDNo
+	 * @return
+	 * @throws NoResultException
+	 * @throws QueryTimeoutException
+	 * @throws Exception
+	 */
 
 	public List<BeneficiariesDTO> getBeneficiaryByHealthIDNo_AbhaIdNo(String healthIDNo)
 			throws NoResultException, QueryTimeoutException, Exception {
@@ -414,6 +475,7 @@ public class IdentityService {
 		List<BeneficiariesDTO> beneficiaryList = new ArrayList<BeneficiariesDTO>();
 		try {
 
+			// find benmap ids
 			List<Object[]> benMapObjArr = new ArrayList<>();
 			List<BigInteger> benDetailsVanSerialNoList = new ArrayList<>();
 			int vanID = 0;
@@ -423,6 +485,8 @@ public class IdentityService {
 			if (benDetailsList == null || benDetailsList.size() == 0)
 				return beneficiaryList;
 			else {
+				// considering as of now family creation is possible through facility modules
+				// only
 				vanID = benDetailsList.get(0).getVanID();
 
 				for (MBeneficiarydetail benDetails : benDetailsList) {
@@ -451,8 +515,10 @@ public class IdentityService {
 
 			List<Object[]> benMapObjArr = new ArrayList<>();
 
+			// find identity no
 			List<MBeneficiaryidentity> benIdentityList = identityRepo.searchByIdentityNo(identity);
 
+			// find benmap ids
 			if (benIdentityList == null || benIdentityList.size() == 0)
 				return beneficiaryList;
 			else {
@@ -509,8 +575,13 @@ public class IdentityService {
 			benMapOBJ.setMBeneficiaryAccount(accountRepo
 					.getWith_vanSerialNo_vanID(getBigIntegerValueFromObject(benMapArr[7]), (Integer) benMapArr[8]));
 
+			// family
+//			benMapOBJ.setMBeneficiaryfamilymappings(
+//					familyMapRepo.findByBenMapIdOrderByBenFamilyMapIdAsc(getBigIntegerValueFromObject(benMapArr[9])));
 			benMapOBJ.setMBeneficiaryfamilymappings(familyMapRepo.findByBenMapIdAndVanIDOrderByBenFamilyMapIdAsc(
 					getBigIntegerValueFromObject(benMapArr[9]), (Integer) benMapArr[8]));
+//			benMapOBJ
+//					.setMBeneficiaryidentities(identityRepo.findByBenMapId(getBigIntegerValueFromObject(benMapArr[9])));
 			benMapOBJ.setMBeneficiaryidentities(identityRepo
 					.findByBenMapIdAndVanID(getBigIntegerValueFromObject(benMapArr[9]), (Integer) benMapArr[8]));
 
@@ -535,9 +606,12 @@ public class IdentityService {
 		return benMapOBJ;
 	}
 
+	// 03-10-2018
+	// get ben mapping object from v_benadvancesearch
 	private MBeneficiarymapping getBeneficiariesDTONew1(V_BenAdvanceSearch benAdvanceSearchOBJ) {
 		MBeneficiarymapping benMapOBJ = new MBeneficiarymapping();
 
+		// for createdBy & createdDate
 		if (benAdvanceSearchOBJ != null) {
 			MBeneficiarydetail benDetailsOBJ = detailRepo
 					.getWith_vanSerialNo_vanID(benAdvanceSearchOBJ.getBenDetailsID(), benAdvanceSearchOBJ.getVanID());
@@ -595,16 +669,30 @@ public class IdentityService {
 		return ret;
 	}
 
-	
+	/**
+	 * The following parameters can be changed/edited once created: - First Name -
+	 * Middle Name - Last Name - DOB/Age - Address (Current, Permanent, Emergency) -
+	 * Contact Numbers/Email Ids - Spouse Name - Preferred Num - Preferred SMS Num -
+	 * Email Id - Identity
+	 * 
+	 * Following changes need Additional Authorization - First Name - Middle Name -
+	 * Last Name - Father Name - Spouse Name - Identity
+	 *
+	 * @param identity
+	 * @return
+	 * @throws MissingMandatoryFieldsException
+	 */
 	public void editIdentity(IdentityEditDTO identity) throws MissingMandatoryFieldsException {
 		logger.info("IdentityService.editIdentity - start");
 		if (identity.getBeneficiaryRegId() == null && null == identity.getBeneficaryId()) {
 			throw new MissingMandatoryFieldsException("Either of BeneficiaryID or Beneficiary Reg Id is mandatory.");
 		}
 
+		// SUNIL TODO: Logic for the various Edit scenarios goes here
 
 		MBeneficiarymapping benMapping = mappingRepo.findByBenRegIdOrderByBenMapIdAsc(identity.getBeneficiaryRegId());
 
+		// change in self details is implement here and other details here
 		logger.debug("identity.getChangeInSelfDetails = " + identity.getChangeInSelfDetails());
 		logger.debug("identity.getChangeInOtherDetails = " + identity.getChangeInOtherDetails());
 		logger.debug("identity.getChangeInAssociations = " + identity.getChangeInAssociations());
@@ -612,10 +700,19 @@ public class IdentityService {
 				|| Boolean.TRUE.equals(identity.getChangeInOtherDetails())
 				|| Boolean.TRUE.equals(identity.getChangeInAssociations())) {
 
+			// MBeneficiarydetail mbDetl =
+			// detailRepo.findOne(benMapping.getMBeneficiarydetail().getBeneficiaryDetailsId());
 			MBeneficiarydetail mbDetl = editMapper.IdentityEditDTOToMBeneficiarydetail(identity);
-			
+			/**
+			 * new logic for data sync, 26-09-2018
+			 */
+			// next commented statement is old one
+			// mbDetl.setBeneficiaryDetailsId(benMapping.getMBeneficiarydetail().getBeneficiaryDetailsId());
+
+			// getting correct beneficiaryDetailsId by passing vanSerialNo & vanID
 			MBeneficiarydetail benDetails = detailRepo.findBenDetailsByVanSerialNoAndVanID(
 					benMapping.getMBeneficiarydetail().getBeneficiaryDetailsId(), benMapping.getVanID());
+			// next statement is new one, setting correct beneficiaryDetailsId
 			if (benDetails != null) {
 				mbDetl.setBeneficiaryDetailsId(benDetails.getBeneficiaryDetailsId());
 				if (benDetails.getFamilyId() != null)
@@ -629,47 +726,78 @@ public class IdentityService {
 			} else
 				throw new MissingMandatoryFieldsException("Either of vanSerialNO or vanID is missing.");
 
+			/**
+			 * END
+			 */
 
+			// old logic
+			// mbDetl.setBeneficiaryDetailsId(benMapping.getMBeneficiarydetail().getBeneficiaryDetailsId());
 			logger.debug("Beneficiary details to update = " + new OutputMapper().gson().toJson(mbDetl));
 			detailRepo.save(mbDetl);
 		}
 
+		// edition in current emergency and permanent is implement below
 		logger.debug("identity.getChangeInAddress = " + identity.getChangeInAddress());
 		if (Boolean.TRUE.equals(identity.getChangeInAddress())) {
 
 			MBeneficiaryaddress mbAddr = editMapper.IdentityEditDTOToMBeneficiaryaddress(identity);
 
-			
+			/**
+			 * new logic for data sync, 26-09-2018
+			 */
+			// next commented statement is old one
+			// mbAddr.setBenAddressID(benMapping.getMBeneficiaryaddress().getBenAddressID());
+
+			// getting correct beneficiaryDetailsId by passing vanSerialNo & vanID
 			BigInteger benAddressID = addressRepo.findIdByVanSerialNoAndVanID(
 					benMapping.getMBeneficiaryaddress().getBenAddressID(), benMapping.getVanID());
+			// next statement is new one, setting correct beneficiaryDetailsId
 			if (benAddressID != null)
 				mbAddr.setBenAddressID(benAddressID);
 			else
 				throw new MissingMandatoryFieldsException("Either of vanSerialNO or vanID is missing.");
 
-			
+			/**
+			 * END
+			 */
 
+			// old logic
+			// mbAddr.setBenAddressID(benMapping.getMBeneficiaryaddress().getBenAddressID());
 			logger.debug("Beneficiary address to update = " + OutputMapper.gson().toJson(mbAddr));
 			addressRepo.save(mbAddr);
 		}
 
+		// edition in beneficiary contacts is updated here
 		logger.debug("identity.getChangeInContacts = " + identity.getChangeInContacts());
 		if (Boolean.TRUE.equals(identity.getChangeInContacts())) {
 
 			MBeneficiarycontact benCon = editMapper.IdentityEdiDTOToMBeneficiarycontact(identity);
 
+			/**
+			 * new logic for data sync, 26-09-2018
+			 */
+			// next commented statement is old one
+			// benCon.setBenContactsID(benMapping.getMBeneficiarycontact().getBenContactsID());
+
+			// getting correct beneficiaryDetailsId by passing vanSerialNo & vanID
 			BigInteger benContactsID = contactRepo.findIdByVanSerialNoAndVanID(
 					benMapping.getMBeneficiarycontact().getBenContactsID(), benMapping.getVanID());
+			// next statement is new one, setting correct beneficiaryDetailsId
 			if (benContactsID != null)
 				benCon.setBenContactsID(benContactsID);
 			else
 				throw new MissingMandatoryFieldsException("Either of vanSerialNO or vanID is missing.");
 
-			
+			/**
+			 * END
+			 */
+
 			logger.debug("Beneficiary contact to update = " + OutputMapper.gson().toJson(benCon));
+			// benCon.setBenContactsID(benMapping.getMBeneficiarycontact().getBenContactsID());
 			contactRepo.save(benCon);
 		}
 
+		// change in identities are added here
 		logger.debug("identity.getChangeInIdentities = " + identity.getChangeInIdentities());
 		if (Boolean.TRUE.equals(identity.getChangeInIdentities())) {
 
@@ -678,6 +806,11 @@ public class IdentityService {
 					.IdentityEditDTOListToMBeneficiaryidentityList(identity.getIdentities());
 			logger.debug("identities to upsert = " + OutputMapper.gson().toJson(identities));
 
+			// old logic for getting beneficiary identities, 26-09-2018
+			// List<MBeneficiaryidentity> idList =
+			// identityRepo.findByBenMapId(benMapping.getBenMapId());
+
+			// new logic for getting beneficiary identities, 26-09-2018
 			List<MBeneficiaryidentity> idList = identityRepo.findByBenMapId(benMapping.getVanSerialNo());
 
 			logger.debug("existing identies = " + OutputMapper.gson().toJson(idList));
@@ -686,28 +819,58 @@ public class IdentityService {
 			while (iterator.hasNext()) {
 				beneficiaryidentity = iterator.next();
 
+				// old logic, 26-09-2018
+				// beneficiaryidentity.setBenMapId(benMapping.getBenMapId());
+
+				// new logic, 26-09-2018
 				beneficiaryidentity.setBenMapId(benMapping.getVanSerialNo());
 				logger.debug("Beneficiary identity to update = " + OutputMapper.gson().toJson(beneficiaryidentity));
 				if (index < idList.size() && beneficiaryidentity.getBenIdentityId() == null) {
 					beneficiaryidentity.setBenIdentityId(idList.get(index).getBenIdentityId());
+					// identityRepo.save(beneficiaryidentity);
 				}
 
+				// new code to set vanID & parkingPlaceID for new record, 26-09-2018
 				if (index >= idList.size() && beneficiaryidentity.getBenIdentityId() == null) {
 					beneficiaryidentity.setVanID(benMapping.getVanID());
 					beneficiaryidentity.setParkingPlaceID(benMapping.getParkingPlaceID());
 				}
-				
+				// else
+				// {
+				/**
+				 * add vanID & parkingPlaceID for data sync
+				 */
+				// if (identity != null && identity.getVanID() != null)
+				// beneficiaryidentity.setVanID(identity.getVanID());
+				// if (identity != null && identity.getParkingPlaceId() != null)
+				// beneficiaryidentity.setParkingPlaceID(identity.getParkingPlaceId());
+				/**
+				 * END
+				 */
 
+				// old logic, 26-09-2018
+				// identityRepo.save(beneficiaryidentity);
+
+				// new logic, 26-09-2018
 				MBeneficiaryidentity m = identityRepo.save(beneficiaryidentity);
 
+				// new code, update van serial no for new entry, 26-09-2018
 				if (index >= idList.size() && beneficiaryidentity.getBenIdentityId() == null) {
 					int i8 = identityRepo.updateVanSerialNo(m.getBenIdentityId());
 				}
 
+				// }
 				index++;
 			}
 		}
 
+		// change other details are added here *** commented cause all details
+		// are
+		// available in ben details
+		// if(identity.getChangeInOtherDetails()){
+		// }
+
+		// family detail changes are performing here
 		logger.debug("identity.getChangeInFamilyDetails = " + identity.getChangeInFamilyDetails());
 		if (Boolean.TRUE.equals(identity.getChangeInFamilyDetails())) {
 			List<MBeneficiaryfamilymapping> fbMaps = editMapper
@@ -715,6 +878,11 @@ public class IdentityService {
 
 			logger.debug("family map to upsert = " + OutputMapper.gson().toJson(fbMaps));
 
+			// old logic, 26-09-2018
+			// List<MBeneficiaryfamilymapping> fmList = familyMapRepo
+			// .findByBenMapIdOrderByBenFamilyMapIdAsc(benMapping.getBenMapId());
+
+			// new logic, 26-09-2018
 			List<MBeneficiaryfamilymapping> fmList = familyMapRepo
 					.findByBenMapIdOrderByBenFamilyMapIdAsc(benMapping.getVanSerialNo());
 
@@ -725,6 +893,10 @@ public class IdentityService {
 			while (iterator.hasNext()) {
 
 				familymapping = iterator.next();
+				// old logic, 26-09-2018
+				// familymapping.setBenMapId(benMapping.getBenMapId());
+
+				// new logic, 26-09-2018
 				familymapping.setBenMapId(benMapping.getVanSerialNo());
 
 				logger.debug("family mapping to update = " + OutputMapper.gson().toJson(familymapping));
@@ -737,8 +909,13 @@ public class IdentityService {
 					familymapping.setParkingPlaceID(benMapping.getParkingPlaceID());
 				}
 
+				// old logic, 26-09-2018
+				// familyMapRepo.save(familymapping);
+
+				// new logic, 26-09-2018
 				MBeneficiaryfamilymapping m = familyMapRepo.save(familymapping);
 
+				// new code, update van serial no for new entry, 26-09-2018
 				if (familymapping.getBenFamilyMapId() == null) {
 					int i8 = familyMapRepo.updateVanSerialNo(m.getBenFamilyMapId());
 				}
@@ -747,18 +924,26 @@ public class IdentityService {
 			}
 		}
 
+		// start
+		// Feature used in outreach
 		if (Boolean.TRUE.equals(identity.getChangeInBankDetails())) {
 			MBeneficiaryAccount beneficiaryAccount = editMapper.identityEditDTOToMBeneficiaryAccount(identity);
 
-			
+			/**
+			 * new logic for data sync, 26-09-2018
+			 */
+			// getting correct beneficiaryDetailsId by passing vanSerialNo & vanID
 			BigInteger benAccountID = accountRepo.findIdByVanSerialNoAndVanID(
 					benMapping.getMBeneficiaryAccount().getBenAccountID(), benMapping.getVanID());
+			// next statement is new one, setting correct beneficiaryDetailsId
 			if (benAccountID != null)
 				beneficiaryAccount.setBenAccountID(benAccountID);
 			else
 				throw new MissingMandatoryFieldsException("Either of vanSerialNO or vanID is missing.");
 
-			
+			/**
+			 * END
+			 */
 
 			logger.debug("Account to upsert = " + OutputMapper.gson().toJson(beneficiaryAccount));
 			beneficiaryAccount = accountRepo.save(beneficiaryAccount);
@@ -767,25 +952,46 @@ public class IdentityService {
 		if (Boolean.TRUE.equals(identity.getChangeInBenImage())) {
 			MBeneficiaryImage beneficiaryImage = editMapper.identityEditDTOToMBeneficiaryImage(identity);
 
-			
+			/**
+			 * new logic for data sync, 26-09-2018
+			 */
+			// getting correct beneficiaryDetailsId by passing vanSerialNo & vanID
 			Long benImageId = imageRepo.findIdByVanSerialNoAndVanID(benMapping.getMBeneficiaryImage().getBenImageId(),
 					benMapping.getVanID());
+			// next statement is new one, setting correct beneficiaryDetailsId
 			if (benImageId != null)
 				beneficiaryImage.setBenImageId(benImageId);
 			else
 				throw new MissingMandatoryFieldsException("Either of vanSerialNO or vanID is missing.");
 
-			
+			/**
+			 * END
+			 */
+
 			logger.debug("Image to upsert = " + OutputMapper.gson().toJson(beneficiaryImage));
 			imageRepo.save(beneficiaryImage);
 		}
 
+		// end
+
+		// change in association will be done here *** commented cause all
+		// details are
+		// available in ben details
+		// if(identity.getChangeInAssociations()) {
+		//
+		// }
 
 		logger.info("IdentityService.editIdentity - end. id = " + benMapping.getBenMapId());
+		// return benMapping;
 	}
 
-	
+	/**
+	 * @param identity
+	 * @return
+	 */
 
+	// SynchronousQueue<MBeneficiaryregidmapping> queue = new
+	// SynchronousQueue<MBeneficiaryregidmapping>();
 	ArrayDeque<MBeneficiaryregidmapping> queue = new ArrayDeque<MBeneficiaryregidmapping>();
 
 	public BeneficiaryCreateResp createIdentity(IdentityDTO identity) throws IEMRException {
@@ -811,6 +1017,25 @@ public class IdentityService {
 
 		regMap.setProvisioned(true);
 
+		/*
+		 * synchronized (regIdRepo) { regMap =
+		 * regIdRepo.findFirstByProvisionedAndReserved(false, false);
+		 * 
+		 * if (regMap == null) throw new
+		 * IEMRException("Beneficiary IDs are not available! Please allocate the IDs");
+		 * 
+		 * regMap.setReserved(true);
+		 * 
+		 * regIdRepo.save(regMap);
+		 * 
+		 * regMap.setProvisioned(true); }
+		 */
+
+		// return regMap;
+		// });
+
+		// Future<MBeneficiaryaddress> fAddress = executor.submit(() ->
+		// {
 		logger.info("IdentityService.createIdentity - saving Address");
 		MBeneficiaryaddress mAddr = mapper.identityDTOToMBeneficiaryaddress(identity);
 		logger.info("identity.getIsPermAddrSameAsCurrAddr = " + identity.getIsPermAddrSameAsCurrAddr());
@@ -840,36 +1065,80 @@ public class IdentityService {
 		mAddr = addressRepo.save(mAddr);
 		logger.info("IdentityService.createIdentity - Address saved - id = " + mAddr.getBenAddressID());
 
+		// Update van serial no for data sync
 		int i = addressRepo.updateVanSerialNo(mAddr.getBenAddressID());
+
+		// return mAddr;
+		// });
+
+		// Future<MBeneficiaryconsent> fConsent = executor.submit(() ->
+		// {
 		MBeneficiaryconsent mConsnt = mapper.identityDTOToDefaultMBeneficiaryconsent(identity, true, false);
 		logger.info("IdentityService.createIdentity - saving Consent");
 		mConsnt = consentRepo.save(mConsnt);
 		logger.info("IdentityService.createIdentity - Consent saved - id = " + mConsnt.getBenConsentID());
 
+		// Update van serial no for data sync
 		int i1 = consentRepo.updateVanSerialNo(mConsnt.getBenConsentID());
+
+		// return mConsnt;
+		// });
+
+		// Future<MBeneficiarycontact> fContact = executor.submit(() ->
+		// {
 		logger.info("IdentityService.createIdentity - saving Contacts");
 		MBeneficiarycontact mContc = mapper.identityDTOToMBeneficiarycontact(identity);
 		mContc = contactRepo.save(mContc);
 		logger.info("IdentityService.createIdentity - Contacts saved - id = " + mContc.getBenContactsID());
+
+		// Update van serial no for data sync
 		int i2 = contactRepo.updateVanSerialNo(mContc.getBenContactsID());
+
+		// return mContc;
+		// });
+
+		// Future<MBeneficiarydetail> fDetail = executor.submit(() ->
+		// {
 		logger.info("IdentityService.createIdentity - saving Details");
 		MBeneficiarydetail mDetl = mapper.identityDTOToMBeneficiarydetail(identity);
 		mDetl = detailRepo.save(mDetl);
 		logger.info("IdentityService.createIdentity - Details saved - id = " + mDetl.getBeneficiaryDetailsId());
+
+		// Update van serial no for data sync
 		int i3 = detailRepo.updateVanSerialNo(mDetl.getBeneficiaryDetailsId());
 
+		// return mDetl;
+		// });
+
+		// start
+		// Feature used in outreach
+		// Future<MBeneficiaryAccount> fBankDetails = executor.submit(() ->
+		// {
 		MBeneficiaryAccount bankOBJ = mapper.identityDTOToMBeneficiaryAccount(identity);
 		bankOBJ = accountRepo.save(bankOBJ);
+		// Update van serial no for data sync
 		int i4 = accountRepo.updateVanSerialNo(bankOBJ.getBenAccountID());
 
+		// return bankOBJ;
+		// });
+
+		// Future<MBeneficiaryImage> fBenImage = executor.submit(() ->
+		// {
 		MBeneficiaryImage benImageOBJ = mapper.identityDTOToMBeneficiaryImage(identity);
 		benImageOBJ = imageRepo.save(benImageOBJ);
 
+		// Update van serial no for data sync
 		int i5 = imageRepo.updateVanSerialNo(benImageOBJ.getBenImageId());
 
+		// return benImageOBJ;
+		// });
+		// end
 
 		logger.info("IdentityService.createIdentity - saving Mapping");
 		MBeneficiarymapping benMapping = mapper.identityDTOToMBeneficiarymapping(identity);
+
+		// try
+		// {
 		benMapping.setMBeneficiarycontact(mContc);
 		benMapping.setMBeneficiaryaddress(mAddr);
 		benMapping.setMBeneficiaryconsent(mConsnt);
@@ -879,22 +1148,50 @@ public class IdentityService {
 		benMapping.setMBeneficiaryAccount(bankOBJ);
 
 		regMap.setProviderServiceMapID(identity.getProviderServiceMapId());
+		// added columns for data sync
+		// 17-09-2018
 		if (identity.getVanID() != null)
 			regMap.setVanID(identity.getVanID());
 		if (identity.getParkingPlaceId() != null)
 			regMap.setParkingPlaceID(identity.getParkingPlaceId());
 		regMap.setVanSerialNo(regMap.getBenRegId());
+		// END
 
 		regIdRepo.save(regMap);
+		// } catch (InterruptedException | ExecutionException e)
+		// {
+		// logger.info("error under catch interrupted exception - benMapping: "
+		// + benMapping);
+		//
+		// e.printStackTrace();
+		// if (benMapping.getMBeneficiarycontact() != null)
+		// {
+		//
+		// logger.info("INSIDE IF IT IS THERE ");
+		// contactRepo.delete(benMapping.getMBeneficiarycontact().getBenContactsID());
+		// }
+		// if (benMapping.getMBeneficiaryaddress() != null)
+		// {
+		//
+		// logger.info("INSIDE IF IT IS THERE ");
+		// regIdRepo.delete(benMapping.getMBeneficiaryaddress().getBenAddressID());
+		// }
+		// e.printStackTrace();
+		// }
 
 		benMapping = mappingRepo.save(benMapping);
+		// Update van serial no for data sync
 		int i6 = mappingRepo.updateVanSerialNo(benMapping.getBenMapId());
 
 		final MBeneficiarymapping benMapping2 = benMapping;
+		// Future<List<MBeneficiaryfamilymapping>> fFamily = executor.submit(()
+		// ->
+		// {
 		logger.info("IdentityService.createIdentity - saving FamilyMaps");
 		List<MBeneficiaryfamilymapping> fIdenList = new ArrayList<MBeneficiaryfamilymapping>();
 		List<MBeneficiaryfamilymapping> fList = new ArrayList<MBeneficiaryfamilymapping>();
 
+		// new logic (18-09-2018, Neeraj kumar)
 		if (null != identity.getBenFamilyDTOs()) {
 			fIdenList = mapper.IdentityDTOListToMBeneficiaryfamilymappingList(identity.getBenFamilyDTOs());
 			if (fIdenList != null) {
@@ -912,6 +1209,7 @@ public class IdentityService {
 					}
 				}
 				fList = (List<MBeneficiaryfamilymapping>) familyMapRepo.save(fIdenList);
+				// Update van serial no for data sync
 				if (fList != null && fList.size() > 0) {
 					for (MBeneficiaryfamilymapping obj : fList) {
 						int i7 = familyMapRepo.updateVanSerialNo(obj.getBenFamilyMapId());
@@ -919,20 +1217,52 @@ public class IdentityService {
 				}
 			}
 
-			
+			/**
+			 * commenting below code as optimization process, ABOVE code replaced it
+			 * 
+			 */
+
+			// ListIterator<MBeneficiaryfamilymapping> iterator = fIdenList.listIterator();
+			// while (iterator.hasNext()) {
+			//
+			// MBeneficiaryfamilymapping fMap = iterator.next();
+			// fMap.setBenMapId(benMapping2.getBenMapId());
+			// if (fMap.getAssociatedBenRegId() == null) {
+			// fMap.setAssociatedBenRegId(benMapping2.getBenRegId());
+			// }
+			// fMap = familyMapRepo.save(fMap);
+			// fList.add(fMap);
+			// }
+			/**
+			 * END
+			 * 
+			 */
 		}
 
 		logger.info("IdentityService.createIdentity - FamilyMap saved ");
+		// return fList;
+		// });
+
+		// Future<List<MBeneficiaryservicemapping>> fService =
+		// executor.submit(() ->
+		// {
 		logger.info("IdentityService.createIdentity - saving Service Map");
 		MBeneficiaryservicemapping sMap = mapper.identityDTOToMBeneficiaryservicemapping(identity);
+		// sMap.setMBeneficiarymapping(benMapping);
 		sMap.setBenMapId(benMapping.getBenMapId());
 		sMap = serviceMapRepo.save(sMap);
 		logger.info("IdentityService.createIdentity - ServiceMap saved  - id = " + sMap.getBenServiceMapID());
 
+		// Update van serial no for data sync
 		int i7 = serviceMapRepo.updateVanSerialNo(sMap.getBenServiceMapID());
 
 		List<MBeneficiaryservicemapping> sList = new ArrayList<MBeneficiaryservicemapping>();
 		sList.add(sMap);
+		// return sList;
+		// });
+
+		// Future<List<MBeneficiaryidentity>> fIdentity = executor.submit(() ->
+		// {
 		logger.info("IdentityService.createIdentity - saving Identity");
 		List<MBeneficiaryidentity> mIdenList2 = new ArrayList<MBeneficiaryidentity>();
 		if (null != identity.getIdentities()) {
@@ -943,6 +1273,7 @@ public class IdentityService {
 				mIden.setCreatedBy(identity.getAgentName());
 				mIden.setCreatedDate(identity.getEventTypeDate());
 
+				// set new column(vanID, parkingPlaceID) value for data sync
 				if (identity.getVanID() != null)
 					mIden.setVanID(identity.getVanID());
 				if (identity.getParkingPlaceId() != null)
@@ -950,6 +1281,7 @@ public class IdentityService {
 
 				MBeneficiaryidentity m = identityRepo.save(mIden);
 
+				// Update van serial no for data sync
 				int i8 = identityRepo.updateVanSerialNo(m.getBenIdentityId());
 
 				mIdenList2.add(m);
@@ -957,6 +1289,14 @@ public class IdentityService {
 			});
 		}
 
+		// commented on 28-09-2018
+		// benMapping.setMBeneficiaryfamilymappings(fList);
+		// benMapping.setMBeneficiaryservicemappings(sList);
+		// benMapping.setMBeneficiaryidentities(mIdenList2);
+		//
+		//
+		// benMapping = mappingRepo.save(benMapping);
+		// end
 
 		logger.info("IdentityService.createIdentity - end. id = " + benMapping.getBenMapId());
 		return partialMapper.MBeneficiarymappingToBeneficiaryCreateResp(benMapping);
@@ -967,7 +1307,11 @@ public class IdentityService {
 		return "success";
 	}
 
-	
+	/**
+	 * 
+	 * @param reserveIdentityDTO
+	 * @return
+	 */
 	public String reserveIdentity(ReserveIdentityDTO reserveIdentityDTO) {
 
 		Long availableCount = regIdRepo.countByProviderServiceMapIDAndVehicalNoOrderByBenRegIdAsc(
@@ -997,18 +1341,68 @@ public class IdentityService {
 		return "Successfully Completed";
 	}
 
-	
+	/**
+	 * Get partial details of beneficiaries (first name middle name and last name)
+	 * list on benId's list
+	 * 
+	 * @param BenRegIds
+	 * @return {@link List} Beneficiaries
+	 */
+	// public List<BeneficiariesPartialDTO>
+	// getBeneficiariesPartialDeatilsByBenRegIdList(List<BigInteger> BenRegIds)
+	// {
+	//
+	// logger.info("IdentityService.getBeneficiariesPartialDeatilsByBenRegId -
+	// end");
+	// List<BeneficiariesPartialDTO> list = new
+	// ArrayList<BeneficiariesPartialDTO>();
+	// List<MBeneficiaryregidmapping> benMapIDList =
+	// (List<MBeneficiaryregidmapping>) regIdRepo.findAll(BenRegIds);
+	// ListIterator<MBeneficiaryregidmapping> benMapListIter =
+	// benMapIDList.listIterator();
+	//
+	// MBeneficiarydetail beneficiarydetail;
+	// MBeneficiarymapping benMap;
+	// while (benMapListIter.hasNext())
+	// {
+	//
+	// MBeneficiaryregidmapping regId = benMapListIter.next();
+	// beneficiarydetail =
+	// detailRepo.findPartialBeneficiaryDetailByBenRegId(regId.getBenRegId());
+	// benMap = new MBeneficiarymapping();
+	// benMap.setMBeneficiarydetail(beneficiarydetail);
+	// benMap.setMBeneficiaryregidmapping(regId);
+	// list.add(partialMapper.MBeneficiarymappingToBeneficiariesPartialDTO(benMap));
+	// }
+	//
+	// logger.info("IdetityService.getBeneficiariesPartialDeatilsByBenRegId -
+	// end");
+	//
+	// return list;
+	// }
 
 	public List<BeneficiariesPartialDTO> getBeneficiariesPartialDeatilsByBenRegIdList(List<BigInteger> BenRegIds) {
 
 		logger.info("IdentityService.getBeneficiariesPartialDeatilsByBenRegId - end");
 		List<BeneficiariesPartialDTO> list = new ArrayList<BeneficiariesPartialDTO>();
+		// old logic
+		// List<MBeneficiarymapping> benMapIDList = (List<MBeneficiarymapping>)
+		// mappingRepo
+		// .findAllByBenRegIdOrderByBenMapIdAsc(BenRegIds);
+		// // List<Future<?>> futures = new ArrayList<Future<?>>();
+		// for (MBeneficiarymapping benMap : benMapIDList) {
+		// list.add(partialMapper.MBeneficiarymappingToBeneficiariesPartialDTO(benMap));
+		// }
+		// end
+
+		// new logic, 19-12-2018
 		List<Object[]> benMapObjArr = new ArrayList<>();
 		if (BenRegIds != null && BenRegIds.size() > 0) {
 			benMapObjArr = mappingRepo.getBenMappingByRegIDList(BenRegIds);
 			if (benMapObjArr != null && benMapObjArr.size() > 0) {
 				for (Object[] objArr : benMapObjArr) {
 					MBeneficiarymapping benMap = this.getBeneficiariesDTONewPartial(objArr);
+//					logger.info("benMap " + benMap);
 
 					list.add(partialMapper.MBeneficiarymappingToBeneficiariesPartialDTO(benMap));
 				}
@@ -1016,22 +1410,90 @@ public class IdentityService {
 			logger.info("benMap size" + (list.size() == 0 ? "No Beneficiary Found" : list.size()));
 
 		}
+		// end
 		logger.info("IdetityService.getBeneficiariesPartialDeatilsByBenRegId - end");
 
 		return list;
 	}
 
-	
+	/**
+	 * Get partial details of beneficiaries (first name middle name and last name)
+	 * list on benId's list
+	 * 
+	 * @param BenRegIds
+	 * @return {@link List} Beneficiaries
+	 */
+	// public List<BeneficiariesDTO>
+	// getBeneficiariesDeatilsByBenRegIdList(List<BigInteger> BenRegIds)
+	// {
+	//
+	// logger.info("IdentityService.getBeneficiariesPartialDeatilsByBenRegId -
+	// end");
+	// List<BeneficiariesDTO> list = new ArrayList<BeneficiariesDTO>();
+	// List<MBeneficiaryregidmapping> benMapIDList =
+	// (List<MBeneficiaryregidmapping>) regIdRepo.findAll(BenRegIds);
+	// List<MBeneficiarymapping> benMapList = new
+	// ArrayList<MBeneficiarymapping>();
+	//
+	// benMapIDList.forEach(benIdMap ->
+	// {
+	//
+	// MBeneficiarymapping benMap =
+	// mappingRepo.findByBenRegIdOrderByBenMapIdAsc(benIdMap.getBenRegId());
+	// benMapList.add(benMap);
+	// });
+	//
+	// List<Future<?>> futures = new ArrayList<Future<?>>();
+	// benMapList.forEach(benMap ->
+	// {
+	// Future<?> future = executor.submit(() ->
+	// {
+	//
+	// list.add(this.getBeneficiariesDTO(benMap));
+	// logger.info("benMapId: " + benMap.getBenMapId() + " :: BenId: "
+	// + benMap.getMBeneficiaryregidmapping().getBeneficiaryID());
+	// });
+	// futures.add(future);
+	// });
+	//
+	// try
+	// {
+	// for (Future<?> future : futures)
+	// {
+	// future.get();
+	// }
+	// } catch (InterruptedException | ExecutionException e)
+	// {
+	// e.printStackTrace();
+	// }
+	//
+	// logger.info("IdetityService.getBeneficiariesPartialDeatilsByBenRegId -
+	// end");
+	//
+	// return list;
+	// }
 	public List<BeneficiariesDTO> getBeneficiariesDeatilsByBenRegIdList(List<BigInteger> BenRegIds) {
 
 		logger.info("IdentityService.getBeneficiariesDeatilsByBenRegIdList - end");
 		List<BeneficiariesDTO> list = new ArrayList<BeneficiariesDTO>();
+		// old logic
+		// List<MBeneficiarymapping> benMapIDList = (List<MBeneficiarymapping>)
+		// mappingRepo
+		// .findAllByBenRegIdOrderByBenMapIdAsc(BenRegIds);
+		//
+		// for (MBeneficiarymapping benMap : benMapIDList) {
+		// list.add(getBeneficiariesDTO(benMap));
+		// }
+		// end
+
+		// new logic, 19-12-2018
 		List<Object[]> benMapObjArr = new ArrayList<>();
 		if (BenRegIds != null && BenRegIds.size() > 0) {
 			benMapObjArr = mappingRepo.getBenMappingByRegIDList(BenRegIds);
 			if (benMapObjArr != null && benMapObjArr.size() > 0) {
 				for (Object[] objArr : benMapObjArr) {
 					MBeneficiarymapping benMap = this.getBeneficiariesDTONew(objArr);
+//					logger.info("benMap " + benMap);
 
 					list.add(this.getBeneficiariesDTO(benMap));
 				}
@@ -1039,13 +1501,20 @@ public class IdentityService {
 			logger.info("benMap size" + (list.size() == 0 ? "No Beneficiary Found" : list.size()));
 
 		}
+		// end
 
 		logger.info("IdetityService.getBeneficiariesPartialDeatilsByBenRegId - end");
 
 		return list;
 	}
 
-	
+	/**
+	 * 
+	 * @param benMap
+	 * @return
+	 */
+	// private synchronized BeneficiariesDTO
+	// getBeneficiariesDTO(MBeneficiarymapping benMap)
 	private BeneficiariesDTO getBeneficiariesDTO(MBeneficiarymapping benMap) {
 
 		BeneficiariesDTO bdto = mapper.MBeneficiarymappingToBeneficiariesDTO(benMap);
@@ -1054,6 +1523,7 @@ public class IdentityService {
 		bdto.setBeneficiaryIdentites(
 				mapper.mBeneficiaryidentityListToBenIdentityDTOList(benMap.getMBeneficiaryidentities()));
 
+		// System.out.println("ABHA start....");
 		List<Object[]> abhaList = v_BenAdvanceSearchRepo.getBenAbhaDetailsByBenRegID(bdto.getBenRegId());
 		if (abhaList != null && abhaList.size() > 0) {
 			List<AbhaAddressDTO> abhaDTOList = new ArrayList<>();
@@ -1075,34 +1545,64 @@ public class IdentityService {
 			}
 			bdto.setAbhaDetails(abhaDTOList);
 		}
+		// System.out.println("ABHA end....");
 		return bdto;
 	}
 
-	
+	/**
+	 * finite search
+	 * 
+	 * @param identityDTO
+	 * @return
+	 */
 	public List<BeneficiariesDTO> getBeneficiaries(IdentityDTO identityDTO) {
 		List<BeneficiariesDTO> list = new ArrayList<BeneficiariesDTO>();
 
 		List<MBeneficiarymapping> benMapList = mappingRepo.finiteSearch(identityDTO);
+		// List<Future<?>> futures = new ArrayList<Future<?>>();
+		// benMapList.forEach(benMap ->
+		// {
+		// Future<?> future = executor.submit(() ->
+		// {
 		for (MBeneficiarymapping benMap : benMapList) {
 			list.add(this.getBeneficiariesDTO(benMap));
 			logger.info("benMapId: " + benMap.getBenMapId() + " :: BenId: "
 					+ benMap.getMBeneficiaryregidmapping().getBeneficiaryID());
 		}
+		// });
+		// futures.add(future);
+		// });
+
+		// try
+		// {
+		// for (Future<?> future : futures)
+		// {
+		// future.get();
+		// }
+		// } catch (InterruptedException | ExecutionException e)
+		// {
+		// e.printStackTrace();
+		// }
 
 		return list;
 	}
 
-	
+	/***
+	 * 
+	 * @return beneficiary image for beneficiary Reg ID.
+	 */
 	public String getBeneficiaryImage(String requestOBJ) {
 		OutputResponse response = new OutputResponse();
 		try {
 			Map<String, Object> benImageMap = new HashMap<String, Object>();
+			// String benImage = null;
 			if (requestOBJ != null) {
 				JsonObject obj = new JsonObject();
 				JsonParser jsnParser = new JsonParser();
 				JsonElement jsnElmnt = jsnParser.parse(requestOBJ);
 				obj = jsnElmnt.getAsJsonObject();
 
+				// JSONObject obj = new JSONObject(requestOBJ);
 				if (obj != null && obj.has("beneficiaryRegID") && obj.get("beneficiaryRegID") != null) {
 					MBeneficiarymapping benMap = mappingRepo
 							.getBenImageIdByBenRegID(obj.get("beneficiaryRegID").getAsBigInteger());
@@ -1131,11 +1631,34 @@ public class IdentityService {
 	}
 
 	public void editIdentityEducationOrCommunity(IdentityEditDTO identity) throws MissingMandatoryFieldsException {
+		// TODO Auto-generated method stub
 		logger.info("IdentityService.editIdentityEducationorCommunity - start");
 		if (identity.getBeneficiaryRegId() == null && null == identity.getBeneficaryId()) {
 			throw new MissingMandatoryFieldsException("Either of BeneficiaryID or Beneficiary Reg Id is mandatory.");
 		}
 
+		// SUNIL TODO: Logic for the various Edit scenarios goes here
+		// old logic : 13-11-2018
+		// MBeneficiarymapping benMapping =
+		// mappingRepo.findByBenRegIdOrderByBenMapIdAsc(identity.getBeneficiaryRegId());
+		// MBeneficiarydetail mbDetl =
+		// editMapper.IdentityEditDTOToMBeneficiarydetail(identity);
+		// logger.debug("Beneficiary details to update = " + new
+		// OutputMapper().gson().toJson(mbDetl));
+		// mbDetl.setBeneficiaryDetailsId(benMapping.getMBeneficiarydetail().getBeneficiaryDetailsId());
+		// if (benMapping != null && benMapping.getMBeneficiarydetail() != null
+		// && benMapping.getMBeneficiarydetail().getBeneficiaryDetailsId() != null) {
+		// if (identity.getCommunityId() != null) {
+		// detailRepo.updateCommunity(benMapping.getMBeneficiarydetail().getBeneficiaryDetailsId(),
+		// identity.getCommunityId());
+		// }
+		// if (identity.getEducationId() != null) {
+		// detailRepo.updateEducation(benMapping.getMBeneficiarydetail().getBeneficiaryDetailsId(),
+		// identity.getEducationId());
+		// }
+		// }
+
+		// new logic : 13-11-2018
 		MBeneficiarymapping benMapping = mappingRepo.findByBenRegIdOrderByBenMapIdAsc(identity.getBeneficiaryRegId());
 		if (benMapping != null && benMapping.getBenDetailsId() != null && benMapping.getVanID() != null) {
 			if (identity.getCommunityId() != null) {
@@ -1172,11 +1695,15 @@ public class IdentityService {
 				objArr[5] = false;
 
 				dataList.add(objArr);
+//				obj.setProvisioned(false);
+//				obj.setReserved(false);
 				System.out.println("regid :" + obj.getBenRegId() + " - benid :" + obj.getBeneficiaryID());
 			}
 
 			int[] i = jdbcTemplate.batchUpdate(query, dataList);
 
+//			ArrayList<MBeneficiaryregidmapping> rs = (ArrayList<MBeneficiaryregidmapping>) regIdRepo
+//					.save(mBeneficiaryregidmappingList);
 			return i.length;
 		} else
 			return 0;

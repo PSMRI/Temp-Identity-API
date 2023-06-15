@@ -58,7 +58,6 @@ public class MBeneficiarydetail implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(unique = true, nullable = false)
-	// @OrderBy(value = "beneficiaryDetailsId asc")
 	private BigInteger beneficiaryDetailsId;
 
 	private Integer areaId;
