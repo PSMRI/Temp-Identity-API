@@ -46,10 +46,10 @@ public class SwaggerConfig
 	private ApiInfo metaData()
 	{
 		ApiInfoBuilder builder = new ApiInfoBuilder();
-		builder.contact(new Contact("Wipro HCIT", "https://www.wipro.com", "mywipro@wipro.com"));
-		builder.description("Identity APIs for AMRIT");
+		builder.contact(new Contact("AMRIT", "https://psmri.github.io/PSMRI/", "amrit@piramalswasthya.org"));
+		builder.description("A microservice for the creation and management of beneficaries.");
 		builder.version("1.0");
-		builder.title("Identity APIs for AMRIT");
+		builder.title("Identity API");
 		return builder.build();
 	}
 }
