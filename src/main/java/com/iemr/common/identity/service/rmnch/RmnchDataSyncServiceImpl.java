@@ -125,8 +125,6 @@ public class RmnchDataSyncServiceImpl implements RmnchDataSyncService {
 
 		try {
 			if (requestOBJ != null && !requestOBJ.isEmpty()) {
-				// JSONObject jsonOBJ = new JSONObject(requestOBJ);
-
 				JsonObject jsnOBJ = new JsonObject();
 				JsonParser jsnParser = new JsonParser();
 				JsonElement jsnElmnt = jsnParser.parse(requestOBJ);
@@ -147,15 +145,11 @@ public class RmnchDataSyncServiceImpl implements RmnchDataSyncService {
 
 						if (benRegID != null) {
 							for (RMNCHBeneficiaryDetailsRmnch obj : benDetailsExtraList) {
-//						RMNCHBeneficiaryDetailsRmnch temp = rMNCHBeneficiaryDetailsRmnchRepo
-//								.getByIdAndVanID(obj.getId(), obj.getVanID());
 								obj.setBenRegId(benRegID);
 								RMNCHBeneficiaryDetailsRmnch temp = rMNCHBeneficiaryDetailsRmnchRepo
 										.getByRegID(benRegID);
 								if (temp != null) {
 									obj.setBeneficiaryDetails_RmnchId(temp.getBeneficiaryDetails_RmnchId());
-//									obj.setModifiedBy(obj.getCreatedBy());
-//									obj.setLastModDate(new Timestamp(System.currentTimeMillis()));
 								}
 
 								if (obj.getRelatedBeneficiaryIds() != null
@@ -334,33 +328,6 @@ public class RmnchDataSyncServiceImpl implements RmnchDataSyncService {
 			} else
 				throw new Exception("Invalid/missing village details");
 
-			// ------
-//			if (request != null && request.getVillageID() != null) {
-//				List<RMNCHMBeneficiaryaddress> resultSet;
-//				Integer pageSize = Integer.valueOf(door_to_door_page_size);
-//				if (request.getPageNo() != null) {
-//					PageRequest pr = new PageRequest(request.getPageNo(), pageSize);
-//					if (request.getFromDate() != null && request.getToDate() != null) {
-//						Page<RMNCHMBeneficiaryaddress> p = rMNCHBenAddressRepo.getBenDataFilteredWithDateRange(
-//								request.getVillageID(), request.getFromDate(), request.getToDate(), pr);
-//						resultSet = p.getContent();
-//						totalPage = p.getTotalPages();
-//					} else {
-//						Page<RMNCHMBeneficiaryaddress> p = rMNCHBenAddressRepo.getBenData(request.getVillageID(), pr);
-//						resultSet = p.getContent();
-//						totalPage = p.getTotalPages();
-//					}
-//					if (resultSet != null && resultSet.size() > 0) {
-//						outputResponse = getMappingsForAddressIDs(resultSet, totalPage, authorisation);
-//					}
-//				} else {
-//					// page no not invalid
-//					throw new Exception("Invalid page no");
-//				}
-//			} else {
-//				// missing village details : village ID
-//				throw new Exception("Invalid/missing village details");
-//			}
 		} catch (Exception e) {
 			throw new Exception(e.getMessage());
 		}
@@ -516,8 +483,6 @@ public class RmnchDataSyncServiceImpl implements RmnchDataSyncService {
 					if (benAddressOBJ.getPermAddrLine3() != null)
 						benDetailsRMNCH_OBJ.setAddressLine3(benAddressOBJ.getPermAddrLine3());
 
-					// -----------------------------------------------------------------------------
-
 					// related benids
 					if (benDetailsRMNCH_OBJ.getRelatedBeneficiaryIdsDB() != null) {
 
@@ -531,7 +496,6 @@ public class RmnchDataSyncServiceImpl implements RmnchDataSyncService {
 
 						benDetailsRMNCH_OBJ.setRelatedBeneficiaryIds(relatedBenIDs);
 					}
-					// ------------------------------------------------------------------------------
 
 					if (benDetailsOBJ.getCommunity() != null)
 						benDetailsRMNCH_OBJ.setCommunity(benDetailsOBJ.getCommunity());
@@ -648,7 +612,6 @@ public class RmnchDataSyncServiceImpl implements RmnchDataSyncService {
 					resultMap.put("benficieryid", benDetailsRMNCH_OBJ.getBenficieryid());
 					resultMap.put("BenRegId", m.getBenRegId());
 
-
 					// adding asha id / created by - user id
 					if (benAddressOBJ.getCreatedBy() != null) {
 						Integer userID = rMNCHMBenMappingRepo.getUserIDByUserName(benAddressOBJ.getCreatedBy());
@@ -742,7 +705,6 @@ public class RmnchDataSyncServiceImpl implements RmnchDataSyncService {
 						response.setConfirmed_hrp(getConfirmedHRP(benRegID, visitCode, authorization, benDetails));
 						break;
 					case "ANC":
-//					response = getConfirmedNCD_TB_Common(benRegID, visitCode);
 						response.setConfirmed_hrp(getConfirmedHRP(benRegID, visitCode, authorization, benDetails));
 						break;
 					case "NCD care":
@@ -985,39 +947,5 @@ public class RmnchDataSyncServiceImpl implements RmnchDataSyncService {
 			response.setDiagnosis_status("Pending");
 		return response;
 	}
-
-//		String isTB = "no", isNCD = "no";
-//	Object obj = null;
-//		ArrayList<String> ncdList = new ArrayList<String>();
-//		if (visitCode != null && benRegID != null) {// add NCD care
-//			if (visitCategory.equalsIgnoreCase("PNC")) {
-//	obj=rMNCHCBACDetailsRepo.getDiagnosisProvidedPNC(benRegID,visitCode);
-//			} else
-//				obj = rMNCHCBACDetailsRepo.getDiagnosisProvidedExceptPNC(benRegID, visitCode);
-//			if (obj != null) {
-//				String diagnosis[] = ((String) obj).split("||");
-//				if (diagnosis.length > 0) {
-//					for (String s : diagnosis) {
-//						if (s.equalsIgnoreCase("Tuberculosis"))
-//							isTB = "yes";
-//						else if (s.equalsIgnoreCase("Diabetes mellitus") || s.equalsIgnoreCase("Hypertension")
-//								|| s.equalsIgnoreCase("Breast cancer")
-//								|| s.equalsIgnoreCase("Mental health disorder")) {
-//							isNCD = "yes";
-//							ncdList.add(s);
-//						}
-//
-//					}
-//				}
-//			}
-//		}
-//		Map<String, String> res = new HashMap<String, String>();
-//		// return yes,no
-//		res.put("suspected_ncd", "isNCD");
-//		res.put("suspected_tb", "isTB");
-//		res.put("suspected_hrp", "isHRP");
-//		res.put("confirmed_ncd_diseases", "ncdList.toString()");
-//		return new Gson().toJson(res);
-//	}
 
 }

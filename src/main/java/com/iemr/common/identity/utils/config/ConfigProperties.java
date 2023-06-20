@@ -56,14 +56,9 @@ public class ConfigProperties {
 		if (properties == null) {
 			properties = new Properties();
 
-			// FileInputStream fis;
 			try {
-				// this.getClass().getResourceAsStream(
-
 				InputStream fis = ConfigProperties.class.getResourceAsStream("/application.properties");
 				properties.load(fis);
-				// properties.
-				// fis.close();
 			} catch (IOException e) {
 				logger.error("Loading of config file failed with error " + e.getLocalizedMessage(), e);
 			}
@@ -122,7 +117,6 @@ public class ConfigProperties {
 			if (properties == null) {
 				initalizeProperties();
 			}
-			// result = environment.getProperty(propertyName);
 			result = properties.getProperty(propertyName).trim();
 		} catch (Exception e) {
 			logger.error(propertyName + " retrival failed.", e);
