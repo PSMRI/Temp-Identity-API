@@ -36,7 +36,7 @@ import com.iemr.common.identity.domain.MBeneficiarycontact;
 
 @Repository
 public interface BenContactRepo extends CrudRepository<MBeneficiarycontact, BigInteger> {
-	List<MBeneficiarycontact> findByBenContactsIDOrderByBenContactsIDAsc(BigInteger BenContactsID);
+	List<MBeneficiarycontact> findByBenContactsIDOrderByBenContactsIDAsc(BigInteger benContactsID);
 
 	List<MBeneficiarycontact> findByCreatedDateBetweenOrderByBenContactsIDAsc(Timestamp fromDate, Timestamp toDate);
 
@@ -46,7 +46,7 @@ public interface BenContactRepo extends CrudRepository<MBeneficiarycontact, BigI
 
 	List<MBeneficiarycontact> findByPreferredPhoneNumOrderByBenContactsIDAsc(String phoneNum);
 
-	List<MBeneficiarycontact> findByPreferredSMSPhoneNumOrderByBenContactsIDAsc(String SMSPhoneNum);
+	List<MBeneficiarycontact> findByPreferredSMSPhoneNumOrderByBenContactsIDAsc(String smsPhoneNum);
 
 	
 	@Query("select c from MBeneficiarycontact c where c.preferredPhoneNum = :phoneNum ")
@@ -67,7 +67,7 @@ public interface BenContactRepo extends CrudRepository<MBeneficiarycontact, BigI
 	BigInteger findIdByVanSerialNoAndVanID(@Param("vanSerialNo") BigInteger vanSerialNo, @Param("vanID") Integer vanID);
 
 	@Query("SELECT a FROM MBeneficiarycontact a WHERE a.vanSerialNo =:vanSerialNo AND a.vanID =:vanID ")
-	MBeneficiarycontact getWith_vanSerialNo_vanID(@Param("vanSerialNo") BigInteger vanSerialNo,
+	MBeneficiarycontact getWithVanSerialNoVanID(@Param("vanSerialNo") BigInteger vanSerialNo,
 			@Param("vanID") Integer vanID);
 
 }

@@ -24,7 +24,7 @@ package com.iemr.common.identity.repo;
 import java.util.List;
 
 import com.iemr.common.identity.domain.MBeneficiarymapping;
-import com.iemr.common.identity.domain.V_BenAdvanceSearch;
+import com.iemr.common.identity.domain.VBenAdvanceSearch;
 import com.iemr.common.identity.dto.IdentityDTO;
 import com.iemr.common.identity.dto.IdentitySearchDTO;
 
@@ -41,5 +41,5 @@ public interface BenMappingRepoCustom {
 	 */
 	List<MBeneficiarymapping> finiteSearch(IdentityDTO identityDTO);
 
-	List<V_BenAdvanceSearch> dynamicFilterSearchNew(IdentitySearchDTO searchDTO);
+	List<VBenAdvanceSearch> dynamicFilterSearchNew(IdentitySearchDTO searchDTO);
 }

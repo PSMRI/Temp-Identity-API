@@ -50,7 +50,7 @@ public interface IdentitySearchMapper {
 			@Mapping(source = "dto.spouseName", target = "spouseName")
 
 			})
-	MBeneficiarydetail IdentitySearchDTOMBeneficiarydetail(IdentitySearchDTO dto);
+	MBeneficiarydetail identitySearchDTOMBeneficiarydetail(IdentitySearchDTO dto);
 
 	@Mappings({
 
@@ -60,7 +60,7 @@ public interface IdentitySearchMapper {
 			@Mapping(source = "dto.currentAddress.district", target = "currDistrict"),
 			@Mapping(source = "dto.pinCode", target = "currPinCode") 
 			})
-	MBeneficiaryaddress IdentitySearchDTOToMBeneficiaryaddress(IdentitySearchDTO dto);
+	MBeneficiaryaddress identitySearchDTOToMBeneficiaryaddress(IdentitySearchDTO dto);
 
 	@Mappings({
 
@@ -71,5 +71,5 @@ public interface IdentitySearchMapper {
 			@Mapping(source = "dto.contactNumber", target = "phoneNum4"),
 			@Mapping(source = "dto.contactNumber", target = "phoneNum5")
 			})
-	MBeneficiarycontact IdentitySearchDTOToMBeneficiarycontact(IdentitySearchDTO dto);
+	MBeneficiarycontact identitySearchDTOToMBeneficiarycontact(IdentitySearchDTO dto);
 }

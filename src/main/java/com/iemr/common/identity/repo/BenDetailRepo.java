@@ -122,8 +122,8 @@ public interface BenDetailRepo extends CrudRepository<MBeneficiarydetail, BigInt
 			+ " c.headOfFamily_Relation =:headofFamily_Relation,c.other =:other "
 			+ " WHERE c.vanSerialNo =:vanSerialNo AND c.vanID =:vanID ")
 	Integer updateFamilyDetails(@Param("familyId") String familyId,
-			@Param("headofFamily_RelationID") Integer headofFamily_RelationID,
-			@Param("headofFamily_Relation") String headofFamily_Relation, @Param("other") String other,
+			@Param("headofFamily_RelationID") Integer headofFamilyRelationID,
+			@Param("headofFamily_Relation") String headofFamilyRelation, @Param("other") String other,
 			@Param("vanSerialNo") BigInteger vanSerialNo, @Param("vanID") Integer vanID);
 
 	@Transactional
@@ -131,8 +131,8 @@ public interface BenDetailRepo extends CrudRepository<MBeneficiarydetail, BigInt
 	@Query("UPDATE MBeneficiarydetail c SET c.headOfFamily_RelationID =:headofFamily_RelationID, "
 			+ " c.headOfFamily_Relation =:headofFamily_Relation,c.other =:other "
 			+ " WHERE c.vanSerialNo =:vanSerialNo AND c.vanID =:vanID AND c.familyId=:familyId ")
-	Integer editFamilyDetails(@Param("headofFamily_RelationID") Integer headofFamily_RelationID,
-			@Param("headofFamily_Relation") String headofFamily_Relation, @Param("other") String other,
+	Integer editFamilyDetails(@Param("headofFamily_RelationID") Integer headofFamilyRelationID,
+			@Param("headofFamily_Relation") String headofFamilyRelation, @Param("other") String other,
 			@Param("vanSerialNo") BigInteger vanSerialNo, @Param("vanID") Integer vanID,
 			@Param("familyId") String familyId);
 

@@ -33,7 +33,7 @@ import com.google.gson.annotations.Expose;
 
 @Entity
 @Table(name = "v_benadvancesearch")
-public class V_BenAdvanceSearch {
+public class VBenAdvanceSearch {
 
 	@Id
 	@Expose
@@ -141,7 +141,7 @@ public class V_BenAdvanceSearch {
 		this.houseHoldID = houseHoldID;
 	}
 
-	public V_BenAdvanceSearch() {
+	public VBenAdvanceSearch() {
 		super();
 	}
 

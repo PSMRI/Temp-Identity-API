@@ -44,7 +44,7 @@ import com.iemr.common.identity.domain.MBeneficiaryaddress;
 import com.iemr.common.identity.domain.MBeneficiarycontact;
 import com.iemr.common.identity.domain.MBeneficiarydetail;
 import com.iemr.common.identity.domain.MBeneficiarymapping;
-import com.iemr.common.identity.domain.V_BenAdvanceSearch;
+import com.iemr.common.identity.domain.VBenAdvanceSearch;
 import com.iemr.common.identity.dto.IdentityDTO;
 import com.iemr.common.identity.dto.IdentitySearchDTO;
 import com.iemr.common.identity.mapper.IdentitySearchMapper;
@@ -347,10 +347,10 @@ public class BenMappingRepoImpl implements BenMappingRepoCustom {
 	}
 
 	@Override
-	public List<V_BenAdvanceSearch> dynamicFilterSearchNew(IdentitySearchDTO searchDTO) {
+	public List<VBenAdvanceSearch> dynamicFilterSearchNew(IdentitySearchDTO searchDTO) {
 		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-		CriteriaQuery<V_BenAdvanceSearch> criteriaQuery = criteriaBuilder.createQuery(V_BenAdvanceSearch.class);
-		Root<V_BenAdvanceSearch> root = criteriaQuery.from(V_BenAdvanceSearch.class);
+		CriteriaQuery<VBenAdvanceSearch> criteriaQuery = criteriaBuilder.createQuery(VBenAdvanceSearch.class);
+		Root<VBenAdvanceSearch> root = criteriaQuery.from(VBenAdvanceSearch.class);
 		List<Predicate> predicateList = new ArrayList<Predicate>();
 
 		// if firstName is not null
@@ -412,7 +412,7 @@ public class BenMappingRepoImpl implements BenMappingRepoCustom {
 		}
 
 		criteriaQuery.select(root).where(predicateList.toArray(new Predicate[] {}));
-		TypedQuery<V_BenAdvanceSearch> typedQuery = entityManager.createQuery(criteriaQuery);
+		TypedQuery<VBenAdvanceSearch> typedQuery = entityManager.createQuery(criteriaQuery);
 		return typedQuery.getResultList();
 	}
 

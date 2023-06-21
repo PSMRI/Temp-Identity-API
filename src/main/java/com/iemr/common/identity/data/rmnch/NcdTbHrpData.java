@@ -29,7 +29,7 @@ import com.google.gson.annotations.Expose;
 import lombok.Data;
 
 @Data
-public class NCD_TB_HRP_data {
+public class NcdTbHrpData {
 
 	@Expose
 	private String confirmed_ncd;

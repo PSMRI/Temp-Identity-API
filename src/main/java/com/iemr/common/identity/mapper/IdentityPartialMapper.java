@@ -47,9 +47,9 @@ public interface IdentityPartialMapper
 			@Mapping(target = "beneficiaryAge",
 					expression = "java(MBeneficiarydetail.calculateAge(map.getMBeneficiarydetail().getDob()))"), })
 
-	BeneficiariesPartialDTO MBeneficiarymappingToBeneficiariesPartialDTO(MBeneficiarymapping map);
+	BeneficiariesPartialDTO mBeneficiarymappingToBeneficiariesPartialDTO(MBeneficiarymapping map);
 
 	@Mappings({ @Mapping(target = "benId", source = "map.MBeneficiaryregidmapping.beneficiaryID"),
 			@Mapping(target = "benRegId", source = "map.MBeneficiaryregidmapping.benRegId") })
-	BeneficiaryCreateResp MBeneficiarymappingToBeneficiaryCreateResp(MBeneficiarymapping map);
+	BeneficiaryCreateResp mBeneficiarymappingToBeneficiaryCreateResp(MBeneficiarymapping map);
 }

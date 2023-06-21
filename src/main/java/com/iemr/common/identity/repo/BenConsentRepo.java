@@ -46,6 +46,6 @@ public interface BenConsentRepo extends CrudRepository<MBeneficiaryconsent, BigI
 	int updateVanSerialNo(@Param("benConsentID") BigInteger benConsentID);
 
 	@Query("SELECT a FROM MBeneficiaryconsent a WHERE a.vanSerialNo =:vanSerialNo AND a.vanID =:vanID ")
-	MBeneficiaryconsent getWith_vanSerialNo_vanID(@Param("vanSerialNo") BigInteger vanSerialNo,
+	MBeneficiaryconsent getWithVanSerialNoVanID(@Param("vanSerialNo") BigInteger vanSerialNo,
 			@Param("vanID") Integer vanID);
 }

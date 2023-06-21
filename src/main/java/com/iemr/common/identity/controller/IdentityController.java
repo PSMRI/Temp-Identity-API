@@ -1005,17 +1005,17 @@ public class IdentityController {
 					+ "        \"benIDRequired\": \"Integer\"\r\n" + "       }") @RequestBody String regIDList) {
 		com.iemr.common.identity.utils.response.OutputResponse response = new com.iemr.common.identity.utils.response.OutputResponse();
 		try {
-			BenIdImportDTO[] BenIdImportDTOArr = InputMapper.getInstance().gson().fromJson(regIDList,
+			BenIdImportDTO[] benIdImportDTOArr = InputMapper.getInstance().gson().fromJson(regIDList,
 					BenIdImportDTO[].class);
 
-			List<BenIdImportDTO> BenIdImportDTOList = Arrays.asList(BenIdImportDTOArr);
+			List<BenIdImportDTO> benIdImportDTOList = Arrays.asList(benIdImportDTOArr);
 
-			int i = svc.importBenIdToLocalServer(BenIdImportDTOList);
+			int i = svc.importBenIdToLocalServer(benIdImportDTOList);
 			if (i > 0)
 				response.setResponse(i + " Unique benid imported to local server");
 			else {
 				response.setResponse("Empty or invalid data");
-				logger.error("Empty or invalid data. Data Size is : " + BenIdImportDTOList.size());
+				logger.error("Empty or invalid data. Data Size is : " + benIdImportDTOList.size());
 			}
 		} catch (Exception e) {
 			logger.error("Exception in importing benID to local server : " + e);

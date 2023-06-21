@@ -41,40 +41,40 @@ public interface BenServiceMappingRepo extends CrudRepository<MBeneficiaryservic
 	List<MBeneficiaryservicemapping> findByProviderServiceMapId(Integer registeredProviderServiceMapId);
 
 	List<MBeneficiaryservicemapping> findByProviderServiceMapIdAndRegisteredDateBetween(
-			Integer registeredProviderServiceMapId, Timestamp from, Timestamp To);
+			Integer registeredProviderServiceMapId, Timestamp from, Timestamp to);
 
 	List<MBeneficiaryservicemapping> findByServiceIdAndRegisteredDateBetween(Integer serviceId, Timestamp from,
-			Timestamp To);
+			Timestamp to);
 
 	List<MBeneficiaryservicemapping> findByServiceNameAndRegisteredDateBetween(String serviceName, Timestamp from,
-			Timestamp To);
+			Timestamp to);
 
 	List<MBeneficiaryservicemapping> findByStateIdAndRegisteredDateBetween(Integer stateId, Timestamp from,
-			Timestamp To);
+			Timestamp to);
 
 	List<MBeneficiaryservicemapping> findByStateNameAndRegisteredDateBetween(String stateName, Timestamp from,
-			Timestamp To);
+			Timestamp to);
 
 	List<MBeneficiaryservicemapping> findByServiceProviderIdAndRegisteredDateBetween(Integer serviceProviderId,
-			Timestamp from, Timestamp To);
+			Timestamp from, Timestamp to);
 
 	List<MBeneficiaryservicemapping> findByServiceProviderNameAndRegisteredDateBetween(String serviceProviderName,
-			Timestamp from, Timestamp To);
+			Timestamp from, Timestamp to);
 
 	Long countByProviderServiceMapIdAndRegisteredDateBetween(Integer registeredProviderServiceMapId, Timestamp from,
-			Timestamp To);
+			Timestamp to);
 
-	Long countByServiceIdAndRegisteredDateBetween(Integer serviceId, Timestamp from, Timestamp To);
+	Long countByServiceIdAndRegisteredDateBetween(Integer serviceId, Timestamp from, Timestamp to);
 
-	Long countByServiceNameAndRegisteredDateBetween(String serviceName, Timestamp from, Timestamp To);
+	Long countByServiceNameAndRegisteredDateBetween(String serviceName, Timestamp from, Timestamp to);
 
-	Long countByStateIdAndRegisteredDateBetween(Integer stateId, Timestamp from, Timestamp To);
+	Long countByStateIdAndRegisteredDateBetween(Integer stateId, Timestamp from, Timestamp to);
 
-	Long countByStateNameAndRegisteredDateBetween(String stateName, Timestamp from, Timestamp To);
+	Long countByStateNameAndRegisteredDateBetween(String stateName, Timestamp from, Timestamp to);
 
-	Long countByServiceProviderIdAndRegisteredDateBetween(Integer serviceProviderId, Timestamp from, Timestamp To);
+	Long countByServiceProviderIdAndRegisteredDateBetween(Integer serviceProviderId, Timestamp from, Timestamp to);
 
-	Long countByServiceProviderNameAndRegisteredDateBetween(String serviceProviderName, Timestamp from, Timestamp To);
+	Long countByServiceProviderNameAndRegisteredDateBetween(String serviceProviderName, Timestamp from, Timestamp to);
 
 	List<MBeneficiaryservicemapping> findByCreatedDateBetween(Timestamp fromDate, Timestamp toDate);
 

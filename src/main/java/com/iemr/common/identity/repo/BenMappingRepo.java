@@ -43,16 +43,16 @@ public interface BenMappingRepo extends CrudRepository<MBeneficiarymapping, BigI
 
 	MBeneficiarymapping findByBenRegIdOrderByBenMapIdAsc(BigInteger benRegId);
 
-	MBeneficiarymapping findByMBeneficiarycontactOrderByBenMapIdAsc(MBeneficiarycontact MBeneficiarycontact);
+	MBeneficiarymapping findByMBeneficiarycontactOrderByBenMapIdAsc(MBeneficiarycontact mBeneficiarycontact);
 
 	List<MBeneficiarymapping> findByMBeneficiaryregidmappingOrderByBenMapIdAsc(
-			MBeneficiaryregidmapping MBeneficiaryregidmapping);
+			MBeneficiaryregidmapping mBeneficiaryregidmapping);
 
 
 	List<MBeneficiarymapping> findByMBeneficiarydetailOrderByBenMapIdAsc(MBeneficiarydetail mBeneficiarydetail);
 
 	List<MBeneficiarymapping> findByMBeneficiarydetailAndMBeneficiaryaddressOrderByBenMapIdAsc(
-			MBeneficiarydetail mBeneficiarydetail, MBeneficiaryaddress MBeneficiaryaddress);
+			MBeneficiarydetail mBeneficiarydetail, MBeneficiaryaddress mBeneficiaryaddress);
 
 	List<MBeneficiarymapping> findByMBeneficiarydetailAndMBeneficiaryaddressAndMBeneficiarycontactOrderByBenMapIdAsc(
 			MBeneficiarydetail mBeneficiarydetail, MBeneficiaryaddress mBeneficiaryaddress,

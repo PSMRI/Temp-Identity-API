@@ -52,10 +52,10 @@ public interface BenAddressRepo extends CrudRepository<MBeneficiaryaddress, BigI
 	List<MBeneficiaryaddress> findByPermStateIdAndPermDistrictIdOrderByBenAddressIDAsc(Integer permStateID,
 			Integer permDistID);
 
-	List<MBeneficiaryaddress> findByEmerStateAndEmerDistrictOrderByBenAddressIDAsc(String EmerState, String EmerDist);
+	List<MBeneficiaryaddress> findByEmerStateAndEmerDistrictOrderByBenAddressIDAsc(String emerState, String emerDist);
 
-	List<MBeneficiaryaddress> findByEmerStateIdAndEmerDistrictIdOrderByBenAddressIDAsc(Integer EmerStateID,
-			Integer EmerDistID);
+	List<MBeneficiaryaddress> findByEmerStateIdAndEmerDistrictIdOrderByBenAddressIDAsc(Integer emerStateID,
+			Integer emerDistID);
 
 	List<MBeneficiaryaddress> findByCreatedDateBetweenOrderByBenAddressIDAsc(Timestamp fromDate, Timestamp toDate);
 
@@ -72,6 +72,6 @@ public interface BenAddressRepo extends CrudRepository<MBeneficiaryaddress, BigI
 	BigInteger findIdByVanSerialNoAndVanID(@Param("vanSerialNo") BigInteger vanSerialNo, @Param("vanID") Integer vanID);
 
 	@Query("SELECT a FROM MBeneficiaryaddress a WHERE a.vanSerialNo =:vanSerialNo AND a.vanID =:vanID ")
-	MBeneficiaryaddress getWith_vanSerialNo_vanID(@Param("vanSerialNo") BigInteger vanSerialNo,
+	MBeneficiaryaddress getWithVanSerialNoVanID(@Param("vanSerialNo") BigInteger vanSerialNo,
 			@Param("vanID") Integer vanID);
 }

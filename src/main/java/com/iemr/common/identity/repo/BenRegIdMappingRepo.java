@@ -68,7 +68,7 @@ public interface BenRegIdMappingRepo extends CrudRepository<MBeneficiaryregidmap
 			@Param("vehicalNo") String vehicalNo);
 
 	@Query("SELECT a FROM MBeneficiaryregidmapping a WHERE a.benRegId =:vanSerialNo AND a.vanID =:vanID ")
-	MBeneficiaryregidmapping getWith_vanSerialNo_vanID(@Param("vanSerialNo") BigInteger vanSerialNo,
+	MBeneficiaryregidmapping getWithVanSerialNoVanID(@Param("vanSerialNo") BigInteger vanSerialNo,
 			@Param("vanID") Integer vanID);
 	
 

@@ -51,7 +51,7 @@ import com.google.gson.JsonParser;
 import com.iemr.common.identity.controller.rmnch.RmnchMobileAppController;
 import com.iemr.common.identity.data.rmnch.BenHealthIDDetails;
 import com.iemr.common.identity.data.rmnch.GetBenRequestHandler;
-import com.iemr.common.identity.data.rmnch.NCD_TB_HRP_data;
+import com.iemr.common.identity.data.rmnch.NcdTbHrpData;
 import com.iemr.common.identity.data.rmnch.RMNCHBeneficiaryDetailsRmnch;
 import com.iemr.common.identity.data.rmnch.RMNCHBornBirthDetails;
 import com.iemr.common.identity.data.rmnch.RMNCHCBACdetails;
@@ -394,7 +394,7 @@ public class RmnchDataSyncServiceImpl implements RmnchDataSyncService {
 
 						benCABCRMNCH_ROBJ = rMNCHCBACDetailsRepo.getByRegID((m.getBenRegId()).longValue());
 						// 20-09-2021,start
-						NCD_TB_HRP_data res = getHRP_NCD_TB_SuspectedStatus(m.getBenRegId().longValue(), authorisation,
+						NcdTbHrpData res = getHRP_NCD_TB_SuspectedStatus(m.getBenRegId().longValue(), authorisation,
 								benDetailsOBJ);
 						if (res != null && benCABCRMNCH_ROBJ != null) {
 							if (res.getConfirmed_hrp() != null)
@@ -680,15 +680,15 @@ public class RmnchDataSyncServiceImpl implements RmnchDataSyncService {
 
 	}
 
-	public NCD_TB_HRP_data getHRP_NCD_TB_SuspectedStatus(Long benRegID, String authorization,
+	public NcdTbHrpData getHRP_NCD_TB_SuspectedStatus(Long benRegID, String authorization,
 			RMNCHMBeneficiarydetail benDetails) throws IEMRException {
-		NCD_TB_HRP_data response = null;
+		NcdTbHrpData response = null;
 		try {
 
 			if (benRegID != null) {
 				List<Object[]> obj = rMNCHCBACDetailsRepo.getVisitDetailsbyRegID(benRegID);
 				if (obj != null && obj.size() > 0) {
-					response = new NCD_TB_HRP_data();
+					response = new NcdTbHrpData();
 					Long visitCode = (((BigInteger) obj.get(0)[0])).longValue();
 					String visitCategory = (String) obj.get(0)[1];
 					switch (visitCategory) {
@@ -772,8 +772,8 @@ public class RmnchDataSyncServiceImpl implements RmnchDataSyncService {
 
 	}
 
-	public NCD_TB_HRP_data getConfirmedNCD_TB_PNC(Long benRegID, Long visitCode) throws IEMRException {
-		NCD_TB_HRP_data response = new NCD_TB_HRP_data();
+	public NcdTbHrpData getConfirmedNCD_TB_PNC(Long benRegID, Long visitCode) throws IEMRException {
+		NcdTbHrpData response = new NcdTbHrpData();
 		String dp = null;
 		if (visitCode != null && benRegID != null) {
 			try {
@@ -829,8 +829,8 @@ public class RmnchDataSyncServiceImpl implements RmnchDataSyncService {
 		return response;
 	}
 
-	public NCD_TB_HRP_data getConfirmedNCD_TB_Common(Long benRegID, Long visitCode) throws IEMRException {
-		NCD_TB_HRP_data response = new NCD_TB_HRP_data();
+	public NcdTbHrpData getConfirmedNCD_TB_Common(Long benRegID, Long visitCode) throws IEMRException {
+		NcdTbHrpData response = new NcdTbHrpData();
 		String dp = null;
 		if (visitCode != null && benRegID != null) {
 			try {
@@ -888,8 +888,8 @@ public class RmnchDataSyncServiceImpl implements RmnchDataSyncService {
 		return response;
 	}
 
-	public NCD_TB_HRP_data getConfirmedNCD_TB_NCD_CARE(Long benRegID, Long visitCode) throws IEMRException {
-		NCD_TB_HRP_data response = new NCD_TB_HRP_data();
+	public NcdTbHrpData getConfirmedNCD_TB_NCD_CARE(Long benRegID, Long visitCode) throws IEMRException {
+		NcdTbHrpData response = new NcdTbHrpData();
 		String dp = null;
 		if (visitCode != null && benRegID != null) {
 			try {

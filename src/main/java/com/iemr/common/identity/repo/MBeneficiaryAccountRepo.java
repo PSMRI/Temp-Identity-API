@@ -41,7 +41,7 @@ public interface MBeneficiaryAccountRepo extends CrudRepository<MBeneficiaryAcco
 	BigInteger findIdByVanSerialNoAndVanID(@Param("vanSerialNo") BigInteger vanSerialNo, @Param("vanID") Integer vanID);
 
 	@Query("SELECT a FROM MBeneficiaryAccount a WHERE a.vanSerialNo =:vanSerialNo AND a.vanID =:vanID ")
-	MBeneficiaryAccount getWith_vanSerialNo_vanID(@Param("vanSerialNo") BigInteger vanSerialNo,
+	MBeneficiaryAccount getWithVanSerialNoVanID(@Param("vanSerialNo") BigInteger vanSerialNo,
 			@Param("vanID") Integer vanID);
 
 }

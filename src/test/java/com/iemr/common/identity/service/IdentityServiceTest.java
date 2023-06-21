@@ -428,7 +428,7 @@ public class IdentityServiceTest {
 			doReturn(benDetail).when(detailRepo).findPartialBeneficiaryDetailByBenRegId(Mockito.any(BigInteger.class));
 			BeneficiariesPartialDTO beneficiariesPartialDTO=new BeneficiariesPartialDTO();
 			beneficiariesPartialDTO.setBeneficiaryDetailsId(new BigInteger("202"));
-			doReturn(beneficiariesPartialDTO).when(partialMapper).MBeneficiarymappingToBeneficiariesPartialDTO(beneficiarymapping);
+			doReturn(beneficiariesPartialDTO).when(partialMapper).mBeneficiarymappingToBeneficiariesPartialDTO(beneficiarymapping);
 			
 			List<BeneficiariesPartialDTO> dtoList=identityService.getBeneficiariesPartialDeatilsByBenRegIdList(Mockito.anyListOf(BigInteger.class));
 			assertTrue(dtoList.size()>0);
@@ -483,7 +483,7 @@ public class IdentityServiceTest {
 			
 			mBeneficiarymapping.setMBeneficiarydetail(beneficiarydetail);
 			
-			doReturn(mBeneficiarydetail).when(editMapper).IdentityEditDTOToMBeneficiarydetail(Mockito.any());
+			doReturn(mBeneficiarydetail).when(editMapper).identityEditDTOToMBeneficiarydetail(Mockito.any());
 
 			doReturn(mBeneficiarydetail).when(beneficiarymapping).getMBeneficiarydetail();
 			doReturn(new BigInteger("250")).when(beneficiarydetail).getBeneficiaryDetailsId();
@@ -500,7 +500,7 @@ public class IdentityServiceTest {
 			mBeneficiaryaddressList.add(mBeneficiaryaddress);
 			
 
-			doReturn(mBeneficiaryaddress).when(editMapper).IdentityEditDTOToMBeneficiaryaddress(Mockito.any());
+			doReturn(mBeneficiaryaddress).when(editMapper).identityEditDTOToMBeneficiaryaddress(Mockito.any());
 			
 			
 			mBeneficiarymapping.setMBeneficiaryaddress(beneficiaryaddress);
@@ -514,7 +514,7 @@ public class IdentityServiceTest {
 			MBeneficiaryidentity mBeneficiaryidentity=new MBeneficiaryidentity();
 			mBeneficiaryidentity.setBenIdentityId(new BigInteger("786"));
 			identityList.add(mBeneficiaryidentity);
-			doReturn(identityList).when(editMapper).IdentityEditDTOListToMBeneficiaryidentityList(Mockito.anyListOf(Identity.class));
+			doReturn(identityList).when(editMapper).identityEditDTOListToMBeneficiaryidentityList(Mockito.anyListOf(Identity.class));
 			doReturn(identityList).when(identityRepo).save(mBeneficiaryidentity);
 			
 			identityEditDTO.setChangeInContacts(true);
@@ -523,7 +523,7 @@ public class IdentityServiceTest {
 			mBeneficiarymapping.setMBeneficiarycontact(contact);
 			doReturn(contact).when(beneficiarymapping).getMBeneficiarycontact();
 			doReturn(new BigInteger("901")).when(mBeneficiarycontact).getBenContactsID();
-			doReturn(contact).when(editMapper).IdentityEdiDTOToMBeneficiarycontact(Mockito.any());
+			doReturn(contact).when(editMapper).identityEdiDTOToMBeneficiarycontact(Mockito.any());
 			
 			identityEditDTO.setChangeInFamilyDetails(true);
 			List<MBeneficiaryfamilymapping> familyMappingList=Lists.newArrayList();
