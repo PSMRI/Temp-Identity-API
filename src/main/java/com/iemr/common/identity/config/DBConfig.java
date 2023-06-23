@@ -28,7 +28,6 @@ import org.apache.tomcat.jdbc.pool.PoolConfiguration;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
@@ -40,20 +39,16 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-
-import com.iemr.common.identity.utils.CryptoUtil;
 import com.iemr.common.identity.utils.config.ConfigProperties;
 
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(entityManagerFactoryRef = "entityManagerFactory", basePackages = {
 		"com.iemr.common.identity.repo", "com.iemr.common.identity.repo.familyTag",
-		"com.iemr.common.identity.repo.rmnch" ,"com.iemr.common.identity.*"})
+		"com.iemr.common.identity.repo.rmnch", "com.iemr.common.identity.*" })
 
 public class DBConfig {
 	Logger logger = LoggerFactory.getLogger(this.getClass().getName());
-	@Autowired
-	private CryptoUtil cryptoUtil;
 
 	@Primary
 	@Bean(name = "dataSource")
@@ -74,8 +69,8 @@ public class DBConfig {
 		org.apache.tomcat.jdbc.pool.DataSource datasource = new org.apache.tomcat.jdbc.pool.DataSource();
 		datasource.setPoolProperties(p);
 
-		datasource.setUsername(cryptoUtil.decrypt(ConfigProperties.getPropertyByName("encDbUserName")));
-		datasource.setPassword(cryptoUtil.decrypt(ConfigProperties.getPropertyByName("encDbPass")));
+		datasource.setUsername(ConfigProperties.getPropertyByName("encDbUserName"));
+		datasource.setPassword(ConfigProperties.getPropertyByName("encDbPass"));
 
 		return datasource;
 	}
