@@ -2,7 +2,10 @@ name: Static Code Analysis and Packaging
 on:
   push:
     branches: [ "master","develop" ]
-    
+
+env:
+  ENV_VAR: test
+   
 jobs:
   CodeQL:
     runs-on: ubuntu-latest
@@ -25,12 +28,8 @@ jobs:
       uses: github/codeql-action/init@v2
       with:
         languages: Java    
-    - name: Set Variable
-      run: echo "ENV_VAR=test" >> $GITHUB_ENV
     - name: Build with Maven
-      run: mvn clean install
-      env:
-        ENV_VAR: ${{env.ENV_VAR}}
+      run: mvn clean install -DENV_VAR=${{ env.ENV_VAR }}
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
       with:
