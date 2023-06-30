@@ -940,12 +940,12 @@ public class IdentityService {
 			regMap = queue.removeFirst();
 		}
 		regMap.setReserved(true);
-		if(regMap.getCreatedDate()==null) {
-		    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
-		    String DateToStoreInDataBase= sdf.format(new Date()); // java.util.Date
-		    Timestamp ts = Timestamp.valueOf(DateToStoreInDataBase); // java.sql.Timestamp
-		    regMap.setCreatedDate(ts);
-			}
+		if (regMap.getCreatedDate() == null) {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
+			String DateToStoreInDataBase = sdf.format(new Date());
+			Timestamp ts = Timestamp.valueOf(DateToStoreInDataBase);
+			regMap.setCreatedDate(ts);
+		}
 
 		regIdRepo.save(regMap);
 
@@ -976,12 +976,12 @@ public class IdentityService {
 			logger.debug("identity.getPermanentAddress = " + identity.getPermanentAddress());
 			mAddr.setEmergencyAddress(identity.getPermanentAddress());
 		}
-		if(mAddr.getCreatedDate()==null) {
-		    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
-		    String DateToStoreInDataBase= sdf.format(new Date()); // java.util.Date
-		    Timestamp ts = Timestamp.valueOf(DateToStoreInDataBase); // java.sql.Timestamp
-		    mAddr.setCreatedDate(ts);
-			}
+		if (mAddr.getCreatedDate() == null) {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
+			String DateToStoreInDataBase = sdf.format(new Date());
+			Timestamp ts = Timestamp.valueOf(DateToStoreInDataBase);
+			mAddr.setCreatedDate(ts);
+		}
 
 		mAddr = addressRepo.save(mAddr);
 		logger.info("IdentityService.createIdentity - Address saved - id = " + mAddr.getBenAddressID());
@@ -991,12 +991,12 @@ public class IdentityService {
 
 		MBeneficiaryconsent mConsnt = mapper.identityDTOToDefaultMBeneficiaryconsent(identity, true, false);
 		logger.info("IdentityService.createIdentity - saving Consent");
-		if(mConsnt.getCreatedDate()==null) {
-		    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
-		    String DateToStoreInDataBase= sdf.format(new Date()); // java.util.Date
-		    Timestamp ts = Timestamp.valueOf(DateToStoreInDataBase); // java.sql.Timestamp
-		    mConsnt.setCreatedDate(ts);
-			}
+		if (mConsnt.getCreatedDate() == null) {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
+			String DateToStoreInDataBase = sdf.format(new Date());
+			Timestamp ts = Timestamp.valueOf(DateToStoreInDataBase);
+			mConsnt.setCreatedDate(ts);
+		}
 		mConsnt = consentRepo.save(mConsnt);
 		logger.info("IdentityService.createIdentity - Consent saved - id = " + mConsnt.getBenConsentID());
 
@@ -1005,12 +1005,12 @@ public class IdentityService {
 
 		logger.info("IdentityService.createIdentity - saving Contacts");
 		MBeneficiarycontact mContc = mapper.identityDTOToMBeneficiarycontact(identity);
-		if(mContc.getCreatedDate()==null) {
-		    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
-		    String DateToStoreInDataBase= sdf.format(new Date()); // java.util.Date
-		    Timestamp ts = Timestamp.valueOf(DateToStoreInDataBase); // java.sql.Timestamp
-		    mContc.setCreatedDate(ts);
-			}
+		if (mContc.getCreatedDate() == null) {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
+			String DateToStoreInDataBase = sdf.format(new Date());
+			Timestamp ts = Timestamp.valueOf(DateToStoreInDataBase);
+			mContc.setCreatedDate(ts);
+		}
 		mContc = contactRepo.save(mContc);
 		logger.info("IdentityService.createIdentity - Contacts saved - id = " + mContc.getBenContactsID());
 
@@ -1019,12 +1019,12 @@ public class IdentityService {
 
 		logger.info("IdentityService.createIdentity - saving Details");
 		MBeneficiarydetail mDetl = mapper.identityDTOToMBeneficiarydetail(identity);
-		if(mDetl.getCreatedDate()==null) {
-		    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
-		    String DateToStoreInDataBase= sdf.format(new Date()); // java.util.Date
-		    Timestamp ts = Timestamp.valueOf(DateToStoreInDataBase); // java.sql.Timestamp
-		    mDetl.setCreatedDate(ts);
-			}
+		if (mDetl.getCreatedDate() == null) {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
+			String DateToStoreInDataBase = sdf.format(new Date());
+			Timestamp ts = Timestamp.valueOf(DateToStoreInDataBase);
+			mDetl.setCreatedDate(ts);
+		}
 		mDetl = detailRepo.save(mDetl);
 		logger.info("IdentityService.createIdentity - Details saved - id = " + mDetl.getBeneficiaryDetailsId());
 
@@ -1032,23 +1032,23 @@ public class IdentityService {
 		int i3 = detailRepo.updateVanSerialNo(mDetl.getBeneficiaryDetailsId());
 
 		MBeneficiaryAccount bankOBJ = mapper.identityDTOToMBeneficiaryAccount(identity);
-		if(bankOBJ.getCreatedDate()==null) {
-		    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
-		    String DateToStoreInDataBase= sdf.format(new Date()); // java.util.Date
-		    Timestamp ts = Timestamp.valueOf(DateToStoreInDataBase); // java.sql.Timestamp
-		    bankOBJ.setCreatedDate(ts);
-			}
+		if (bankOBJ.getCreatedDate() == null) {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
+			String DateToStoreInDataBase = sdf.format(new Date());
+			Timestamp ts = Timestamp.valueOf(DateToStoreInDataBase);
+			bankOBJ.setCreatedDate(ts);
+		}
 		bankOBJ = accountRepo.save(bankOBJ);
 		// Update van serial no for data sync
 		int i4 = accountRepo.updateVanSerialNo(bankOBJ.getBenAccountID());
 
 		MBeneficiaryImage benImageOBJ = mapper.identityDTOToMBeneficiaryImage(identity);
-		if(benImageOBJ.getCreatedDate()==null) {
-		    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
-		    String DateToStoreInDataBase= sdf.format(new Date()); // java.util.Date
-		    Timestamp ts = Timestamp.valueOf(DateToStoreInDataBase); // java.sql.Timestamp
-		    benImageOBJ.setCreatedDate(ts);
-			}
+		if (benImageOBJ.getCreatedDate() == null) {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
+			String DateToStoreInDataBase = sdf.format(new Date());
+			Timestamp ts = Timestamp.valueOf(DateToStoreInDataBase);
+			benImageOBJ.setCreatedDate(ts);
+		}
 		benImageOBJ = imageRepo.save(benImageOBJ);
 
 		// Update van serial no for data sync
@@ -1076,12 +1076,12 @@ public class IdentityService {
 		// END
 
 		regIdRepo.save(regMap);
-		if(benMapping.getCreatedDate()==null) {
-		    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
-		    String DateToStoreInDataBase= sdf.format(new Date()); // java.util.Date
-		    Timestamp ts = Timestamp.valueOf(DateToStoreInDataBase); // java.sql.Timestamp
-		    benMapping.setCreatedDate(ts);
-			}
+		if (benMapping.getCreatedDate() == null) {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
+			String DateToStoreInDataBase = sdf.format(new Date());
+			Timestamp ts = Timestamp.valueOf(DateToStoreInDataBase);
+			benMapping.setCreatedDate(ts);
+		}
 
 		benMapping = mappingRepo.save(benMapping);
 		// Update van serial no for data sync
@@ -1124,12 +1124,12 @@ public class IdentityService {
 		logger.info("IdentityService.createIdentity - saving Service Map");
 		MBeneficiaryservicemapping sMap = mapper.identityDTOToMBeneficiaryservicemapping(identity);
 		sMap.setBenMapId(benMapping.getBenMapId());
-		if(sMap.getCreatedDate()==null) {
-		    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
-		    String DateToStoreInDataBase= sdf.format(new Date()); // java.util.Date
-		    Timestamp ts = Timestamp.valueOf(DateToStoreInDataBase); // java.sql.Timestamp
-		    sMap.setCreatedDate(ts);
-			}
+		if (sMap.getCreatedDate() == null) {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
+			String DateToStoreInDataBase = sdf.format(new Date());
+			Timestamp ts = Timestamp.valueOf(DateToStoreInDataBase);
+			sMap.setCreatedDate(ts);
+		}
 		sMap = serviceMapRepo.save(sMap);
 		logger.info("IdentityService.createIdentity - ServiceMap saved  - id = " + sMap.getBenServiceMapID());
 
