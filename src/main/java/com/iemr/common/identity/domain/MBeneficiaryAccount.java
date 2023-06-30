@@ -66,7 +66,7 @@ public class MBeneficiaryAccount {
 	@Column(name = "CreatedBy", length = 50, updatable = false)
 	private String createdBy;
 
-	@Column(name = "CreatedDate", insertable = false, updatable = false)
+	@Column(name = "CreatedDate")
 	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
 	private Timestamp createdDate;
 

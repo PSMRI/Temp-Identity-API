@@ -58,7 +58,7 @@ public class MBeneficiarycontact implements Serializable {
 	@Column(nullable = false, length = 50, updatable = false)
 	private String createdBy;
 
-	@Column(name = "CreatedDate", insertable = false, updatable = false)
+	@Column(name = "CreatedDate")
 	private Timestamp createdDate;
 
 	private Boolean deleted = false;

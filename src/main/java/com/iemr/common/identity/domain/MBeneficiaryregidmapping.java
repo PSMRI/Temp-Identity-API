@@ -59,7 +59,7 @@ public class MBeneficiaryregidmapping implements Serializable {
 	@Column(length = 30)
 	private String createdBy;
 
-	@Column(name = "CreatedDate", insertable = false, updatable = false)
+	@Column(name = "CreatedDate")
 	private Timestamp createdDate;
 
 	private Boolean deleted = false;

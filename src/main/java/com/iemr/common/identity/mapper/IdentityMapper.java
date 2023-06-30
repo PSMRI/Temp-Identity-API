@@ -56,7 +56,7 @@ public interface IdentityMapper {
 	IdentityMapper INSTANCE = Mappers.getMapper(IdentityMapper.class);
 
 	@Mappings({ @Mapping(source = "dto.agentName", target = "createdBy"),
-			@Mapping(source = "dto.eventTypeDate", target = "createdDate"),
+			@Mapping(source = "dto.createdDate", target = "createdDate"),
 			// new mapping added for data sync(van ID & parking place ID)
 			// 17-09-2018
 			@Mapping(source = "dto.vanID", target = "vanID"),
@@ -112,7 +112,8 @@ public interface IdentityMapper {
 			@Mapping(source = "dto.permanentAddress.addressValue", target = "permAddressValue"),
 			@Mapping(source = "dto.permanentAddress.pinCode", target = "permPinCode"),
 			@Mapping(source = "dto.agentName", target = "createdBy"),
-			@Mapping(source = "dto.eventTypeDate", target = "createdDate"),
+			//@Mapping(source = "dto.eventTypeDate", target = "createdDate"),
+			@Mapping(source = "dto.createdDate", target = "createdDate"),
 
 			/*
 			 * New columns added for MMU integration 09-04-2018
@@ -168,7 +169,7 @@ public interface IdentityMapper {
 			@Mapping(source = "defaultNo", target = "sharePersonalDetailsWithNGO"),
 			@Mapping(source = "defaultYes", target = "sharePersonalDetailsWithSpouse"),
 			@Mapping(source = "dto.agentName", target = "createdBy"),
-			@Mapping(source = "dto.eventTypeDate", target = "createdDate"),
+			@Mapping(source = "dto.createdDate", target = "createdDate"),
 			// new mapping added for data sync(van ID & parking place ID)
 			// 17-09-2018
 			@Mapping(source = "dto.vanID", target = "vanID"),
@@ -196,7 +197,7 @@ public interface IdentityMapper {
 			@Mapping(source = "dto.contact.phoneTyp5", target = "phoneTyp5"),
 			@Mapping(source = "dto.preferredEmailId", target = "emailId"),
 			@Mapping(source = "dto.agentName", target = "createdBy"),
-			@Mapping(source = "dto.eventTypeDate", target = "createdDate"),
+			@Mapping(source = "dto.createdDate", target = "createdDate"),
 			// new mapping added for data sync(van ID & parking place ID)
 			// 17-09-2018
 			@Mapping(source = "dto.vanID", target = "vanID"),
@@ -239,7 +240,7 @@ public interface IdentityMapper {
 			@Mapping(source = "dto.status", target = "status"), @Mapping(source = "dto.title", target = "title"),
 			@Mapping(source = "dto.titleId", target = "titleId"), @Mapping(source = "dto.zoneId", target = "zoneId"),
 			@Mapping(source = "dto.agentName", target = "createdBy"),
-			@Mapping(source = "dto.eventTypeDate", target = "createdDate"),
+			@Mapping(source = "dto.createdDate", target = "createdDate"),
 			@Mapping(target = "isHIVPositive", expression = "java(MBeneficiarydetail.setIsHIVPositive(dto.getIsHIVPositive()))"),
 			// Start MMU specific code
 			@Mapping(target = "ageAtMarriage", expression = "java(MBeneficiarydetail.getAgeAtMarriageCalc(dto.getDob(), dto.getMarriageDate(), "
@@ -293,7 +294,7 @@ public interface IdentityMapper {
 			@Mapping(source = "dto.agentName", target = "registeredByName"),
 			@Mapping(source = "dto.eventTypeDate", target = "registeredDate"),
 			@Mapping(source = "dto.agentName", target = "createdBy"),
-			@Mapping(source = "dto.eventTypeDate", target = "createdDate"),
+			@Mapping(source = "dto.createdDate", target = "createdDate"),
 			@Mapping(source = "dto.vanID", target = "vanID"),
 			@Mapping(source = "dto.parkingPlaceId", target = "parkingPlaceID") })
 	MBeneficiaryservicemapping identityDTOToMBeneficiaryservicemapping(IdentityDTO dto);
@@ -583,7 +584,7 @@ public interface IdentityMapper {
 			@Mapping(source = "dto.ifscCode", target = "ifscCode"),
 			@Mapping(source = "dto.accountNo", target = "accountNo"),
 			@Mapping(source = "dto.agentName", target = "createdBy"),
-			@Mapping(source = "dto.eventTypeDate", target = "createdDate"),
+			@Mapping(source = "dto.createdDate", target = "createdDate"),
 			@Mapping(source = "dto.vanID", target = "vanID"),
 			@Mapping(source = "dto.parkingPlaceId", target = "parkingPlaceID"),
 			// End
@@ -595,7 +596,7 @@ public interface IdentityMapper {
 
 	@Mappings({ @Mapping(source = "dto.benImage", target = "benImage"),
 			@Mapping(source = "dto.agentName", target = "createdBy"),
-			@Mapping(source = "dto.eventTypeDate", target = "createdDate"),
+			@Mapping(source = "dto.createdDate", target = "createdDate"),
 			// new mapping added for data sync(van ID & parking place ID)
 			// 17-09-2018
 			@Mapping(source = "dto.vanID", target = "vanID"),

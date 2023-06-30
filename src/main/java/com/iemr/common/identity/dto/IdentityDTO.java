@@ -47,6 +47,7 @@ public class IdentityDTO {
 	private Integer stateId;
 	private String stateName;
 	private Integer providerServiceMapId;
+	private Timestamp createdDate;
 
 	private Integer areaId;
 	private Integer beneficiaryId;
