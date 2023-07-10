@@ -321,8 +321,8 @@ public class IdentityService {
 		logger.info("IdentityService.getBeneficiariesByBenId - start, beneficiaryID : " + benId);
 		List<BeneficiariesDTO> list = new ArrayList<BeneficiariesDTO>();
 
-		MBeneficiaryregidmapping regId = regIdRepo.findByBeneficiaryID(benId);
-
+		//MBeneficiaryregidmapping regId = regIdRepo.findByBeneficiaryID(benId);
+		MBeneficiaryregidmapping regId=regIdRepo.findOne(benId);
 		if (regId != null && regId.getBenRegId() != null) {
 			List<Object[]> benMapObjArr = mappingRepo.getBenMappingByRegID(regId.getBenRegId());
 
