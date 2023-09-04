@@ -317,7 +317,7 @@ public class IdentityController {
 
 	// search beneficiary by lastModDate and districtID
 	@CrossOrigin(origins = { "*commonapi*" })
-//	@PostMapping(path = "/searchByDistrictId", headers = "Authorization")
+	@ApiOperation(value ="Search beneficiary by blockId and last modified date")
 	@PostMapping(path = "/searchByDistrictId")
 	public @ResponseBody String searchBeneficiaryByBlockIdAndLastModDate(
 			@ApiParam(value = "\"String\"") @RequestBody String object) {
