@@ -524,7 +524,6 @@ public class IdentityService {
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
 			logger.error(
 					"error in beneficiary search for familyId : " + blockID + " error : " + e.getLocalizedMessage());
 		}
