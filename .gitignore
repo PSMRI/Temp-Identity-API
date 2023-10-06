@@ -29,3 +29,7 @@ nbdist/
 mvnw
 mvnw.cmd
 .mvn
+
+# Properties
+src/main/environment/1097_local.properties
+src/main/environment/common_local.properties
