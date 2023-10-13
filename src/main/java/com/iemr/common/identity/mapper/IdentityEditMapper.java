@@ -1,3 +1,24 @@
+/*
+* AMRIT – Accessible Medical Records via Integrated Technology 
+* Integrated EHR (Electronic Health Records) Solution 
+*
+* Copyright (C) "Piramal Swasthya Management and Research Institute" 
+*
+* This file is part of AMRIT.
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see https://www.gnu.org/licenses/.
+*/
 package com.iemr.common.identity.mapper;
 
 import java.sql.Timestamp;
@@ -36,7 +57,7 @@ public interface IdentityEditMapper {
 			@Mapping(source = "dto.eventTypeDate", target = "lastModDate")
 
 	})
-	MBeneficiarymapping IdentityEditDTOToMBeneficiarymapping(IdentityEditDTO dto);
+	MBeneficiarymapping identityEditDTOToMBeneficiarymapping(IdentityEditDTO dto);
 
 	@Mappings({ @Mapping(source = "dto.currentAddress.addrLine1", target = "currAddrLine1"),
 			@Mapping(source = "dto.currentAddress.addrLine2", target = "currAddrLine2"),
@@ -120,7 +141,7 @@ public interface IdentityEditMapper {
 			// @Mapping(source = "dto.parkingPlaceId", target = "parkingPlaceID"),
 			// END
 	})
-	MBeneficiaryaddress IdentityEditDTOToMBeneficiaryaddress(IdentityEditDTO dto);
+	MBeneficiaryaddress identityEditDTOToMBeneficiaryaddress(IdentityEditDTO dto);
 
 	@Mappings({ @Mapping(source = "defaultNo", target = "shareAnonymousWithGovt"),
 			@Mapping(source = "defaultNo", target = "shareAnonymousWithMedicalCommunity"),
@@ -141,7 +162,7 @@ public interface IdentityEditMapper {
 			@Mapping(source = "defaultYes", target = "sharePersonalDetailsWithSpouse"),
 			@Mapping(source = "dto.agentName", target = "createdBy"),
 			@Mapping(source = "dto.eventTypeDate", target = "createdDate") })
-	MBeneficiaryconsent IdentityEditDTOToDefaultMBeneficiaryconsent(IdentityEditDTO dto, Boolean defaultYes,
+	MBeneficiaryconsent identityEditDTOToDefaultMBeneficiaryconsent(IdentityEditDTO dto, Boolean defaultYes,
 			Boolean defaultNo);
 
 	@Mappings({ @Mapping(source = "dto.contact.preferredPhoneNum", target = "preferredPhoneNum"),
@@ -167,7 +188,7 @@ public interface IdentityEditMapper {
 			// @Mapping(source = "dto.parkingPlaceId", target = "parkingPlaceID"),
 			// END
 	})
-	MBeneficiarycontact IdentityEdiDTOToMBeneficiarycontact(IdentityEditDTO dto);
+	MBeneficiarycontact identityEdiDTOToMBeneficiarycontact(IdentityEditDTO dto);
 
 	@Mappings({ @Mapping(source = "dto.areaId", target = "areaId"),
 			@Mapping(source = "dto.beneficiaryRegId", target = "beneficiaryRegID"),
@@ -185,6 +206,7 @@ public interface IdentityEditMapper {
 			@Mapping(source = "dto.gender", target = "gender"), @Mapping(source = "dto.genderId", target = "genderId"),
 			@Mapping(source = "dto.incomeStatusId", target = "incomeStatusId"),
 			@Mapping(source = "dto.incomeStatus", target = "incomeStatus"),
+			@Mapping(source = "dto.monthlyFamilyIncome", target = "monthlyFamilyIncome"),
 			@Mapping(source = "dto.lastName", target = "lastName"),
 			@Mapping(source = "dto.maritalStatusId", target = "maritalStatusId"),
 			@Mapping(source = "dto.maritalStatus", target = "maritalStatus"),
@@ -216,17 +238,17 @@ public interface IdentityEditMapper {
 			// @Mapping(source = "dto.parkingPlaceId", target = "parkingPlaceID"),
 			// END
 	})
-	MBeneficiarydetail IdentityEditDTOToMBeneficiarydetail(IdentityEditDTO dto);
+	MBeneficiarydetail identityEditDTOToMBeneficiarydetail(IdentityEditDTO dto);
 
 	@Mappings({ @Mapping(source = "benFamilyDTO.isEmergencyContact", target = "isEmergencyContact"),
 			@Mapping(source = "benFamilyDTO.relationshipToSelf", target = "relationshipToSelf"),
 			@Mapping(source = "benFamilyDTO.associatedBenRegId", target = "associatedBenRegId"),
 			@Mapping(source = "createdBy", target = "createdBy"),
 			@Mapping(source = "createdDate", target = "createdDate") })
-	MBeneficiaryfamilymapping IdentityEditDTOToMBeneficiaryfamilymapping(BenFamilyDTO benFamilyDTO, String createdBy,
+	MBeneficiaryfamilymapping identityEditDTOToMBeneficiaryfamilymapping(BenFamilyDTO benFamilyDTO, String createdBy,
 			Timestamp createdDate);
 
-	List<MBeneficiaryfamilymapping> IdentityEditDTOListToMBeneficiaryfamilymappingList(List<BenFamilyDTO> list);
+	List<MBeneficiaryfamilymapping> identityEditDTOListToMBeneficiaryfamilymappingList(List<BenFamilyDTO> list);
 
 	@Mappings({ @Mapping(source = "identity.identityNo", target = "identityNo"),
 			@Mapping(source = "identity.identityName", target = "identityName"),
@@ -237,9 +259,9 @@ public interface IdentityEditMapper {
 			@Mapping(source = "identity.identityFilePath", target = "identityFilePath"),
 			@Mapping(source = "createdBy", target = "createdBy"),
 			@Mapping(source = "createdDate", target = "createdDate") })
-	MBeneficiaryidentity IdentityToMBeneficiaryidentity(Identity identity, String createdBy, Timestamp createdDate);
+	MBeneficiaryidentity identityToMBeneficiaryidentity(Identity identity, String createdBy, Timestamp createdDate);
 
-	List<MBeneficiaryidentity> IdentityEditDTOListToMBeneficiaryidentityList(List<Identity> list);
+	List<MBeneficiaryidentity> identityEditDTOListToMBeneficiaryidentityList(List<Identity> list);
 
 	@Mappings({ @Mapping(source = "dto.serviceId", target = "serviceId"),
 			@Mapping(source = "dto.serviceName", target = "serviceName"),
@@ -253,7 +275,7 @@ public interface IdentityEditMapper {
 			@Mapping(source = "dto.eventTypeDate", target = "registeredDate"),
 			@Mapping(source = "dto.agentName", target = "createdBy"),
 			@Mapping(source = "dto.eventTypeDate", target = "createdDate") })
-	MBeneficiaryservicemapping IdentityEditDTOToMBeneficiaryservicemapping(IdentityEditDTO dto);
+	MBeneficiaryservicemapping identityEditDTOToMBeneficiaryservicemapping(IdentityEditDTO dto);
 
 	@Mappings({ @Mapping(source = "beneficiaryDetailsId", target = "beneficiaryDetailsId"),
 			@Mapping(source = "areaId", target = "areaId"),
@@ -281,7 +303,7 @@ public interface IdentityEditMapper {
 			@Mapping(source = "sourceOfInfo", target = "sourceOfInfo"),
 			@Mapping(source = "spouseName", target = "spouseName"), @Mapping(source = "status", target = "status"),
 			@Mapping(source = "title", target = "title"), @Mapping(source = "zoneId", target = "zoneId") })
-	BenDetailDTO MBeneficiarydetailToBenDetailDTO(MBeneficiarydetail detail);
+	BenDetailDTO mBeneficiarydetailToBenDetailDTO(MBeneficiarydetail detail);
 
 	@Mappings({ @Mapping(source = "family.benFamilyMapId", target = "benFamilyMapId"),
 			@Mapping(source = "family.associatedBenRegId", target = "associatedBenRegId"),
@@ -292,7 +314,7 @@ public interface IdentityEditMapper {
 			@Mapping(source = "family.lastModDate", target = "lastModDate"),
 			@Mapping(source = "family.modifiedBy", target = "modifiedBy"),
 			@Mapping(source = "family.relationshipToSelf", target = "relationshipToSelf") })
-	BenFamilyDTO MBeneficiaryfamilymappingToBenFamilyDTO(MBeneficiaryfamilymapping family);
+	BenFamilyDTO mBeneficiaryfamilymappingToBenFamilyDTO(MBeneficiaryfamilymapping family);
 
 	List<BenFamilyDTO> mBeneficiaryfamilymappingListToBenFamilyDTOList(List<MBeneficiaryfamilymapping> families);
 

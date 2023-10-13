@@ -21,13 +21,12 @@
 */
 package com.iemr.common.identity.dto;
 
-import java.math.BigInteger;
-
 import lombok.Data;
 
 @Data
-public class BeneficiaryCreateResp {
+public class SearchSyncDTO {
 
-	private BigInteger benId;
-	private BigInteger benRegId;
+	private Long lastModifDate;
+	private Integer blockID;
+
 }

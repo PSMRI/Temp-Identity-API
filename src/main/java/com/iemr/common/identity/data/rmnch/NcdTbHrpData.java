@@ -19,15 +19,34 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see https://www.gnu.org/licenses/.
 */
-package com.iemr.common.identity.dto;
+package com.iemr.common.identity.data.rmnch;
 
-import java.math.BigInteger;
+import java.util.List;
+import java.util.Map;
+
+import com.google.gson.annotations.Expose;
 
 import lombok.Data;
 
 @Data
-public class BeneficiaryCreateResp {
+public class NcdTbHrpData {
 
-	private BigInteger benId;
-	private BigInteger benRegId;
+	@Expose
+	private String confirmed_ncd;
+	@Expose
+	private String confirmed_hrp;
+	@Expose
+	private String confirmed_tb;
+	@Expose
+	private String confirmed_ncd_diseases;
+	@Expose
+	private String diagnosis_status;
+	@Expose
+	private List<Map<String, String>> confirmed_ncd_diseases_Snomed;
+	private String p_diagnosis;
+	private String p_diagnosis_snomed;
+	private String visit_code;
+	private Long benRegID;
+	private String visit_category;
+
 }

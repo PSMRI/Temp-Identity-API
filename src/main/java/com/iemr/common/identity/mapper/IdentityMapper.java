@@ -1,3 +1,24 @@
+/*
+* AMRIT – Accessible Medical Records via Integrated Technology 
+* Integrated EHR (Electronic Health Records) Solution 
+*
+* Copyright (C) "Piramal Swasthya Management and Research Institute" 
+*
+* This file is part of AMRIT.
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see https://www.gnu.org/licenses/.
+*/
 package com.iemr.common.identity.mapper;
 
 import java.sql.Timestamp;
@@ -35,7 +56,7 @@ public interface IdentityMapper {
 	IdentityMapper INSTANCE = Mappers.getMapper(IdentityMapper.class);
 
 	@Mappings({ @Mapping(source = "dto.agentName", target = "createdBy"),
-			@Mapping(source = "dto.eventTypeDate", target = "createdDate"),
+			@Mapping(source = "dto.createdDate", target = "createdDate"),
 			// new mapping added for data sync(van ID & parking place ID)
 			// 17-09-2018
 			@Mapping(source = "dto.vanID", target = "vanID"),
@@ -91,7 +112,8 @@ public interface IdentityMapper {
 			@Mapping(source = "dto.permanentAddress.addressValue", target = "permAddressValue"),
 			@Mapping(source = "dto.permanentAddress.pinCode", target = "permPinCode"),
 			@Mapping(source = "dto.agentName", target = "createdBy"),
-			@Mapping(source = "dto.eventTypeDate", target = "createdDate"),
+			//@Mapping(source = "dto.eventTypeDate", target = "createdDate"),
+			@Mapping(source = "dto.createdDate", target = "createdDate"),
 
 			/*
 			 * New columns added for MMU integration 09-04-2018
@@ -147,7 +169,7 @@ public interface IdentityMapper {
 			@Mapping(source = "defaultNo", target = "sharePersonalDetailsWithNGO"),
 			@Mapping(source = "defaultYes", target = "sharePersonalDetailsWithSpouse"),
 			@Mapping(source = "dto.agentName", target = "createdBy"),
-			@Mapping(source = "dto.eventTypeDate", target = "createdDate"),
+			@Mapping(source = "dto.createdDate", target = "createdDate"),
 			// new mapping added for data sync(van ID & parking place ID)
 			// 17-09-2018
 			@Mapping(source = "dto.vanID", target = "vanID"),
@@ -175,7 +197,7 @@ public interface IdentityMapper {
 			@Mapping(source = "dto.contact.phoneTyp5", target = "phoneTyp5"),
 			@Mapping(source = "dto.preferredEmailId", target = "emailId"),
 			@Mapping(source = "dto.agentName", target = "createdBy"),
-			@Mapping(source = "dto.eventTypeDate", target = "createdDate"),
+			@Mapping(source = "dto.createdDate", target = "createdDate"),
 			// new mapping added for data sync(van ID & parking place ID)
 			// 17-09-2018
 			@Mapping(source = "dto.vanID", target = "vanID"),
@@ -199,6 +221,7 @@ public interface IdentityMapper {
 			@Mapping(source = "dto.firstName", target = "firstName"),
 			@Mapping(source = "dto.gender", target = "gender"), @Mapping(source = "dto.genderId", target = "genderId"),
 			@Mapping(source = "dto.incomeStatus", target = "incomeStatus"),
+			@Mapping(source = "dto.monthlyFamilyIncome", target = "monthlyFamilyIncome"),
 			@Mapping(source = "dto.incomeStatusId", target = "incomeStatusId"),
 			@Mapping(source = "dto.lastName", target = "lastName"),
 			@Mapping(source = "dto.maritalStatusId", target = "maritalStatusId"),
@@ -218,7 +241,7 @@ public interface IdentityMapper {
 			@Mapping(source = "dto.status", target = "status"), @Mapping(source = "dto.title", target = "title"),
 			@Mapping(source = "dto.titleId", target = "titleId"), @Mapping(source = "dto.zoneId", target = "zoneId"),
 			@Mapping(source = "dto.agentName", target = "createdBy"),
-			@Mapping(source = "dto.eventTypeDate", target = "createdDate"),
+			@Mapping(source = "dto.createdDate", target = "createdDate"),
 			@Mapping(target = "isHIVPositive", expression = "java(MBeneficiarydetail.setIsHIVPositive(dto.getIsHIVPositive()))"),
 			// Start MMU specific code
 			@Mapping(target = "ageAtMarriage", expression = "java(MBeneficiarydetail.getAgeAtMarriageCalc(dto.getDob(), dto.getMarriageDate(), "
@@ -241,10 +264,10 @@ public interface IdentityMapper {
 			@Mapping(source = "benFamilyDTO.associatedBenRegId", target = "associatedBenRegId"),
 			@Mapping(source = "createdBy", target = "createdBy"),
 			@Mapping(source = "createdDate", target = "createdDate") })
-	MBeneficiaryfamilymapping IdentityDTOToMBeneficiaryfamilymapping(BenFamilyDTO benFamilyDTO, String createdBy,
+	MBeneficiaryfamilymapping identityDTOToMBeneficiaryfamilymapping(BenFamilyDTO benFamilyDTO, String createdBy,
 			Timestamp createdDate);
 
-	List<MBeneficiaryfamilymapping> IdentityDTOListToMBeneficiaryfamilymappingList(List<BenFamilyDTO> list);
+	List<MBeneficiaryfamilymapping> identityDTOListToMBeneficiaryfamilymappingList(List<BenFamilyDTO> list);
 
 	@Mappings({ @Mapping(source = "identity.identityNo", target = "identityNo"),
 			@Mapping(source = "identity.identityNameId", target = "identityNameId"),
@@ -257,9 +280,9 @@ public interface IdentityMapper {
 			@Mapping(source = "identity.identityFilePath", target = "identityFilePath"),
 			@Mapping(source = "createdBy", target = "createdBy"),
 			@Mapping(source = "createdDate", target = "createdDate") })
-	MBeneficiaryidentity IdentityToMBeneficiaryidentity(Identity identity, String createdBy, Timestamp createdDate);
+	MBeneficiaryidentity identityToMBeneficiaryidentity(Identity identity, String createdBy, Timestamp createdDate);
 
-	List<MBeneficiaryidentity> IdentityDTOListToMBeneficiaryidentityList(List<Identity> list);
+	List<MBeneficiaryidentity> identityDTOListToMBeneficiaryidentityList(List<Identity> list);
 
 	@Mappings({ @Mapping(source = "dto.serviceId", target = "serviceId"),
 			@Mapping(source = "dto.serviceName", target = "serviceName"),
@@ -272,12 +295,11 @@ public interface IdentityMapper {
 			@Mapping(source = "dto.agentName", target = "registeredByName"),
 			@Mapping(source = "dto.eventTypeDate", target = "registeredDate"),
 			@Mapping(source = "dto.agentName", target = "createdBy"),
-			@Mapping(source = "dto.eventTypeDate", target = "createdDate"),
+			@Mapping(source = "dto.createdDate", target = "createdDate"),
 			@Mapping(source = "dto.vanID", target = "vanID"),
 			@Mapping(source = "dto.parkingPlaceId", target = "parkingPlaceID") })
 	MBeneficiaryservicemapping identityDTOToMBeneficiaryservicemapping(IdentityDTO dto);
 
-	// SUNIL TODO: Change to order of target & source to maintain consistency
 	@Mappings({ @Mapping(target = "benMapId", source = "benMapId"),
 			@Mapping(target = "benId", source = "map.MBeneficiaryregidmapping.beneficiaryID"),
 			@Mapping(target = "benRegId", source = "map.MBeneficiaryregidmapping.benRegId"),
@@ -353,6 +375,7 @@ public interface IdentityMapper {
 			@Mapping(target = "beneficiaryDetails.firstName", source = "map.MBeneficiarydetail.firstName"),
 			@Mapping(target = "beneficiaryDetails.gender", source = "map.MBeneficiarydetail.gender"),
 			@Mapping(target = "beneficiaryDetails.incomeStatus", source = "map.MBeneficiarydetail.incomeStatus"),
+			@Mapping(target = "beneficiaryDetails.monthlyFamilyIncome", source = "map.MBeneficiarydetail.monthlyFamilyIncome"),
 			@Mapping(target = "beneficiaryDetails.lastModDate", source = "map.MBeneficiarydetail.lastModDate"),
 			@Mapping(target = "beneficiaryDetails.lastName", source = "map.MBeneficiarydetail.lastName"),
 			@Mapping(target = "beneficiaryDetails.maritalStatus", source = "map.MBeneficiarydetail.maritalStatus"),
@@ -443,6 +466,7 @@ public interface IdentityMapper {
 			@Mapping(source = "map.MBeneficiarydetail.occupationId", target = "occupationId"),
 			@Mapping(source = "map.MBeneficiarydetail.occupation", target = "occupation"),
 			@Mapping(source = "map.MBeneficiarydetail.incomeStatus", target = "incomeStatus"),
+			@Mapping(source = "map.MBeneficiarydetail.monthlyFamilyIncome", target = "monthlyFamilyIncome"),
 			@Mapping(source = "map.MBeneficiarydetail.religionId", target = "religionId"),
 			@Mapping(source = "map.MBeneficiarydetail.religion", target = "religion"),
 			// End
@@ -463,10 +487,10 @@ public interface IdentityMapper {
 			// End 1097
 
 	})
-	BeneficiariesDTO MBeneficiarymappingToBeneficiariesDTO(MBeneficiarymapping map);
+	BeneficiariesDTO mBeneficiarymappingToBeneficiariesDTO(MBeneficiarymapping map);
 
 	@IterableMapping(elementTargetType = BeneficiariesDTO.class)
-	List<BeneficiariesDTO> MBeneficiarymappingToBeneficiariesDTO(List<MBeneficiarymapping> map);
+	List<BeneficiariesDTO> mbeneficiarymappingToBeneficiariesDTO(List<MBeneficiarymapping> map);
 
 	@Mappings({ @Mapping(source = "beneficiaryDetailsId", target = "beneficiaryDetailsId"),
 			@Mapping(source = "areaId", target = "areaId"),
@@ -494,7 +518,7 @@ public interface IdentityMapper {
 			@Mapping(source = "spouseName", target = "spouseName"), @Mapping(source = "status", target = "status"),
 			@Mapping(source = "title", target = "title"), @Mapping(source = "zoneId", target = "zoneId"),
 			@Mapping(expression = "java(MBeneficiarydetail.getIsHIVPositive(detail.getIsHIVPositive()))", target = "isHIVPositive"), })
-	BenDetailDTO MBeneficiarydetailToBenDetailDTO(MBeneficiarydetail detail);
+	BenDetailDTO mBeneficiarydetailToBenDetailDTO(MBeneficiarydetail detail);
 
 	@Mappings({ @Mapping(source = "family.benFamilyMapId", target = "benFamilyMapId"),
 			@Mapping(source = "family.associatedBenRegId", target = "associatedBenRegId"),
@@ -505,7 +529,7 @@ public interface IdentityMapper {
 			@Mapping(source = "family.lastModDate", target = "lastModDate"),
 			@Mapping(source = "family.modifiedBy", target = "modifiedBy"),
 			@Mapping(source = "family.relationshipToSelf", target = "relationshipToSelf") })
-	BenFamilyDTO MBeneficiaryfamilymappingToBenFamilyDTO(MBeneficiaryfamilymapping family);
+	BenFamilyDTO mBeneficiaryfamilymappingToBenFamilyDTO(MBeneficiaryfamilymapping family);
 
 	List<BenFamilyDTO> mBeneficiaryfamilymappingListToBenFamilyDTOList(List<MBeneficiaryfamilymapping> families);
 
@@ -558,26 +582,12 @@ public interface IdentityMapper {
 
 	List<BenServiceDTO> mBeneficiaryservicemappingListToBenServiceDTOList(List<MBeneficiaryservicemapping> services);
 
-	// @Mapping(target = "MBeneficiaryservicemappings", expression =
-	// "java(Collections.singletonList(svcMapping))"),
-	// @Mapping(target = "MBeneficiaryfamilymappings", expression =
-	// "java(Collections.singletonList(familyMapping))")
-	// MBeneficiarymapping
-	// MBeneficiarymappingDTOToMBeneficiarymapping(MBeneficiarymappingDTOInbound
-	// dto);
-	// MBeneficiarymappingDTOInbound
-	// MBeneficiarymappingToMBeneficiarymappingDTO(MBeneficiarymapping map);
-
-	// Start outreach
-	// code specific for outreach
 	@Mappings({ @Mapping(source = "dto.bankName", target = "bankName"),
 			@Mapping(source = "dto.branchName", target = "branchName"),
 			@Mapping(source = "dto.ifscCode", target = "ifscCode"),
 			@Mapping(source = "dto.accountNo", target = "accountNo"),
 			@Mapping(source = "dto.agentName", target = "createdBy"),
-			@Mapping(source = "dto.eventTypeDate", target = "createdDate"),
-			// new mapping added for data sync(van ID & parking place ID)
-			// 17-09-2018
+			@Mapping(source = "dto.createdDate", target = "createdDate"),
 			@Mapping(source = "dto.vanID", target = "vanID"),
 			@Mapping(source = "dto.parkingPlaceId", target = "parkingPlaceID"),
 			// End
@@ -589,7 +599,7 @@ public interface IdentityMapper {
 
 	@Mappings({ @Mapping(source = "dto.benImage", target = "benImage"),
 			@Mapping(source = "dto.agentName", target = "createdBy"),
-			@Mapping(source = "dto.eventTypeDate", target = "createdDate"),
+			@Mapping(source = "dto.createdDate", target = "createdDate"),
 			// new mapping added for data sync(van ID & parking place ID)
 			// 17-09-2018
 			@Mapping(source = "dto.vanID", target = "vanID"),

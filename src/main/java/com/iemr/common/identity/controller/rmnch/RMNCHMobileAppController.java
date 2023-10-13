@@ -1,3 +1,24 @@
+/*
+* AMRIT – Accessible Medical Records via Integrated Technology 
+* Integrated EHR (Electronic Health Records) Solution 
+*
+* Copyright (C) "Piramal Swasthya Management and Research Institute" 
+*
+* This file is part of AMRIT.
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see https://www.gnu.org/licenses/.
+*/
 package com.iemr.common.identity.controller.rmnch;
 
 import java.sql.Timestamp;
@@ -19,23 +40,21 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
 /**
- * @date : 13-02-2019,
  * @apiNote API will be exposed to public domain for RMNCH mobile data sync to
  *          AMRIT platform
- * @author NE298657
  */
 @RestController
 @RequestMapping(value = "/rmnch", headers = "Authorization")
-public class RmnchMobileAppController {
+public class RMNCHMobileAppController {
 
-	private Logger logger = LoggerFactory.getLogger(RmnchMobileAppController.class);
+	private Logger logger = LoggerFactory.getLogger(RMNCHMobileAppController.class);
 
 	@Autowired
 	@Qualifier("rmnchServiceImpl")
 	RmnchDataSyncService rmnchDataSyncService;
 
 	@RequestMapping(value = "/syncDataToAmrit", method = RequestMethod.POST)
-	@ApiOperation(value = "sync data to amrit for already regestered beneficiary with AMRIT beneficiary id ", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Sync data to AMRIT for already regestered beneficiary with AMRIT beneficiary id ", consumes = "application/json", produces = "application/json")
 	public String syncDataToAmrit(@ApiParam(value = "{\r\n" + "  \"beneficiaryDetails\": [\r\n" + "    {\r\n"
 			+ "      \"BenRegId\": \"Long\",\r\n" + "      \"Countyid\": \"Integer\",\r\n"
 			+ "      \"Processed\": \"String\",\r\n" + "      \"ProviderServiceMapID\": \"Integer\",\r\n"
@@ -115,7 +134,7 @@ public class RmnchMobileAppController {
 
 //	@Deprecated
 	@RequestMapping(value = "/getBeneficiaryDataForVillage", method = RequestMethod.POST)
-	@ApiOperation(value = "get beneficiary data for given village ", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get beneficiary data for given village ", consumes = "application/json", produces = "application/json")
 	public String getBeneficiaryData(
 			@ApiParam(value = "{\r\n" + "\"villageID\":\"Integer\",\r\n" + "\"fromDate\":\"DateTime\",\r\n"
 					+ "\"toDate\":\"DateTime\",\r\n" + "\"pageNo\":\"Integer\"\r\n"

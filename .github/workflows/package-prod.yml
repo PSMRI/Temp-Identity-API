@@ -1,45 +1,37 @@
-name: Package
+name: Package-prod
 
 on:
   push:
-    branches: [ "develop"]
+    branches: [ "master"]
     paths-ignore:
      - target/**
      
   pull_request:
-     branches: [ "develop" ]
+     branches: [ "master" ]
      paths-ignore:
      - target/**
      
 env:
-  ENV_VAR: test
+  ENV_VAR: prod
 
 jobs:
-  Package-test:
+  Package-prod:
     runs-on: ubuntu-latest
-    permissions:
-      actions: read
-      contents: read
-      security-events: write
-
-    strategy:
-      fail-fast: false
     steps:
     
-    - name: Checkout code 
-      uses: actions/checkout@v2
-
+    - name: Checkout code
+      uses: actions/checkout@v3
+      
     - name: Setup JDK 8
       uses: actions/setup-java@v2
       with:
         java-version: 8
         distribution: 'adopt'
-
         
     - name: Build with Maven
       run: mvn clean install -DENV_VAR=${{ env.ENV_VAR }}
       
-    - name: Build WAR file
+    - name: Create WAR file 
       run: mvn -B package --file pom.xml
       
     - name: Upload WAR file as artifact

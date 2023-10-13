@@ -1,3 +1,24 @@
+/*
+* AMRIT – Accessible Medical Records via Integrated Technology 
+* Integrated EHR (Electronic Health Records) Solution 
+*
+* Copyright (C) "Piramal Swasthya Management and Research Institute" 
+*
+* This file is part of AMRIT.
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see https://www.gnu.org/licenses/.
+*/
 package com.iemr.common.identity.dto;
 
 import java.math.BigInteger;
@@ -44,7 +65,6 @@ public class IdentityEditDTO {
 	private String gender;
 	private Integer titleId;
 	private String title;
-	// private Integer parkingPlaceId;
 	private String literacyStatus;
 
 	// self address
@@ -84,17 +104,11 @@ public class IdentityEditDTO {
 	private String placeOfWork;
 	private Integer healthCareWorkerId;
 	private String healthCareWorker;
+	private String monthlyFamilyIncome;
 
 	// family details
 	private Boolean changeInFamilyDetails = false;
 	List<BenFamilyDTO> benFamilyDTOs;
-	// private Boolean isEmergencyContact;
-	// private String relationshipToSelf;
-	// private BigInteger associatedBenRegId; // Family mapping must be a list
-
-	// List<BenFamilyDTO> benFamilyDTOs;
-
-	// MMU/TM details
 	private Boolean changeInAssociations = false;
 
 	private Integer zoneId;
@@ -131,4 +145,5 @@ public class IdentityEditDTO {
 
 	private Integer vanID;
 	private Integer parkingPlaceId;
+	private boolean emergencyRegistration;
 }

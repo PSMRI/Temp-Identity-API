@@ -1,3 +1,24 @@
+/*
+* AMRIT – Accessible Medical Records via Integrated Technology 
+* Integrated EHR (Electronic Health Records) Solution 
+*
+* Copyright (C) "Piramal Swasthya Management and Research Institute" 
+*
+* This file is part of AMRIT.
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see https://www.gnu.org/licenses/.
+*/
 package com.iemr.common.identity.domain;
 
 import java.io.Serializable;
@@ -18,16 +39,15 @@ import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-/**
- * The persistent class for the m_beneficiarydetails database table.
- * 
- */
 @Entity
 @Table(name = "i_beneficiarydetails")
 @NamedQuery(name = "MBeneficiarydetail.findAll", query = "SELECT m FROM MBeneficiarydetail m order by beneficiaryDetailsId asc")
 @Data
+@AllArgsConstructor
 public class MBeneficiarydetail implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private static final int START_YEAR = 1970;
@@ -41,7 +61,6 @@ public class MBeneficiarydetail implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(unique = true, nullable = false)
-	// @OrderBy(value = "beneficiaryDetailsId asc")
 	private BigInteger beneficiaryDetailsId;
 
 	private Integer areaId;
@@ -54,7 +73,7 @@ public class MBeneficiarydetail implements Serializable {
 	@Column(nullable = false, length = 50, updatable = false)
 	private String createdBy;
 
-	@Column(name = "CreatedDate", insertable = false, updatable = false)
+	@Column(name = "CreatedDate",updatable = false)
 	private Timestamp createdDate;
 
 	private Boolean deleted = false;
@@ -63,7 +82,8 @@ public class MBeneficiarydetail implements Serializable {
 
 	@Column(length = 45)
 	private String education;
-
+    
+	@Column(name = "EmergencyRegistration")
 	private Boolean emergencyRegistration;
 
 	@Column(length = 50)
@@ -103,8 +123,6 @@ public class MBeneficiarydetail implements Serializable {
 
 	@Column(length = 50)
 	private String modifiedBy;
-
-	// private Integer parkingPlaceID;
 
 	private Integer occupationId;
 
@@ -216,22 +234,14 @@ public class MBeneficiarydetail implements Serializable {
 	@Expose
 	@Column(name = "VanSerialNo", updatable = false)
 	private BigInteger vanSerialNo;
+	
+	@Column(name = "MonthlyFamilyIncome")
+	private String monthlyFamilyIncome;
 
-//	@Expose
-//	@Column(name = "familyid", updatable = true)
-//	private String familyid;
-
-	// END OF new column added for data sync
-	/**
-	 * Default constructor
-	 */
 	public MBeneficiarydetail() {
 
 	}
 
-	/**
-	 * Constructor for retrieving partial beneficiary details
-	 */
 	public MBeneficiarydetail(BigInteger beneficiaryDetailsId, String firstName, String lastName, String middleName,
 			String fatherName, String spouseName) {
 
@@ -321,9 +331,4 @@ public class MBeneficiarydetail implements Serializable {
 		return isHIVPositive;
 	}
 
-	// public static void main(String[] args)
-	// {
-	// Timestamp dob = new Timestamp(10, 07, 10,0,0,0,0);
-	// System.out.println(calculateAge(dob));
-	// }
 }

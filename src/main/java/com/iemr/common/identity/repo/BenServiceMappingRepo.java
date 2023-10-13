@@ -1,3 +1,24 @@
+/*
+* AMRIT – Accessible Medical Records via Integrated Technology 
+* Integrated EHR (Electronic Health Records) Solution 
+*
+* Copyright (C) "Piramal Swasthya Management and Research Institute" 
+*
+* This file is part of AMRIT.
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see https://www.gnu.org/licenses/.
+*/
 package com.iemr.common.identity.repo;
 
 import java.math.BigInteger;
@@ -20,40 +41,40 @@ public interface BenServiceMappingRepo extends CrudRepository<MBeneficiaryservic
 	List<MBeneficiaryservicemapping> findByProviderServiceMapId(Integer registeredProviderServiceMapId);
 
 	List<MBeneficiaryservicemapping> findByProviderServiceMapIdAndRegisteredDateBetween(
-			Integer registeredProviderServiceMapId, Timestamp from, Timestamp To);
+			Integer registeredProviderServiceMapId, Timestamp from, Timestamp to);
 
 	List<MBeneficiaryservicemapping> findByServiceIdAndRegisteredDateBetween(Integer serviceId, Timestamp from,
-			Timestamp To);
+			Timestamp to);
 
 	List<MBeneficiaryservicemapping> findByServiceNameAndRegisteredDateBetween(String serviceName, Timestamp from,
-			Timestamp To);
+			Timestamp to);
 
 	List<MBeneficiaryservicemapping> findByStateIdAndRegisteredDateBetween(Integer stateId, Timestamp from,
-			Timestamp To);
+			Timestamp to);
 
 	List<MBeneficiaryservicemapping> findByStateNameAndRegisteredDateBetween(String stateName, Timestamp from,
-			Timestamp To);
+			Timestamp to);
 
 	List<MBeneficiaryservicemapping> findByServiceProviderIdAndRegisteredDateBetween(Integer serviceProviderId,
-			Timestamp from, Timestamp To);
+			Timestamp from, Timestamp to);
 
 	List<MBeneficiaryservicemapping> findByServiceProviderNameAndRegisteredDateBetween(String serviceProviderName,
-			Timestamp from, Timestamp To);
+			Timestamp from, Timestamp to);
 
 	Long countByProviderServiceMapIdAndRegisteredDateBetween(Integer registeredProviderServiceMapId, Timestamp from,
-			Timestamp To);
+			Timestamp to);
 
-	Long countByServiceIdAndRegisteredDateBetween(Integer serviceId, Timestamp from, Timestamp To);
+	Long countByServiceIdAndRegisteredDateBetween(Integer serviceId, Timestamp from, Timestamp to);
 
-	Long countByServiceNameAndRegisteredDateBetween(String serviceName, Timestamp from, Timestamp To);
+	Long countByServiceNameAndRegisteredDateBetween(String serviceName, Timestamp from, Timestamp to);
 
-	Long countByStateIdAndRegisteredDateBetween(Integer stateId, Timestamp from, Timestamp To);
+	Long countByStateIdAndRegisteredDateBetween(Integer stateId, Timestamp from, Timestamp to);
 
-	Long countByStateNameAndRegisteredDateBetween(String stateName, Timestamp from, Timestamp To);
+	Long countByStateNameAndRegisteredDateBetween(String stateName, Timestamp from, Timestamp to);
 
-	Long countByServiceProviderIdAndRegisteredDateBetween(Integer serviceProviderId, Timestamp from, Timestamp To);
+	Long countByServiceProviderIdAndRegisteredDateBetween(Integer serviceProviderId, Timestamp from, Timestamp to);
 
-	Long countByServiceProviderNameAndRegisteredDateBetween(String serviceProviderName, Timestamp from, Timestamp To);
+	Long countByServiceProviderNameAndRegisteredDateBetween(String serviceProviderName, Timestamp from, Timestamp to);
 
 	List<MBeneficiaryservicemapping> findByCreatedDateBetween(Timestamp fromDate, Timestamp toDate);
 

@@ -1,3 +1,24 @@
+/*
+* AMRIT – Accessible Medical Records via Integrated Technology 
+* Integrated EHR (Electronic Health Records) Solution 
+*
+* Copyright (C) "Piramal Swasthya Management and Research Institute" 
+*
+* This file is part of AMRIT.
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see https://www.gnu.org/licenses/.
+*/
 package com.iemr.common.identity.utils.http;
 
 import java.io.FileInputStream;
@@ -41,30 +62,15 @@ public class HttpUtils {
 			headers.add("Content-Type", "application/json");
 		}
 	}
-	private Logger logger = LoggerFactory.getLogger(IdentityController.class);
-	// public HttpUtils() {
-	// if (rest == null) {
-	// rest = new RestTemplate();
-	// headers = new HttpHeaders();
-	// headers.add("Content-Type", "application/json");
-	// }
-	// }
 
-	// @Bean
-	// public HttpUtils httpUtils() {
-	// return new HttpUtils();
-	// }
+	private Logger logger = LoggerFactory.getLogger(IdentityController.class);
 
 	public String get(String uri) {
 		String body;
 		HttpEntity<String> requestEntity = new HttpEntity<String>("", headers);
 		ResponseEntity<String> responseEntity = rest.exchange(uri, HttpMethod.GET, requestEntity, String.class);
 		setStatus(responseEntity.getStatusCode());
-		// if (status == HttpStatus.OK){
 		body = responseEntity.getBody();
-		// }else{
-		// responseEntity
-		// }
 		return body;
 	}
 
@@ -101,7 +107,6 @@ public class HttpUtils {
 		if (header.containsKey(headers.AUTHORIZATION)) {
 			headers.add(headers.AUTHORIZATION, header.get(headers.AUTHORIZATION).toString());
 		}
-		// headers.add("Content-Type", MediaType.APPLICATION_JSON);
 		ResponseEntity<String> responseEntity = new ResponseEntity(HttpStatus.BAD_REQUEST);
 		HttpEntity<String> requestEntity;
 		requestEntity = new HttpEntity<String>(data, headers);
@@ -137,16 +142,14 @@ public class HttpUtils {
 				multiPart.field("docPath", data);
 				headers.add("Content-Type", MediaType.APPLICATION_JSON);
 				requestEntity = new HttpEntity<FormDataMultiPart>(multiPart, headers);// new
-																						// HttpEntity<String>(multiPart,
-																						// headers);
 				responseEntity = rest.exchange(uri, HttpMethod.POST, requestEntity, String.class);
 			} catch (FileNotFoundException e) {
 				logger.error(e.getMessage());
 			} finally {
-				if(multiPart!=null)
-				multiPart.close();
-				if(is!=null)
-				is.close();
+				if (multiPart != null)
+					multiPart.close();
+				if (is != null)
+					is.close();
 			}
 		} else {
 			HttpEntity<String> requestEntity;

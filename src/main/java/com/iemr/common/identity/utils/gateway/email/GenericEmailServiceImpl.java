@@ -1,3 +1,24 @@
+/*
+* AMRIT – Accessible Medical Records via Integrated Technology 
+* Integrated EHR (Electronic Health Records) Solution 
+*
+* Copyright (C) "Piramal Swasthya Management and Research Institute" 
+*
+* This file is part of AMRIT.
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see https://www.gnu.org/licenses/.
+*/
 package com.iemr.common.identity.utils.gateway.email;
 
 import org.json.JSONObject;
@@ -21,9 +42,6 @@ public class GenericEmailServiceImpl implements EmailService {
 		String from = requestObj.getString("from");
 		String subject = requestObj.getString("subject");
 		String message = requestObj.getString("message");
-
-		// TODO
-		// JSONObject templateObj = new JSONObject(template);
 
 		mailMessage.setTo(to);
 		mailMessage.setFrom(from);
@@ -51,31 +69,5 @@ public class GenericEmailServiceImpl implements EmailService {
 
 	@Override
 	public void sendEmailWithAttachment(String jsonObject, String template) {
-		// TODO Auto-generated method stub
-
 	}
-
-	// public static void main(String[] args)
-	// {
-	// GenericEmailServiceImpl impl = new GenericEmailServiceImpl();
-	// JSONObject test = new JSONObject();
-	// test.put("to", "vinay.chidambara@wipro.com, vinay.sompur@gmail.com");
-	// test.put("from", "vinay.sompur@gmail.com");
-	// test.put("subject", "Test email event");
-	// test.put("message", "Testing email for demo");
-	// impl.sendEmail(test.toString());
-	// }
-
-	// public static void main(String[] args) throws Exception
-	// {
-	// GenericEmailServiceImpl impl = new GenericEmailServiceImpl();
-	// JSONObject test = new JSONObject();
-	// test.put("to", "vinay.chidambara@wipro.com, vinay.sompur@gmail.com");
-	// test.put("from", "vinay.sompur@gmail.com");
-	// test.put("subject", "Test email event");
-	// test.put("message", "Testing email for demo");
-	// SpringApplication.run(GenericEmailServiceImpl.class, args);
-	// impl.sendEmail(test.toString());
-	// }
-
 }

@@ -1,7 +1,29 @@
+/*
+* AMRIT – Accessible Medical Records via Integrated Technology 
+* Integrated EHR (Electronic Health Records) Solution 
+*
+* Copyright (C) "Piramal Swasthya Management and Research Institute" 
+*
+* This file is part of AMRIT.
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see https://www.gnu.org/licenses/.
+*/
 package com.iemr.common.identity.controller;
 
 import java.lang.reflect.Type;
 import java.math.BigInteger;
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -10,6 +32,7 @@ import java.util.Objects;
 import javax.persistence.NoResultException;
 import javax.persistence.QueryTimeoutException;
 
+import com.iemr.common.identity.dto.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +85,7 @@ public class IdentityController {
 	IdentityMapper mapper;
 
 	@CrossOrigin(origins = { "*commonapi*" })
+	@ApiOperation(value = "Get beneficiaries by advance search")
 	@PostMapping(path = "/advanceSearch", headers = "Authorization")
 	public @ResponseBody String getBeneficiaries(
 			@ApiParam(value = "{\"firstName\":\"String\",\"genderId\":\"Integer\",\"fatherName\":\"String\","
@@ -75,8 +99,6 @@ public class IdentityController {
 			JsonElement json = new JsonParser().parse(searchFilter);
 			IdentitySearchDTO searchParams = InputMapper.getInstance().gson().fromJson(json, IdentitySearchDTO.class);
 
-			// SUNIL TODO: advance search here
-			// getResponseString(list)
 			List<BeneficiariesDTO> list = svc.getBeneficiaries(searchParams);
 			list.removeIf(Objects::isNull);
 			Collections.sort(list);
@@ -92,6 +114,7 @@ public class IdentityController {
 	}
 
 	@CrossOrigin(origins = { "*commonapi*" })
+	@ApiOperation(value = "Search beneficiary based on beneficiary registration id")
 	@PostMapping(path = "/getByBenRegId", headers = "Authorization")
 	public @ResponseBody String getBeneficiariesByBeneficiaryRegId(
 			@ApiParam(value = "\"Integer\"") @RequestParam String benRegId) {
@@ -128,6 +151,7 @@ public class IdentityController {
 	}
 
 	@CrossOrigin(origins = { "*commonapi*" })
+	@ApiOperation(value = "Search identity based on beneficiary registration id")
 	@PostMapping(path = "/getByBenId", headers = "Authorization")
 	public @ResponseBody String getBeneficiariesByBeneficiaryId(
 			@ApiParam(value = "\"Integer\"") @RequestParam String benId) {
@@ -164,6 +188,7 @@ public class IdentityController {
 	}
 
 	@CrossOrigin(origins = { "*commonapi*" })
+	@ApiOperation(value = "Search beneficiary based on phone number")
 	@PostMapping(path = "/getByPhoneNum", headers = "Authorization")
 	public @ResponseBody String getBeneficiariesByPhoneNum(
 			@ApiParam(value = "\"String\"") @RequestParam String phoneNum) {
@@ -181,7 +206,6 @@ public class IdentityController {
 			phoneNumValue = phoneNum;
 
 			List<BeneficiariesDTO> list = svc.getBeneficiariesByPhoneNum(phoneNumValue);
-			// list.removeAll(null);
 			list.removeIf(Objects::isNull);
 			Collections.sort(list);
 			response = getSuccessResponseString(list, 200, "success", "getIdentityByAgent");
@@ -195,8 +219,8 @@ public class IdentityController {
 		return response;
 	}
 
-	// search beneficiary by healthid / ABHA_Address
 	@CrossOrigin(origins = { "*commonapi*" })
+	@ApiOperation(value = "Search beneficiary based on health ID / ABHA Address")
 	@PostMapping(path = "/getByAbhaAddress", headers = "Authorization")
 	public @ResponseBody String searhBeneficiaryByABHAAddress(
 			@ApiParam(value = "\"String\"") @RequestParam String healthID) {
@@ -213,8 +237,7 @@ public class IdentityController {
 
 			healthIDValue = healthID;
 
-			List<BeneficiariesDTO> list = svc.getBeneficiaryByHealthID_AbhaAddress(healthIDValue);
-			// list.removeAll(null);
+			List<BeneficiariesDTO> list = svc.getBeneficiaryByHealthIDAbhaAddress(healthIDValue);
 			list.removeIf(Objects::isNull);
 			Collections.sort(list);
 			response = getSuccessResponseString(list, 200, "success", "getIdentityByAgent");
@@ -229,8 +252,8 @@ public class IdentityController {
 		return response;
 	}
 
-	// search beneficiary by healthid / ABHA_Address
 	@CrossOrigin(origins = { "*commonapi*" })
+	@ApiOperation(value = "Search beneficiary based on health ID number / ABHA ID number")
 	@PostMapping(path = "/getByAbhaIdNo", headers = "Authorization")
 	public @ResponseBody String searhBeneficiaryByABHAIdNo(
 			@ApiParam(value = "\"String\"") @RequestParam String healthIDNo) {
@@ -247,8 +270,7 @@ public class IdentityController {
 
 			healthIDNoValue = healthIDNo;
 
-			List<BeneficiariesDTO> list = svc.getBeneficiaryByHealthIDNo_AbhaIdNo(healthIDNoValue);
-			// list.removeAll(null);
+			List<BeneficiariesDTO> list = svc.getBeneficiaryByHealthIDNoAbhaIdNo(healthIDNoValue);
 			list.removeIf(Objects::isNull);
 			Collections.sort(list);
 			response = getSuccessResponseString(list, 200, "success", "getIdentityByAgent");
@@ -263,8 +285,8 @@ public class IdentityController {
 		return response;
 	}
 
-	// search beneficiary by family id
 	@CrossOrigin(origins = { "*commonapi*" })
+	@ApiOperation(value = "Search beneficiary based on family id")
 	@PostMapping(path = "/searchByFamilyId", headers = "Authorization")
 	public @ResponseBody String searhBeneficiaryByFamilyId(
 			@ApiParam(value = "\"String\"") @RequestParam String familyId) {
@@ -280,7 +302,6 @@ public class IdentityController {
 			}
 
 			List<BeneficiariesDTO> list = svc.searhBeneficiaryByFamilyId(familyId);
-			// list.removeAll(null);
 			list.removeIf(Objects::isNull);
 			Collections.sort(list);
 			response = getSuccessResponseString(list, 200, "success", "getIdentityByAgent");
@@ -294,8 +315,34 @@ public class IdentityController {
 		return response;
 	}
 
-	// search beneficiary by gov identity - aadhar, pan, voter id etc
+	// search beneficiary by lastModDate and districtID
 	@CrossOrigin(origins = { "*commonapi*" })
+	@ApiOperation(value ="Search beneficiary by blockId and last modified date")
+	@PostMapping(path = "/searchByDistrictId")
+	public @ResponseBody String searchBeneficiaryByBlockIdAndLastModDate(
+			@ApiParam(value = "\"String\"") @RequestBody String object) {
+		logger.info("IdentityController.getBeneficiary - start. search object = " + object);
+		String response;
+		try {
+
+			JsonElement json = new JsonParser().parse(object);
+
+			SearchSyncDTO search = InputMapper.getInstance().gson().fromJson(json, SearchSyncDTO.class);
+			List<BeneficiariesDTO> list = svc.searchBeneficiaryByBlockIdAndLastModifyDate(search.getBlockID(), new Timestamp(search.getLastModifDate()));
+
+			response = getSuccessResponseString(list, 200, "success", "getIdentityByAgent");
+
+			logger.info("IdentityController.getBeneficiary - end");
+		} catch (Exception e) {
+			logger.error("error in beneficiary search by Family Id : " + e.getLocalizedMessage());
+			response = getErrorResponseString("error in beneficiary search by block Id  : " + e.getLocalizedMessage(),
+					5000, "failure", "");
+		}
+		return response;
+	}
+
+	@CrossOrigin(origins = { "*commonapi*" })
+	@ApiOperation(value = "Search beneficiary based on government identity number")
 	@PostMapping(path = "/searhByGovIdentity", headers = "Authorization")
 	public @ResponseBody String searhBeneficiaryByGovIdentity(
 			@ApiParam(value = "\"String\"") @RequestParam String identity) {
@@ -311,7 +358,6 @@ public class IdentityController {
 			}
 
 			List<BeneficiariesDTO> list = svc.searhBeneficiaryByGovIdentity(identity);
-			// list.removeAll(null);
 			list.removeIf(Objects::isNull);
 			Collections.sort(list);
 			response = getSuccessResponseString(list, 200, "success", "getIdentityByAgent");
@@ -331,6 +377,7 @@ public class IdentityController {
 	 * @return
 	 */
 	@CrossOrigin(origins = { "*commonapi*" })
+	@ApiOperation(value = "Edit identity by agent")
 	@PostMapping(path = "/edit", headers = "Authorization")
 	public @ResponseBody String editIdentity(@ApiParam(value = "{\r\n" + "  \"eventTypeName\": \"String\",\r\n"
 			+ "  \"eventTypeDate\": \"Timestamp\",\r\n" + "  \"agentId\": \"Integer\",\r\n"
@@ -444,7 +491,6 @@ public class IdentityController {
 		}
 
 		IdentityEditDTO identity = InputMapper.getInstance().gson().fromJson(json, IdentityEditDTO.class);
-		// MBeneficiarymapping map;
 		try {
 			svc.editIdentity(identity);
 			String response = getSuccessResponseString("Updated successfully", 200, "success", "editIdentityByAgent");
@@ -464,6 +510,7 @@ public class IdentityController {
 	 * @return
 	 */
 	@CrossOrigin(origins = { "*commonapi*" })
+	@ApiOperation(value = "Create identity by agent")
 	@PostMapping(path = "/create", headers = "Authorization")
 	public @ResponseBody String createIdentity(@ApiParam(value = "{\r\n" + "  \"eventTypeName\": \"String\",\r\n"
 			+ "  \"eventTypeDate\": \"Timestamp\",\r\n" + "  \"agentId\": \"Integer\",\r\n"
@@ -582,6 +629,7 @@ public class IdentityController {
 	}
 
 	@CrossOrigin(origins = { "*commonapi*" })
+	@ApiOperation(value = "Reserve identity by agent")
 	@PostMapping(path = "/reserve", headers = "Authorization")
 	public @ResponseBody String reserveIdentity(@RequestBody String reserveIdentity) {
 		logger.info("IdentityController.reserveIdentity - start");
@@ -602,6 +650,7 @@ public class IdentityController {
 	}
 
 	@CrossOrigin(origins = { "*commonapi*" })
+	@ApiOperation(value = "Unreserve identity by agent")
 	@PostMapping(path = "/unreserve", headers = "Authorization")
 	public @ResponseBody String unreserveIdentity(@RequestBody String unreserve) {
 		logger.info("IdentityController.unreserveIdentity - start");
@@ -628,6 +677,7 @@ public class IdentityController {
 	 * @return
 	 */
 	@CrossOrigin(origins = { "*commonapi*" })
+	@ApiOperation(value = "Get beneficiaries partial details by beneficiary registration id list")
 	@PostMapping(path = "/getByPartialBenRegIdList", headers = "Authorization")
 	public @ResponseBody String getPartialBeneficiariesByBenRegIds(
 			@ApiParam(value = "[Integer,Integer…..(array of benRegId)]") @RequestBody String benRegIds) {
@@ -649,7 +699,6 @@ public class IdentityController {
 		String data = InputMapper.getInstance().gson().toJson(list).toString();
 		String response = getSuccessResponseString(data, 200, "success", "getBeneficiariesByBenRegIds");
 
-//		logger.info("IdentityController.getBeneficiariesByBenRegIds - end response: " + response);
 		logger.info("IdentityController.getBeneficiariesByBenRegIds - end ");
 		return response;
 	}
@@ -661,6 +710,7 @@ public class IdentityController {
 	 * @return
 	 */
 	@CrossOrigin(origins = { "*commonapi*" })
+	@ApiOperation(value = "Get beneficiaries by beneficiary registration id")
 	@PostMapping(path = "/getByBenRegIdList", headers = "Authorization")
 	public @ResponseBody String getBeneficiariesByBenRegIds(
 			@ApiParam(value = " {\"beneficiaryRegID\": \"Long\"}") @RequestBody String benRegIds) {
@@ -680,7 +730,6 @@ public class IdentityController {
 		Collections.sort(list);
 		String response = getSuccessResponseString(list, 200, "success", "getBeneficiariesByBenRegIds");
 
-//		logger.info("IdentityController.getBeneficiariesByBenRegIds - end response: " + response);
 		logger.info("IdentityController.getBeneficiariesByBenRegIds - end : ");
 		return response;
 	}
@@ -696,8 +745,7 @@ public class IdentityController {
 	private String getSuccessResponseString(MBeneficiarymapping map, Integer statusCode, String statusMsg,
 			String methodName) {
 		logger.info("IdentityController.getResponseString of map parameter - start");
-		BeneficiariesDTO bdto = mapper.MBeneficiarymappingToBeneficiariesDTO(map);
-		// bdto.setBeneficiaryDetails(mapper.MBeneficiarydetailToBenDetailDTO(map.getMBeneficiarydetail()));
+		BeneficiariesDTO bdto = mapper.mBeneficiarymappingToBeneficiariesDTO(map);
 		bdto.setBeneficiaryFamilyTags(
 				mapper.mBeneficiaryfamilymappingListToBenFamilyDTOList(map.getMBeneficiaryfamilymappings()));
 		bdto.setBeneficiaryIdentites(
@@ -729,9 +777,6 @@ public class IdentityController {
 	private String getSuccessResponseString(String data, Integer statusCode, String statusMsg, String methodName) {
 		logger.info("IdentityController.getResponseString of string parameter - start");
 
-		// String data =
-		// InputMapper.getInstance().gson().toJson(bdto).toString();
-//		logger.info("data: " + data);
 
 		OutputResponse response = new OutputResponse.Builder().setDataJsonType("JsonObject.class")
 				.setStatusCode(statusCode).setStatusMessage(statusMsg)
@@ -749,8 +794,6 @@ public class IdentityController {
 		}.getType();
 		String data = OutputMapper.getInstance().gson().toJson(list, typeOfSrc);
 		logger.info("data response size:" + (list != null ? list.size() : "No Beneficiary Found"));
-//		logger.info("data: " + data);
-//		logger.info("data.toStr: " + data.toString());
 		OutputResponse response = new OutputResponse.Builder().setDataJsonType("JsonObject.class")
 				.setStatusCode(statusCode).setStatusMessage(statusMsg)
 				.setDataObjectType(this.getClass().getSimpleName()).setMethodName(methodName).setData(data).build();
@@ -807,6 +850,7 @@ public class IdentityController {
 	}
 
 	@CrossOrigin(origins = { "*commonapi*" })
+	@ApiOperation(value = "Get finite beneficiaries")
 	@PostMapping(path = "/finiteSearch", headers = "Authorization")
 	public @ResponseBody String getFiniteBeneficiaries(@RequestBody String searchFilter) {
 		logger.info("IdentityController.getFiniteBeneficiaries - start");
@@ -822,15 +866,12 @@ public class IdentityController {
 			response = getSuccessResponseString(list, 200, "success", "getFiniteBeneficiaries");
 			logger.info("IdentityController.getFiniteBeneficiaries - end");
 		} catch (NoResultException e) {
-			// TODO Auto-generated catch block
 			logger.error(e.getMessage());
 			response = getErrorResponseString(e.getLocalizedMessage(), 5000, "failure", "");
 		} catch (QueryTimeoutException e) {
-			// TODO Auto-generated catch block
 			logger.error(e.getMessage());
 			response = getErrorResponseString(e.getLocalizedMessage(), 5000, "failure", "");
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			logger.error(e.getMessage());
 			response = getErrorResponseString(e.getLocalizedMessage(), 5000, "failure", "");
 		}
@@ -840,6 +881,7 @@ public class IdentityController {
 
 	// New API for getting beneficiary image only.
 	@CrossOrigin(origins = { "*commonapi*" })
+	@ApiOperation(value = "Get beneficiary image by beneficiary registration id")
 	@PostMapping(path = "/benImageByBenRegID", headers = "Authorization")
 	public @ResponseBody String getBeneficiaryImageByBenRegID(@RequestBody String identityData) {
 		String benImage = null;
@@ -854,6 +896,7 @@ public class IdentityController {
 	}
 
 	@CrossOrigin(origins = { "*commonapi*" })
+	@ApiOperation(value = "Edit education or community by agent")
 	@PostMapping(path = "/editEducationOrCommunity", headers = "Authorization")
 	public @ResponseBody String editIdentityEducationOrCommunity(@ApiParam(value = "{\r\n"
 			+ "  \"eventTypeName\": \"String\",\r\n" + "  \"eventTypeDate\": \"Timestamp\",\r\n"
@@ -967,7 +1010,6 @@ public class IdentityController {
 		}
 
 		IdentityEditDTO identity = InputMapper.getInstance().gson().fromJson(json, IdentityEditDTO.class);
-		// MBeneficiarymapping map;
 		try {
 			svc.editIdentityEducationOrCommunity(identity);
 			String response = getSuccessResponseString("Updated successfully", 200, "success", "editIdentityByAgent");
@@ -982,7 +1024,7 @@ public class IdentityController {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "Check available BENID in local", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Check available beneficary id in local server", consumes = "application/json", produces = "application/json")
 	@GetMapping(path = "/checkAvailablBenIDLocalServer", headers = "Authorization")
 	public @ResponseBody String checkAvailablBenIDLocalServer() {
 		com.iemr.common.identity.utils.response.OutputResponse response = new com.iemr.common.identity.utils.response.OutputResponse();
@@ -997,24 +1039,24 @@ public class IdentityController {
 	}
 
 	@CrossOrigin(origins = { "*commonapi*" })
-	@ApiOperation(value = "Save Server generated BeneficiaryID & BenRegID to local server", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Save server generated beneficiary ID & beneficiary registration ID to local server", consumes = "application/json", produces = "application/json")
 	@PostMapping(path = "/saveGeneratedBenIDToLocalServer", headers = "Authorization")
 	public @ResponseBody String saveGeneratedBenIDToLocalServer(
 			@ApiParam(value = "{\r\n" + "        \"vanID\": \"Integer\",\r\n"
 					+ "        \"benIDRequired\": \"Integer\"\r\n" + "       }") @RequestBody String regIDList) {
 		com.iemr.common.identity.utils.response.OutputResponse response = new com.iemr.common.identity.utils.response.OutputResponse();
 		try {
-			BenIdImportDTO[] BenIdImportDTOArr = InputMapper.getInstance().gson().fromJson(regIDList,
+			BenIdImportDTO[] benIdImportDTOArr = InputMapper.getInstance().gson().fromJson(regIDList,
 					BenIdImportDTO[].class);
 
-			List<BenIdImportDTO> BenIdImportDTOList = Arrays.asList(BenIdImportDTOArr);
+			List<BenIdImportDTO> benIdImportDTOList = Arrays.asList(benIdImportDTOArr);
 
-			int i = svc.importBenIdToLocalServer(BenIdImportDTOList);
+			int i = svc.importBenIdToLocalServer(benIdImportDTOList);
 			if (i > 0)
 				response.setResponse(i + " Unique benid imported to local server");
 			else {
 				response.setResponse("Empty or invalid data");
-				logger.error("Empty or invalid data. Data Size is : " + BenIdImportDTOList.size());
+				logger.error("Empty or invalid data. Data Size is : " + benIdImportDTOList.size());
 			}
 		} catch (Exception e) {
 			logger.error("Exception in importing benID to local server : " + e);

@@ -1,3 +1,24 @@
+/*
+* AMRIT – Accessible Medical Records via Integrated Technology 
+* Integrated EHR (Electronic Health Records) Solution 
+*
+* Copyright (C) "Piramal Swasthya Management and Research Institute" 
+*
+* This file is part of AMRIT.
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see https://www.gnu.org/licenses/.
+*/
 package com.iemr.common.identity.controller.familyTagging;
 
 import org.slf4j.Logger;
@@ -23,7 +44,7 @@ public class FamilyTaggingController {
 	private FamilyTagService familyTagService;
 
 	@CrossOrigin()
-	@ApiOperation(value = "Create and Modify family tagging", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Create and modify family tagging", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/addTag" }, method = { RequestMethod.POST })
 	public String saveFamilyTagging(@RequestBody String comingReq) {
 		String s;
@@ -39,7 +60,7 @@ public class FamilyTaggingController {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "Create Family", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Create family", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/createFamily" }, method = { RequestMethod.POST })
 	public String createFamily(@RequestBody String comingReq) {
 		String s;
@@ -55,7 +76,7 @@ public class FamilyTaggingController {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "Search Family", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Search family", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/searchFamily" }, method = { RequestMethod.POST })
 	public String searchFamily(@RequestBody String comingReq) {
 		String s;
@@ -103,7 +124,7 @@ public class FamilyTaggingController {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "edit beneficiary family details", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Edit beneficiary family details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/editFamilyTagging" }, method = { RequestMethod.POST })
 	public String editFamilyDetails(@RequestBody String comingReq) {
 		String s;

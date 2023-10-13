@@ -1,3 +1,24 @@
+/*
+* AMRIT – Accessible Medical Records via Integrated Technology 
+* Integrated EHR (Electronic Health Records) Solution 
+*
+* Copyright (C) "Piramal Swasthya Management and Research Institute" 
+*
+* This file is part of AMRIT.
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see https://www.gnu.org/licenses/.
+*/
 package com.iemr.common.identity.domain;
 
 import java.io.Serializable;
@@ -9,8 +30,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
@@ -86,11 +105,6 @@ public class MBeneficiaryservicemapping implements Serializable {
 	@Column(length = 45)
 	private String stateName;
 
-	// bi-directional many-to-one association to MBeneficiarymapping
-//	@ManyToOne(/* fetch = FetchType.EAGER */) /* (fetch = FetchType.LAZY) */
-//	@JoinColumn(name = "BenMapId")
-//	private MBeneficiarymapping MBeneficiarymapping;
-	
 	@Column(name = "BenMapId", insertable = true, updatable = true)
 	private BigInteger benMapId;
 

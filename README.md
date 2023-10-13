@@ -1,5 +1,5 @@
 # AMRIT - Identity Service 
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) 
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)  ![branch parameter](https://github.com/PSMRI/Identity-API/actions/workflows/sast-and-package.yml/badge.svg)
 
 Identity API is a microservice which is used for the creation and management of beneficaries.
 

@@ -1,3 +1,24 @@
+/*
+* AMRIT – Accessible Medical Records via Integrated Technology 
+* Integrated EHR (Electronic Health Records) Solution 
+*
+* Copyright (C) "Piramal Swasthya Management and Research Institute" 
+*
+* This file is part of AMRIT.
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see https://www.gnu.org/licenses/.
+*/
 package com.iemr.common.identity.domain;
 
 import java.io.Serializable;
@@ -9,8 +30,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -25,8 +44,7 @@ import lombok.Data;
 @Table(name = "t_bendataaccess")
 @NamedQuery(name = "TBendataaccess.findAll", query = "SELECT t FROM TBendataaccess t")
 @Data
-public class TBendataaccess implements Serializable
-{
+public class TBendataaccess implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -47,8 +65,6 @@ public class TBendataaccess implements Serializable
 	private String authId;
 
 	@Transient
-	// @Column(nullable=false, length=75) //SQL Error: 1054, SQLState: 42S22 Unknown column 'tbendataac0_.consentId' in
-	// 'field list'
 	private String consentId;
 
 	@Column(length = 4)
@@ -58,8 +74,6 @@ public class TBendataaccess implements Serializable
 	private Integer userAgentId;
 
 	@Transient
-	// @Column(nullable=false, length=20)// SQL Error: 1054, SQLState: 42S22 Unknown column
-	// 'tbendataac0_.userAgentIpAddr' in 'field list'
 	private String userAgentIpAddr;
 
 	@Column(nullable = false)
@@ -71,11 +85,6 @@ public class TBendataaccess implements Serializable
 	@Column(nullable = false)
 	private Integer userAgentServiceId;
 
-	// commented on 28-09-2018
-	// bi-directional many-to-one association to MBeneficiarymapping
-//	@ManyToOne(/*fetch = FetchType.EAGER*/) /* (fetch = FetchType.LAZY) */
-//	@JoinColumn(name = "BenMapId", nullable = false)
-//	private MBeneficiarymapping MBeneficiarymapping;
 	@Column(name = "BenMapId", insertable = true, updatable = true)
 	private BigInteger benMapId;
 

@@ -1,3 +1,24 @@
+/*
+* AMRIT – Accessible Medical Records via Integrated Technology 
+* Integrated EHR (Electronic Health Records) Solution 
+*
+* Copyright (C) "Piramal Swasthya Management and Research Institute" 
+*
+* This file is part of AMRIT.
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see https://www.gnu.org/licenses/.
+*/
 package com.iemr.common.identity.dto;
 
 import java.sql.Timestamp;
@@ -7,7 +28,6 @@ import com.google.gson.annotations.Expose;
 import com.iemr.common.identity.domain.Address;
 import com.iemr.common.identity.domain.Contact;
 import com.iemr.common.identity.domain.Identity;
-// import com.iemr.common.identity.domain.Phone;
 
 import lombok.Data;
 
@@ -15,7 +35,6 @@ import lombok.Data;
 public class IdentityDTO {
 
 	private String eventTypeName; // created, reserved, registered, modified,
-									// deleted
 	private Timestamp eventTypeDate;
 	private Integer agentId;
 	private String agentName;
@@ -28,8 +47,8 @@ public class IdentityDTO {
 	private Integer stateId;
 	private String stateName;
 	private Integer providerServiceMapId;
+	private Timestamp createdDate;
 
-	// details
 	private Integer areaId;
 	private Integer beneficiaryId;
 	private Integer beneficiaryRegId;
@@ -70,7 +89,6 @@ public class IdentityDTO {
 	private String title;
 	private Integer zoneId;
 
-	// address
 	private Address currentAddress;
 	private Address permanentAddress;
 	private Address emergencyAddress;
@@ -80,28 +98,18 @@ public class IdentityDTO {
 	private Boolean isEmerAddrSameAsPermAddr;
 	private String addressType;
 
-	// contacts
 	private String preferredEmailId;
 	private Contact contact;
 
-	// family tagging
 	List<BenFamilyDTO> benFamilyDTOs;
-	// private Boolean isEmergencyContact;
-	// private String relationshipToSelf;
-	// private BigInteger associatedBenRegId;
 
-	// identities
 	private List<Identity> identities;
 
-	// Start 1097
 	private Integer sexualOrientationID;
 	private String sexualOrientationType;
 	private String isHIVPositive;
-	// End 1097
 
-	/*
-	 * New columns added for MMU integration 11-04-2018
-	 */
+	
 	private String bankName;
 	private String branchName;
 	private String ifscCode;
@@ -112,14 +120,11 @@ public class IdentityDTO {
 	private Integer ageAtMarriage;
 	private Integer incomeStatusId;
 	private String incomeStatus;
-	// End
+	private String monthlyFamilyIncome;
 
-	// new column added for data sync
-	// 17-06-2018
 	@Expose
 	private Integer vanID;
 
-	// END OF new column added for data sync
 
 	@Expose
 	private Boolean beneficiaryConsent;
