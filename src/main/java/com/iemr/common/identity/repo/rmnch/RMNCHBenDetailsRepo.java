@@ -35,4 +35,8 @@ public interface RMNCHBenDetailsRepo extends CrudRepository<RMNCHMBeneficiarydet
 	@Query(" SELECT t FROM RMNCHMBeneficiarydetail t WHERE t.id = :vanSerialNo AND t.VanID = :vanID")
 	public RMNCHMBeneficiarydetail getByIdAndVanID(@Param("vanSerialNo") BigInteger vanSerialNo,
 			@Param("vanID") int vanID);
+
+	@Query(" SELECT t FROM RMNCHMBeneficiarydetail t WHERE t.id = " +
+			"(SELECT m.benDetailsId from RMNCHMBeneficiarymapping m where m.benRegId = :beneficiaryRegID)")
+	public RMNCHMBeneficiarydetail getByBenRegID(@Param("beneficiaryRegID") BigInteger beneficiaryRegID);
 }
