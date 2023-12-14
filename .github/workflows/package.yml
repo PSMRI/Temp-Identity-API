@@ -28,10 +28,6 @@ jobs:
     
     - name: Checkout code 
       uses: actions/checkout@v2
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/master
     - name: Setup JDK 8
       uses: actions/setup-java@v2
       with:
