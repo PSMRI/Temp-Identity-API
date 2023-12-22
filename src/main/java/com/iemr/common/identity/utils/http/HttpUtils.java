@@ -34,6 +34,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -69,7 +70,7 @@ public class HttpUtils {
 		String body;
 		HttpEntity<String> requestEntity = new HttpEntity<String>("", headers);
 		ResponseEntity<String> responseEntity = rest.exchange(uri, HttpMethod.GET, requestEntity, String.class);
-		setStatus(responseEntity.getStatusCode());
+		setStatus((HttpStatus) responseEntity.getStatusCode());
 		body = responseEntity.getBody();
 		return body;
 	}
@@ -87,7 +88,7 @@ public class HttpUtils {
 		}
 		HttpEntity<String> requestEntity = new HttpEntity<String>("", headers);
 		ResponseEntity<String> responseEntity = rest.exchange(uri, HttpMethod.GET, requestEntity, String.class);
-		setStatus(responseEntity.getStatusCode());
+		setStatus((HttpStatus) responseEntity.getStatusCode());
 		body = responseEntity.getBody();
 		return body;
 	}
@@ -96,7 +97,7 @@ public class HttpUtils {
 		String body;
 		HttpEntity<String> requestEntity = new HttpEntity<String>(json, headers);
 		ResponseEntity<String> responseEntity = rest.exchange(uri, HttpMethod.POST, requestEntity, String.class);
-		setStatus(responseEntity.getStatusCode());
+		setStatus((HttpStatus) responseEntity.getStatusCode());
 		body = responseEntity.getBody();
 		return body;
 	}
@@ -111,7 +112,7 @@ public class HttpUtils {
 		HttpEntity<String> requestEntity;
 		requestEntity = new HttpEntity<String>(data, headers);
 		responseEntity = rest.exchange(uri, HttpMethod.POST, requestEntity, String.class);
-		setStatus(responseEntity.getStatusCode());
+		setStatus((HttpStatus) responseEntity.getStatusCode());
 		body = responseEntity.getBody();
 		return body;
 	}
@@ -156,10 +157,11 @@ public class HttpUtils {
 			requestEntity = new HttpEntity<String>(data, headers);
 			responseEntity = rest.exchange(uri, HttpMethod.POST, requestEntity, String.class);
 		}
-		setStatus(responseEntity.getStatusCode());
+		setStatus((HttpStatus) responseEntity.getStatusCode());
 		body = responseEntity.getBody();
 		return body;
 	}
+
 
 	public HttpStatus getStatus() {
 		return status;

@@ -24,27 +24,17 @@ package com.iemr.common.identity.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import com.iemr.common.identity.utils.http.HTTPRequestInterceptor;
 
 @Configuration
-public class InterceptorConfig extends WebMvcConfigurerAdapter
-{
+public class InterceptorConfig implements WebMvcConfigurer {
 
 	@Autowired
 	HTTPRequestInterceptor requestInterceptor;
-
-//	@Override
-//	public void addInterceptors(InterceptorRegistry registry)
-//	{
-//		registry.addInterceptor(requestInterceptor);
-//	}
 	
 	@Override
-	public void addInterceptors(InterceptorRegistry registry)
-	{
-		 registry.addInterceptor(new BlockingHttpMethodInterceptor())
-         .addPathPatterns("/**"); 
+	public void addInterceptors(InterceptorRegistry registry) {
+		registry.addInterceptor(new BlockingHttpMethodInterceptor()).addPathPatterns("/**");
 	}
 }

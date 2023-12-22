@@ -28,8 +28,6 @@ import static org.mockito.Mockito.doReturn;
 import java.math.BigInteger;
 import java.util.List;
 
-import javax.persistence.NoResultException;
-import javax.persistence.QueryTimeoutException;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -48,6 +46,9 @@ import com.iemr.common.identity.repo.BenAddressRepo;
 import com.iemr.common.identity.repo.BenMappingRepo;
 import com.iemr.common.identity.service.IdentityService;
 import com.iemr.common.identity.utils.exception.IEMRException;
+
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.QueryTimeoutException;
 
 @RunWith(MockitoJUnitRunner.class)
 public class IdentityControllerTest {

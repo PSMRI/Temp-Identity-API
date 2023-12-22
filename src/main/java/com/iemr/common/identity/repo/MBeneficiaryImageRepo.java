@@ -35,8 +35,8 @@ public interface MBeneficiaryImageRepo extends CrudRepository<MBeneficiaryImage,
 
 	@Transactional
 	@Modifying
-	@Query(" UPDATE MBeneficiaryImage set vanSerialNo = :BenImageId WHERE BenImageId = :BenImageId")
-	int updateVanSerialNo(@Param("BenImageId") Long benImageId);
+	@Query(" UPDATE MBeneficiaryImage m set m.vanSerialNo = :benImageId WHERE m.benImageId = :benImageId")
+	int updateVanSerialNo(@Param("benImageId") Long benImageId);
 
 	@Query("SELECT benImageId FROM MBeneficiaryImage WHERE vanSerialNo =:vanSerialNo AND vanID =:vanID ")
 	Long findIdByVanSerialNoAndVanID(@Param("vanSerialNo") Long vanSerialNo, @Param("vanID") Integer vanID);

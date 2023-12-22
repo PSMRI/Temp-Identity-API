@@ -171,7 +171,7 @@ public class RmnchDataSyncServiceImpl implements RmnchDataSyncService {
 							}
 
 							benDetailsExtraList = (ArrayList<RMNCHBeneficiaryDetailsRmnch>) rMNCHBeneficiaryDetailsRmnchRepo
-									.save(benDetailsExtraList);
+									.saveAll(benDetailsExtraList);
 
 							benDetailsExtraList.forEach((n) -> beneficiaryDetailsIds.add(n.getId()));
 //						} else
@@ -190,7 +190,7 @@ public class RmnchDataSyncServiceImpl implements RmnchDataSyncService {
 									obj.setBornBirthDeatilsId(temp.getBornBirthDeatilsId());
 							}
 							bornBirthList = (ArrayList<RMNCHBornBirthDetails>) rMNCHBornBirthDetailsRepo
-									.save(bornBirthList);
+									.saveAll(bornBirthList);
 							// success response
 							bornBirthList.forEach((n) -> bornBirthDeatilsIds.add(n.getId()));
 						}
@@ -213,7 +213,7 @@ public class RmnchDataSyncServiceImpl implements RmnchDataSyncService {
 									obj.setCBACDetailsid(temp.getCBACDetailsid());
 							}
 
-							cbacList = (ArrayList<RMNCHCBACdetails>) rMNCHCBACDetailsRepo.save(cbacList);
+							cbacList = (ArrayList<RMNCHCBACdetails>) rMNCHCBACDetailsRepo.saveAll(cbacList);
 							// success response
 							cbacList.forEach((n) -> cBACDetailsIds.add(n.getId()));
 						}
@@ -230,7 +230,7 @@ public class RmnchDataSyncServiceImpl implements RmnchDataSyncService {
 									obj.setHouseHoldDetailsId(temp.getHouseHoldDetailsId());
 							}
 							houseHoldList = (ArrayList<RMNCHHouseHoldDetails>) rMNCHHouseHoldDetailsRepo
-									.save(houseHoldList);
+									.saveAll(houseHoldList);
 							// success response
 							houseHoldList.forEach((n) -> houseHoldDetailsIds.add(n.getId()));
 						}
@@ -265,7 +265,7 @@ public class RmnchDataSyncServiceImpl implements RmnchDataSyncService {
 				List<RMNCHMBeneficiaryaddress> resultSet;
 				Integer pageSize = Integer.valueOf(door_to_door_page_size);
 				if (request.getPageNo() != null) {
-					PageRequest pr = new PageRequest(request.getPageNo(), pageSize);
+					PageRequest pr = PageRequest.of(request.getPageNo(), pageSize);
 					if (request.getFromDate() != null && request.getToDate() != null) {
 						Page<RMNCHMBeneficiaryaddress> p = rMNCHBenAddressRepo.getBenDataFilteredWithDateRange(
 								request.getVillageID(), request.getFromDate(), request.getToDate(), pr);
@@ -311,7 +311,7 @@ public class RmnchDataSyncServiceImpl implements RmnchDataSyncService {
 
 					request.setUserName(userName);
 
-					PageRequest pr = new PageRequest(request.getPageNo(), pageSize);
+					PageRequest pr = PageRequest.of(request.getPageNo(), pageSize);
 					if (request.getFromDate() != null && request.getToDate() != null) {
 						Page<RMNCHMBeneficiaryaddress> p = rMNCHBenAddressRepo.getBenDataByAshaFilteredWithDateRange(
 								request.getUserName(), request.getFromDate(), request.getToDate(), pr);

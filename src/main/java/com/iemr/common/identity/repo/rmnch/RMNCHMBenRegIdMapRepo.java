@@ -23,8 +23,6 @@ package com.iemr.common.identity.repo.rmnch;
 
 import java.math.BigInteger;
 
-import javax.transaction.Transactional;
-
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -32,6 +30,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.iemr.common.identity.data.rmnch.RMNCHMBeneficiaryregidmapping;
+
+import jakarta.transaction.Transactional;
 
 @Repository
 public interface RMNCHMBenRegIdMapRepo extends CrudRepository<RMNCHMBeneficiaryregidmapping, Long> {

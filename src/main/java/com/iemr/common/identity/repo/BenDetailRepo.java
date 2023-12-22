@@ -25,8 +25,6 @@ import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.List;
 
-import javax.transaction.Transactional;
-
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -34,6 +32,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.iemr.common.identity.domain.MBeneficiarydetail;
+
+import jakarta.transaction.Transactional;
 
 @Repository
 public interface BenDetailRepo extends CrudRepository<MBeneficiarydetail, BigInteger>, BenDetailRepoCustom {
@@ -138,10 +138,10 @@ public interface BenDetailRepo extends CrudRepository<MBeneficiarydetail, BigInt
 
 	@Transactional
 	@Modifying
-	@Query("UPDATE MBeneficiarydetail c SET c.familyId = null,headofFamily_RelationID = null,other = null, "
-			+ " headofFamily_Relation = null,modifiedBy = :modifiedBy "
+	@Query("UPDATE MBeneficiarydetail c SET c.familyId = null,c.headOfFamily_RelationID = null,c.other = null, "
+			+ " c.headOfFamily_Relation = null,c.modifiedBy = :modifiedBy "
 			+ " WHERE c.vanSerialNo =:vanSerialNo AND c.vanID =:vanID ")
-	Integer untagFamily(@Param("modifiedBy") String modifiedBy, @Param("vanSerialNo") BigInteger vanSerialNo,
+	int untagFamily(@Param("modifiedBy") String modifiedBy, @Param("vanSerialNo") BigInteger vanSerialNo,
 			@Param("vanID") Integer vanID);
 
 	@Query("SELECT b FROM MBeneficiarydetail b WHERE b.familyId =:familyid  ")

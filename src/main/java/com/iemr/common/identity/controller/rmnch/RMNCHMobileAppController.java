@@ -36,8 +36,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.iemr.common.identity.service.rmnch.RmnchDataSyncService;
 import com.iemr.common.identity.utils.response.OutputResponse;
 
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.lettuce.core.dynamic.annotation.Param;
+import io.swagger.v3.oas.annotations.Operation;
+
 
 /**
  * @apiNote API will be exposed to public domain for RMNCH mobile data sync to
@@ -53,9 +54,9 @@ public class RMNCHMobileAppController {
 	@Qualifier("rmnchServiceImpl")
 	RmnchDataSyncService rmnchDataSyncService;
 
-	@RequestMapping(value = "/syncDataToAmrit", method = RequestMethod.POST)
-	@ApiOperation(value = "Sync data to AMRIT for already regestered beneficiary with AMRIT beneficiary id ", consumes = "application/json", produces = "application/json")
-	public String syncDataToAmrit(@ApiParam(value = "{\r\n" + "  \"beneficiaryDetails\": [\r\n" + "    {\r\n"
+	@RequestMapping(value = "/syncDataToAmrit", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+	@Operation(summary = "Sync data to AMRIT for already regestered beneficiary with AMRIT beneficiary id ")
+	public String syncDataToAmrit(@Param(value = "{\r\n" + "  \"beneficiaryDetails\": [\r\n" + "    {\r\n"
 			+ "      \"BenRegId\": \"Long\",\r\n" + "      \"Countyid\": \"Integer\",\r\n"
 			+ "      \"Processed\": \"String\",\r\n" + "      \"ProviderServiceMapID\": \"Integer\",\r\n"
 			+ "      \"VanID\": \"Integer\",\r\n" + "      \"aadhaNo\": \"String\",\r\n"
@@ -133,10 +134,10 @@ public class RMNCHMobileAppController {
 	}
 
 //	@Deprecated
-	@RequestMapping(value = "/getBeneficiaryDataForVillage", method = RequestMethod.POST)
-	@ApiOperation(value = "Get beneficiary data for given village ", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = "/getBeneficiaryDataForVillage", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+	@Operation(summary = "Get beneficiary data for given village ")
 	public String getBeneficiaryData(
-			@ApiParam(value = "{\r\n" + "\"villageID\":\"Integer\",\r\n" + "\"fromDate\":\"DateTime\",\r\n"
+			@Param(value = "{\r\n" + "\"villageID\":\"Integer\",\r\n" + "\"fromDate\":\"DateTime\",\r\n"
 					+ "\"toDate\":\"DateTime\",\r\n" + "\"pageNo\":\"Integer\"\r\n"
 					+ "}") @RequestBody String requestOBJ,
 			@RequestHeader(value = "Authorization") String authorization) {
@@ -160,10 +161,10 @@ public class RMNCHMobileAppController {
 
 	}
 
-	@RequestMapping(value = "/getBeneficiaryDataForAsha", method = RequestMethod.POST)
-	@ApiOperation(value = "get beneficiary data for given village ", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = "/getBeneficiaryDataForAsha", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+	@Operation(summary = "get beneficiary data for given village ")
 	public String getBeneficiaryDataByAsha(
-			@ApiParam(value = "{\r\n" + "\"AshaId\":\"Integer\",\r\n" + "\"fromDate\":\"DateTime\",\r\n"
+			@Param(value = "{\r\n" + "\"AshaId\":\"Integer\",\r\n" + "\"fromDate\":\"DateTime\",\r\n"
 					+ "\"toDate\":\"DateTime\",\r\n" + "\"pageNo\":\"Integer\"\r\n"
 					+ "}") @RequestBody String requestOBJ,
 			@RequestHeader(value = "Authorization") String authorization) {

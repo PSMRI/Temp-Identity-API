@@ -34,8 +34,6 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 
-import javax.persistence.NoResultException;
-import javax.persistence.QueryTimeoutException;
 import javax.sql.DataSource;
 
 import org.slf4j.Logger;
@@ -94,6 +92,9 @@ import com.iemr.common.identity.repo.rmnch.RMNCHBeneficiaryDetailsRmnchRepo;
 import com.iemr.common.identity.utils.exception.IEMRException;
 import com.iemr.common.identity.utils.mapper.OutputMapper;
 import com.iemr.common.identity.utils.response.OutputResponse;
+
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.QueryTimeoutException;
 
 @Service
 public class IdentityService {
@@ -1135,7 +1136,7 @@ public class IdentityService {
 						bfMapping.setAssociatedBenRegId(benMapping2.getBenRegId());
 					}
 				}
-				fList = (List<MBeneficiaryfamilymapping>) familyMapRepo.save(fIdenList);
+				fList = (List<MBeneficiaryfamilymapping>) familyMapRepo.saveAll(fIdenList);
 				// Update van serial no for data sync
 				if (fList != null && fList.size() > 0) {
 					for (MBeneficiaryfamilymapping obj : fList) {
