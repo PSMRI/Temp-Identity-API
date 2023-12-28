@@ -30,11 +30,12 @@ import java.util.List;
 
 
 import org.junit.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.google.common.collect.Lists;
 import com.iemr.common.identity.dto.BeneficiariesDTO;
@@ -50,7 +51,7 @@ import com.iemr.common.identity.utils.exception.IEMRException;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.QueryTimeoutException;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class IdentityControllerTest {
 
 	@InjectMocks
@@ -279,7 +280,7 @@ public class IdentityControllerTest {
 		BeneficiariesDTO beneficiariesDTO = new BeneficiariesDTO();
 		beneficiariesDTO.setBenId(new BigInteger("601"));
 		list.add(beneficiariesDTO);
-		doReturn(list).when(identityService).getBeneficiariesDeatilsByBenRegIdList(Mockito.anyListOf(BigInteger.class));
+		//doReturn(list).when(identityService).getBeneficiariesDeatilsByBenRegIdList(Mockito.anyListOf(BigInteger.class));
 		String response = identityController.getBeneficiariesByBenRegIds("[601]");
 		assertTrue(response.contains("\\\"benId\\\":601"));
 	}
@@ -296,8 +297,8 @@ public class IdentityControllerTest {
 		BeneficiariesPartialDTO partialDTO = new BeneficiariesPartialDTO();
 		partialDTO.setBeneficiaryDetailsId(new BigInteger("101"));
 		partialList.add(partialDTO);
-		doReturn(partialList).when(identityService)
-				.getBeneficiariesPartialDeatilsByBenRegIdList(Mockito.anyListOf(BigInteger.class));
+		//doReturn(partialList).when(identityService)
+		//		.getBeneficiariesPartialDeatilsByBenRegIdList(Mockito.anyListOf(BigInteger.class));
 		String response = identityController.getPartialBeneficiariesByBenRegIds("[505]");
 		assertTrue(response.contains("\\\"beneficiaryDetailsId\\\":101"));
 	}

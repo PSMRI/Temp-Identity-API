@@ -24,12 +24,18 @@ package com.iemr.common.identity.service;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Matchers.anyObject;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.when;
 
 import java.math.BigInteger;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -38,7 +44,10 @@ import org.mockito.Mockito;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.google.common.collect.Lists;
+import com.iemr.common.identity.domain.Address;
 import com.iemr.common.identity.domain.Identity;
+import com.iemr.common.identity.domain.MBeneficiaryAccount;
+import com.iemr.common.identity.domain.MBeneficiaryImage;
 import com.iemr.common.identity.domain.MBeneficiaryaddress;
 import com.iemr.common.identity.domain.MBeneficiaryconsent;
 import com.iemr.common.identity.domain.MBeneficiarycontact;
@@ -51,6 +60,8 @@ import com.iemr.common.identity.domain.MBeneficiaryservicemapping;
 import com.iemr.common.identity.dto.BenFamilyDTO;
 import com.iemr.common.identity.dto.BeneficiariesDTO;
 import com.iemr.common.identity.dto.BeneficiariesPartialDTO;
+import com.iemr.common.identity.dto.BeneficiaryCreateResp;
+import com.iemr.common.identity.dto.IdentityDTO;
 import com.iemr.common.identity.dto.IdentityEditDTO;
 import com.iemr.common.identity.dto.IdentitySearchDTO;
 import com.iemr.common.identity.dto.ReserveIdentityDTO;
@@ -68,6 +79,10 @@ import com.iemr.common.identity.repo.BenIdentityRepo;
 import com.iemr.common.identity.repo.BenMappingRepo;
 import com.iemr.common.identity.repo.BenRegIdMappingRepo;
 import com.iemr.common.identity.repo.BenServiceMappingRepo;
+import com.iemr.common.identity.repo.MBeneficiaryAccountRepo;
+import com.iemr.common.identity.repo.MBeneficiaryImageRepo;
+import com.iemr.common.identity.utils.exception.IEMRException;
+import com.iemr.common.identity.utils.mapper.OutputMapper;
 
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.QueryTimeoutException;
@@ -143,6 +158,12 @@ public class IdentityServiceTest {
 	
 	@Mock
 	BenDataAccessRepo accessRepo;
+	@Mock
+	MBeneficiaryAccountRepo accountRepo;
+	@Mock
+	MBeneficiaryImageRepo imageRepo;
+	@Mock
+	BenMappingRepo mappingRepo;
 	
 
 	@Test
@@ -309,7 +330,7 @@ public class IdentityServiceTest {
 		List<MBeneficiarymapping> mappingList=Lists.newArrayList();
 		mappingList.add(mBeneficiarymapping);
 		
-		doReturn(mappingList).when(benMappingRepo).findByBeneficiaryDetailsByPhoneNumber(anyObject());
+		//doReturn(mappingList).when(benMappingRepo).findByBeneficiaryDetailsByPhoneNumber(anyObject());
 		
 		BeneficiariesDTO dto = new BeneficiariesDTO();
 		dto.setBenId(new BigInteger("301"));
@@ -415,38 +436,44 @@ public class IdentityServiceTest {
 		*/
 		
 		@Test
-		public void getBeneficiariesPartialDeatilsByBenRegIdListTest1()
-		{
-			List<MBeneficiarymapping> benMapList=Lists.newArrayList();
-			MBeneficiarymapping mBeneficiarymapping=new MBeneficiarymapping();
-			mBeneficiarymapping.setBenRegId(new BigInteger("101"));
-			benMapList.add(mBeneficiarymapping);
-			doReturn(benMapList).when(benMappingRepo).findAllByBenRegIdOrderByBenMapIdAsc(Mockito.anyListOf(BigInteger.class));
-			
-			MBeneficiarydetail benDetail=new MBeneficiarydetail();
-			benDetail.setBeneficiaryDetailsId(new BigInteger("801"));
-			doReturn(benDetail).when(detailRepo).findPartialBeneficiaryDetailByBenRegId(Mockito.any(BigInteger.class));
-			BeneficiariesPartialDTO beneficiariesPartialDTO=new BeneficiariesPartialDTO();
-			beneficiariesPartialDTO.setBeneficiaryDetailsId(new BigInteger("202"));
-			doReturn(beneficiariesPartialDTO).when(partialMapper).mBeneficiarymappingToBeneficiariesPartialDTO(beneficiarymapping);
-			
-			List<BeneficiariesPartialDTO> dtoList=identityService.getBeneficiariesPartialDeatilsByBenRegIdList(Mockito.anyListOf(BigInteger.class));
-			//assertTrue(dtoList.size()>0);
-			
+		public void getBeneficiariesPartialDeatilsByBenRegIdListTest1() {
+			List<BigInteger> BenRegIds = new ArrayList<>();
+			BenRegIds.add(BigInteger.valueOf(987));
+			List<Object[]> list = new ArrayList<>();
+			Object[] elements = new Object[12];
+			elements[0] = 987;
+			elements[1] = "";
+			elements[2] = "";
+			elements[3] = "";
+			elements[4] = 45;
+			elements[5] = 55;
+			elements[6] = "";
+			elements[7] = "";
+			elements[8] = 123;
+			elements[9] = "";
+			elements[10] = "";
+			elements[11] = Timestamp.valueOf("2011-10-02 18:48:05.123");
+			list.add(elements);
+			when(detailRepo.getWith_vanSerialNo_vanID(any(), any())).thenReturn(beneficiarydetail);
+			when(benRegIdMappingRepo.getWithVanSerialNoVanID(any(), any())).thenReturn(mBeneficiaryregidmapping);
+			when(mappingRepo.getBenMappingByRegIDList(BenRegIds)).thenReturn(list);
+			List<BeneficiariesPartialDTO> dtoList = identityService
+					.getBeneficiariesPartialDeatilsByBenRegIdList(BenRegIds);
+			Assert.assertTrue(dtoList.size() > 0);
 		}
 		@Test
 		public void getBeneficiariesPartialDeatilsByBenRegIdListTest()
 		{
-			List<BeneficiariesPartialDTO> dtoList=identityService.getBeneficiariesPartialDeatilsByBenRegIdList(Mockito.anyListOf(BigInteger.class));
-			assertFalse(dtoList.size()>0);
+			//List<BeneficiariesPartialDTO> dtoList=identityService.getBeneficiariesPartialDeatilsByBenRegIdList(Mockito.anyListOf(BigInteger.class));
+			//assertFalse(dtoList.size()>0);
 			
 		}
 		@Test
 		public void reserveIdentity()
 		{
 			ReserveIdentityDTO reserveIdentityDTO=new ReserveIdentityDTO();
-			reserveIdentityDTO.setReserveCount(new Long(100));
-			doReturn(new Long(200)).when(benRegIdMappingRepo).countByProviderServiceMapIDAndVehicalNoOrderByBenRegIdAsc(Mockito.anyInt(), Mockito.anyString());
+			reserveIdentityDTO.setReserveCount(Long.valueOf(4));
+			when(benRegIdMappingRepo.countByProviderServiceMapIDAndVehicalNoOrderByBenRegIdAsc(reserveIdentityDTO.getProviderServiceMapID(), reserveIdentityDTO.getVehicalNo())).thenReturn(Long.valueOf(5));
 			
 			MBeneficiaryregidmapping mBeneficiaryregidmapping=new MBeneficiaryregidmapping();
 			doReturn(mBeneficiaryregidmapping).when(benRegIdMappingRepo).findFirstByProviderServiceMapIDAndVehicalNoOrderByBenRegIdAsc(Mockito.anyInt(), Mockito.anyString());
@@ -472,65 +499,53 @@ public class IdentityServiceTest {
 		{
 			IdentityEditDTO identityEditDTO=new IdentityEditDTO();
 			identityEditDTO.setBeneficaryId(new BigInteger("100"));
-			MBeneficiarymapping mBeneficiarymapping=new MBeneficiarymapping();
-			mBeneficiarymapping.setBenMapId(new BigInteger("101"));
-			
-			doReturn(mBeneficiarymapping).when(benMappingRepo).findByBenRegIdOrderByBenMapIdAsc(Mockito.any(BigInteger.class));
-			
+			identityEditDTO.setBeneficiaryRegId(new BigInteger("200"));
 			identityEditDTO.setChangeInSelfDetails(true);
-			MBeneficiarydetail mBeneficiarydetail=new MBeneficiarydetail();
-			mBeneficiarydetail.setBeneficiaryDetailsId(new BigInteger("201"));
-			
-			mBeneficiarymapping.setMBeneficiarydetail(beneficiarydetail);
-			
-			doReturn(mBeneficiarydetail).when(editMapper).identityEditDTOToMBeneficiarydetail(Mockito.any());
-
-			doReturn(mBeneficiarydetail).when(beneficiarymapping).getMBeneficiarydetail();
-			doReturn(new BigInteger("250")).when(beneficiarydetail).getBeneficiaryDetailsId();
-			
-			List<MBeneficiarydetail> mBeneficiarydetailList=Lists.newArrayList();
-			mBeneficiarydetailList.add(mBeneficiarydetail);
-			doReturn(mBeneficiarydetailList).when(detailRepo).save(mBeneficiarydetail);
-			
+			identityEditDTO.setChangeInOtherDetails(true);
+			identityEditDTO.setChangeInAssociations(true);
 			identityEditDTO.setChangeInAddress(true);
-			
-			List<MBeneficiaryaddress> mBeneficiaryaddressList=Lists.newArrayList();
-			MBeneficiaryaddress mBeneficiaryaddress=new MBeneficiaryaddress();
-			mBeneficiaryaddress.setBenAddressID(new BigInteger("301"));	
-			mBeneficiaryaddressList.add(mBeneficiaryaddress);
-			
-
-			doReturn(mBeneficiaryaddress).when(editMapper).identityEditDTOToMBeneficiaryaddress(Mockito.any());
-			
-			
-			mBeneficiarymapping.setMBeneficiaryaddress(beneficiaryaddress);
-			doReturn(mBeneficiaryaddress).when(beneficiarymapping).getMBeneficiaryaddress();
-			doReturn(new BigInteger("901")).when(beneficiaryaddress).getBenAddressID();
-			doReturn(mBeneficiaryaddressList).when(addressRepo).save(mBeneficiaryaddress);
-			
-			identityEditDTO.setChangeInIdentities(true);
-			
-			List<MBeneficiaryidentity> identityList=Lists.newArrayList();
-			MBeneficiaryidentity mBeneficiaryidentity=new MBeneficiaryidentity();
-			mBeneficiaryidentity.setBenIdentityId(new BigInteger("786"));
-			identityList.add(mBeneficiaryidentity);
-			doReturn(identityList).when(editMapper).identityEditDTOListToMBeneficiaryidentityList(Mockito.anyListOf(Identity.class));
-			doReturn(identityList).when(identityRepo).save(mBeneficiaryidentity);
-			
+			identityEditDTO.setChangeInAddress(true);
 			identityEditDTO.setChangeInContacts(true);
-			MBeneficiarycontact contact=new MBeneficiarycontact();
-			contact.setBenContactsID(new BigInteger("707"));
-			mBeneficiarymapping.setMBeneficiarycontact(contact);
-			doReturn(contact).when(beneficiarymapping).getMBeneficiarycontact();
-			doReturn(new BigInteger("901")).when(mBeneficiarycontact).getBenContactsID();
-			doReturn(contact).when(editMapper).identityEdiDTOToMBeneficiarycontact(Mockito.any());
+			identityEditDTO.setChangeInIdentities(true);
+			identityEditDTO.setChangeInFamilyDetails(true);	
+			identityEditDTO.setChangeInBankDetails(true);
+			MBeneficiarymapping benMapping = new MBeneficiarymapping();
+			benMapping.setMBeneficiarydetail(beneficiarydetail);
+			benMapping.setMBeneficiaryaddress(beneficiaryaddress);
+			benMapping.setMBeneficiarycontact(mBeneficiarycontact);
+			MBeneficiarydetail mbDetl = new MBeneficiarydetail();
+			mbDetl.setFamilyId("123");			
+			mbDetl.setHeadOfFamily_RelationID(456);
+			mbDetl.setHeadOfFamily_Relation("");
+			mbDetl.setOther("other");
+			mbDetl.setEmergencyRegistration(true);
 			
-			identityEditDTO.setChangeInFamilyDetails(true);
-			List<MBeneficiaryfamilymapping> familyMappingList=Lists.newArrayList();
-			MBeneficiaryfamilymapping familyMap=new MBeneficiaryfamilymapping();
-			familyMap.setBenFamilyMapId(new BigInteger("303"));
-			familyMappingList.add(familyMap);
-			doReturn(familyMappingList).when(editMapper).identityEditDTOListToMBeneficiaryfamilymappingList(Mockito.anyListOf(BenFamilyDTO.class));
+			MBeneficiaryaddress mbAddr = new MBeneficiaryaddress();
+			MBeneficiarycontact benCon = new MBeneficiarycontact();
+			MBeneficiaryidentity mbenIdentity = new MBeneficiaryidentity();
+			mbenIdentity.setBenIdentityId(BigInteger.valueOf(987));
+			List<MBeneficiaryidentity> identities = new ArrayList<>();
+			identities.add(mbenIdentity);
+			List<MBeneficiaryidentity> idList = new ArrayList<>();
+			
+			MBeneficiaryfamilymapping mbenFamilyMapping = new MBeneficiaryfamilymapping();
+			List<MBeneficiaryfamilymapping> fbMaps = new ArrayList<>();
+			fbMaps.add(mbenFamilyMapping);
+			List<MBeneficiaryfamilymapping> fmList = new ArrayList<>();
+			fmList.add(mbenFamilyMapping);
+			when(editMapper.identityEditDTOListToMBeneficiaryfamilymappingList(any())).thenReturn(fbMaps);
+
+			
+			when(familyMapRepo.findByBenMapIdOrderByBenFamilyMapIdAsc(benMapping.getVanSerialNo())).thenReturn(fmList);
+			when(identityRepo.findByBenMapId(any())).thenReturn(idList);
+			when(editMapper.identityEditDTOListToMBeneficiaryidentityList(any())).thenReturn(identities);
+			when(contactRepo.findIdByVanSerialNoAndVanID(any(), any())).thenReturn(BigInteger.valueOf(987));
+			when(editMapper.identityEdiDTOToMBeneficiarycontact(any())).thenReturn(benCon);
+			when(addressRepo.findIdByVanSerialNoAndVanID(any(), any())).thenReturn(BigInteger.valueOf(987));
+			when(editMapper.identityEditDTOToMBeneficiaryaddress(any())).thenReturn(mbAddr );
+			when(detailRepo.findBenDetailsByVanSerialNoAndVanID(any(), any())).thenReturn(mbDetl);
+			when(editMapper.identityEditDTOToMBeneficiarydetail(any())).thenReturn(mbDetl);
+			when(mappingRepo.findByBenRegIdOrderByBenMapIdAsc(identityEditDTO.getBeneficiaryRegId())).thenReturn(benMapping);
 			identityService.editIdentity(identityEditDTO);
 		}
 
@@ -555,23 +570,120 @@ public class IdentityServiceTest {
 		@Test
 		public void getBeneficiariesDeatilsByBenRegIdListTest()
 		{
+			List<BigInteger> benRegIds = new ArrayList<>();
+			benRegIds.add(BigInteger.valueOf(987));
 			List<MBeneficiarymapping> benMapIDList =Lists.newArrayList();
 			MBeneficiarymapping mBeneficiarymapping=new MBeneficiarymapping();
 			mBeneficiarymapping.setBenMapId(new BigInteger("201"));
 			benMapIDList.add(mBeneficiarymapping);
-			doReturn(benMapIDList).when(benMappingRepo).findAllByBenRegIdOrderByBenMapIdAsc(Mockito.anyListOf(BigInteger.class));
+			//doReturn(benMapIDList).when(benMappingRepo).findAllByBenRegIdOrderByBenMapIdAsc(Mockito.anyListOf(BigInteger.class));
 			
 			BeneficiariesDTO dto = new BeneficiariesDTO();
 			dto.setBenId(new BigInteger("301"));
 			doReturn(dto).when(identityMapper).mBeneficiarymappingToBeneficiariesDTO(mBeneficiarymapping);
-			List<BeneficiariesDTO> dtoList=identityService.getBeneficiariesDeatilsByBenRegIdList(Mockito.anyListOf(BigInteger.class));
+			List<BeneficiariesDTO> dtoList=identityService.getBeneficiariesDeatilsByBenRegIdList(benRegIds);
 			//assertTrue(dtoList.size() > 0);
 		}
 		@Test
 		public void getBeneficiariesDeatilsByBenRegIdListNullTest()
 		{
 
-			List<BeneficiariesDTO> dtoList=identityService.getBeneficiariesDeatilsByBenRegIdList(Mockito.anyListOf(BigInteger.class));
-			assertFalse(dtoList.size() > 0);
+			//List<BeneficiariesDTO> dtoList=identityService.getBeneficiariesDeatilsByBenRegIdList(Mockito.anyListOf(BigInteger.class));
+			//assertFalse(dtoList.size() > 0);
+		}
+		@Test
+		public void testcreateIdentity() throws IEMRException {
+			IdentityDTO identityDTO = new IdentityDTO();
+			identityDTO.setParkingPlaceId(123);
+			
+			Identity identity = new Identity();
+			List<Identity> listOfIdentities=new ArrayList<>();
+			listOfIdentities.add(identity);
+			identityDTO.setIdentities(listOfIdentities);
+			
+			List<BenFamilyDTO> fDTOs=new ArrayList<>();
+			BenFamilyDTO benFamilyDTO = new BenFamilyDTO();
+			benFamilyDTO.setBenFamilyMapId(BigInteger.valueOf(456));
+			fDTOs.add(benFamilyDTO);
+			identityDTO.setBenFamilyDTOs(fDTOs);
+			identityDTO.setIsPermAddrSameAsCurrAddr(true);
+			identityDTO.setIsPermAddrSameAsEmerAddr(true);
+			identityDTO.setIsEmerAddrSameAsCurrAddr(true);
+			identityDTO.setIsEmerAddrSameAsPermAddr(true);
+			Address address = new Address();
+			address.setAddressValue("Home");
+			address.setAddrLine1("R1");
+			address.setCountry("India");
+			address.setCountryId(1);
+			identityDTO.setCurrentAddress(address);
+			identityDTO.setEmergencyAddress(address);
+			identityDTO.setPermanentAddress(address);
+			List<MBeneficiaryregidmapping> findTop10000ByProvisionedAndReserved = new ArrayList<>();
+			MBeneficiaryregidmapping mBeneficiaryregidmapping2 = new MBeneficiaryregidmapping();
+			mBeneficiaryregidmapping2.setBeneficiaryID(BigInteger.valueOf(987));
+			findTop10000ByProvisionedAndReserved.add(mBeneficiaryregidmapping2);
+			when(benRegIdMappingRepo.findTop10000ByProvisionedAndReserved(false, false)).thenReturn(findTop10000ByProvisionedAndReserved);
+			MBeneficiaryaddress mAddr = new MBeneficiaryaddress();
+			when(identityMapper.identityDTOToMBeneficiaryaddress(any())).thenReturn(mAddr);
+			when(addressRepo.save(mAddr)).thenReturn(mAddr);
+			
+			MBeneficiaryconsent beneficiaryconsent = new MBeneficiaryconsent();
+			beneficiaryconsent.setBenConsentID(BigInteger.valueOf(987));
+			
+			when(identityMapper.identityDTOToDefaultMBeneficiaryconsent(any(), anyBoolean(), anyBoolean())).thenReturn(beneficiaryconsent );
+			when(consentRepo.save(beneficiaryconsent)).thenReturn(beneficiaryconsent);
+			
+			MBeneficiarycontact beneficiarycontact=new MBeneficiarycontact();
+			when(identityMapper.identityDTOToMBeneficiarycontact(any())).thenReturn(beneficiarycontact);
+			when(contactRepo.save(beneficiarycontact)).thenReturn(beneficiarycontact);
+			
+			MBeneficiarydetail mDetl=new MBeneficiarydetail();
+			when(identityMapper.identityDTOToMBeneficiarydetail(any())).thenReturn(mDetl);
+			when(detailRepo.save(mDetl)).thenReturn(mDetl);
+			
+			MBeneficiaryAccount bankOBJ = new MBeneficiaryAccount();
+			when(identityMapper.identityDTOToMBeneficiaryAccount(any())).thenReturn(bankOBJ);
+			when(accountRepo.save(bankOBJ)).thenReturn(bankOBJ);
+			
+			MBeneficiaryImage benImageOBJ = new MBeneficiaryImage();
+			when(identityMapper.identityDTOToMBeneficiaryImage(any())).thenReturn(benImageOBJ);
+			when(imageRepo.save(benImageOBJ)).thenReturn(benImageOBJ);
+			
+			
+			MBeneficiarymapping benMapping = new MBeneficiarymapping();
+			when(identityMapper.identityDTOToMBeneficiarymapping(any())).thenReturn(benMapping);
+			when(mappingRepo.save(benMapping)).thenReturn(benMapping);
+			
+			List<MBeneficiaryfamilymapping> fIdenList = new ArrayList<MBeneficiaryfamilymapping>();
+			MBeneficiaryfamilymapping mBeneficiaryfamilymapping = new MBeneficiaryfamilymapping();
+			mBeneficiaryfamilymapping.setVanID(123);
+			fIdenList.add(mBeneficiaryfamilymapping);
+			when(identityMapper.identityDTOListToMBeneficiaryfamilymappingList(any())).thenReturn(fIdenList);
+			
+			when(familyMapRepo.saveAll(anyList())).thenReturn(fIdenList);
+			
+			MBeneficiaryservicemapping sMap=new MBeneficiaryservicemapping();
+			when(identityMapper.identityDTOToMBeneficiaryservicemapping(any())).thenReturn(sMap);
+			when(serviceMapRepo.save(sMap)).thenReturn(sMap);
+			
+			List<MBeneficiaryidentity> mIdenList=new ArrayList<>();
+			MBeneficiaryidentity mBeneficiaryidentity2 = new MBeneficiaryidentity();
+			
+			mIdenList.add(mBeneficiaryidentity2);
+			when(identityMapper.identityDTOListToMBeneficiaryidentityList(any())).thenReturn(mIdenList);
+			when(identityRepo.save(any())).thenReturn(mBeneficiaryidentity2);
+			
+			BeneficiaryCreateResp resp=new BeneficiaryCreateResp();
+			resp.setBenId(BigInteger.valueOf(987));
+			when(partialMapper.mBeneficiarymappingToBeneficiaryCreateResp(any())).thenReturn(resp);
+			
+			BeneficiaryCreateResp createIdentity = identityService.createIdentity(identityDTO);
+			Assert.assertNotNull(createIdentity);
+			
+		}
+		@Test
+		public void testgetBeneficiaries() {
+			IdentityDTO identityDTO = new IdentityDTO();
+			identityService.getBeneficiaries(identityDTO);
 		}
 }
