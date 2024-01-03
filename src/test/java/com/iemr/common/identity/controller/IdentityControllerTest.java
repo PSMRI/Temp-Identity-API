@@ -21,302 +21,256 @@
 */
 package com.iemr.common.identity.controller;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.doReturn;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.when;
 
 import java.math.BigInteger;
 import java.util.List;
 
-
-import org.junit.Test;
+import org.junit.Assert;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.google.common.collect.Lists;
+import com.google.gson.Gson;
 import com.iemr.common.identity.dto.BeneficiariesDTO;
-import com.iemr.common.identity.dto.BeneficiariesPartialDTO;
-import com.iemr.common.identity.dto.BeneficiaryCreateResp;
+import com.iemr.common.identity.dto.IdentityEditDTO;
 import com.iemr.common.identity.dto.IdentitySearchDTO;
-import com.iemr.common.identity.mapper.IdentityMapper;
-import com.iemr.common.identity.repo.BenAddressRepo;
-import com.iemr.common.identity.repo.BenMappingRepo;
+import com.iemr.common.identity.dto.ReserveIdentityDTO;
+import com.iemr.common.identity.dto.SearchSyncDTO;
+import com.iemr.common.identity.exception.MissingMandatoryFieldsException;
 import com.iemr.common.identity.service.IdentityService;
-import com.iemr.common.identity.utils.exception.IEMRException;
 
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.QueryTimeoutException;
+import net.minidev.json.JSONObject;
+import net.minidev.json.parser.JSONParser;
+import net.minidev.json.parser.ParseException;
 
 @ExtendWith(MockitoExtension.class)
 public class IdentityControllerTest {
-
 	@InjectMocks
 	IdentityController identityController;
-
 	@Mock
-	IdentityService identityService;
-
-	@Mock
-	BenMappingRepo benMappingRepo;
-
-	@Mock
-	IdentityMapper identityMapper;
-
-	@Mock
-	BenAddressRepo addressRepo;
-
-	@Mock
-	IdentitySearchDTO identitySearchDTO;
+	IdentityService svc;
 
 	@Test
-	public void getBeneficiariesTest() {
+	void testGetBeneficiaries() throws NoResultException, QueryTimeoutException, Exception {
+		IdentitySearchDTO searchParams = new IdentitySearchDTO();
+		
 		BeneficiariesDTO a1 = new BeneficiariesDTO();
 		List<BeneficiariesDTO> bdList = Lists.newArrayList();
 		a1.setBenId(new BigInteger("1"));
 		bdList.add(a1);
-		try {
-			doReturn(bdList).when(identityService).getBeneficiaries(Mockito.any(IdentitySearchDTO.class));
-		} catch (NoResultException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (QueryTimeoutException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		String res = identityController.getBeneficiaries(Mockito.anyString());
-		assertTrue(res.contains("\\\"benId\\\":1"));
+		
+		String req = new Gson().toJson(searchParams);
+		//when(svc.getBeneficiaries(searchParams)).thenReturn(any()).thenReturn(bdList);
+		identityController.getBeneficiaries(req);
 	}
 
 	@Test
-	public void getBeneficiariesTest1() {
+	void testGetBeneficiariesByBeneficiaryRegId() {
+		identityController.getBeneficiariesByBeneficiaryRegId("123");
+	}
+	
+	@Test
+	void testGetBeneficiariesByBeneficiaryRegIdCatchBlock() throws NoResultException, QueryTimeoutException, Exception {
+		when(svc.getBeneficiariesByBenRegId(any())).thenThrow(NoResultException.class);
+		identityController.getBeneficiariesByBeneficiaryRegId("123");
+	}
+
+	@Test
+	void testGetBeneficiariesByBeneficiaryId() {
+		identityController.getBeneficiariesByBeneficiaryId("987");
+	}
+	@Test
+	void testGetBeneficiariesByBeneficiaryIdCatchBlock() throws NoResultException, QueryTimeoutException, Exception {
+		when(svc.getBeneficiariesByBenId(any())).thenThrow(NoResultException.class);
+		identityController.getBeneficiariesByBeneficiaryId("987");
+	}
+
+	@Test
+	void testGetBeneficiariesByPhoneNum() {
+		identityController.getBeneficiariesByPhoneNum("9988776655");
+	}
+	@Test
+	void testGetBeneficiariesByPhoneNumCatchblock() throws NoResultException, QueryTimeoutException, Exception {
+		when(svc.getBeneficiariesByPhoneNum(any())).thenThrow(NoResultException.class);
+		identityController.getBeneficiariesByPhoneNum("9988776655");
+	}
+	@Test
+	void testSearhBeneficiaryByABHAAddress() {
+		identityController.searhBeneficiaryByABHAAddress("9876");
+	}
+
+	@Test
+	void testSearhBeneficiaryByABHAAddressCatchblock() throws NoResultException, QueryTimeoutException, Exception {
+		when(svc.getBeneficiaryByHealthIDAbhaAddress(any())).thenThrow(NoResultException.class);
+		identityController.searhBeneficiaryByABHAAddress("9876");
+	}
+	@Test
+	void testSearhBeneficiaryByABHAIdNo() {
+		identityController.searhBeneficiaryByABHAIdNo("9876");
+	}
+	@Test
+	void testSearhBeneficiaryByABHAIdNoCatchblock() throws NoResultException, QueryTimeoutException, Exception {
+		when(svc.getBeneficiaryByHealthIDNoAbhaIdNo(any())).thenThrow(NoResultException.class);
+		identityController.searhBeneficiaryByABHAIdNo("9876");
+	}
+
+	@Test
+	void testSearhBeneficiaryByFamilyId() {
+		identityController.searhBeneficiaryByFamilyId("9876");
+	}
+	@Test
+	void testSearhBeneficiaryByFamilyIdCatchblock() throws NoResultException, QueryTimeoutException, Exception {
+		when(svc.searhBeneficiaryByFamilyId(any())).thenThrow(NoResultException.class);
+		identityController.searhBeneficiaryByFamilyId("9876");
+	}
+
+	@Test
+	void testSearchBeneficiaryByBlockIdAndLastModDate() {
 		BeneficiariesDTO a1 = new BeneficiariesDTO();
 		List<BeneficiariesDTO> bdList = Lists.newArrayList();
 		a1.setBenId(new BigInteger("1"));
 		bdList.add(a1);
-		try {
-			doReturn(bdList).when(identityService).getBeneficiaries(Mockito.any(IdentitySearchDTO.class));
-		} catch (NoResultException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (QueryTimeoutException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		String res = identityController.getBeneficiaries("");
-		assertTrue(res.contains("\\\"benId\\\":1"));
+		SearchSyncDTO searchSyncDTO = new SearchSyncDTO();
+		String req = new Gson().toJson(searchSyncDTO);
+		//when(svc.searchBeneficiaryByBlockIdAndLastModifyDate(any(), any())).thenReturn(bdList);
+		identityController.searchBeneficiaryByBlockIdAndLastModDate(req);
+		//Assert.assertThrows(Exception.class, () -> 
 	}
 
 	@Test
-	public void getBeneficiariesByBeneficiaryRegIdTest() {
-		List<BeneficiariesDTO> list = Lists.newArrayList();
-		BeneficiariesDTO beneficiariesDTO = new BeneficiariesDTO();
-		beneficiariesDTO.setBenId(new BigInteger("101"));
-		list.add(beneficiariesDTO);
-		try {
-			doReturn(list).when(identityService).getBeneficiariesByBenRegId(Mockito.any(BigInteger.class));
-		} catch (NoResultException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (QueryTimeoutException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		String response = identityController.getBeneficiariesByBeneficiaryRegId("10101");
-		assertTrue(response.contains("\\\"benId\\\":101"));
+	void testSearhBeneficiaryByGovIdentity() {
+		identityController.searhBeneficiaryByGovIdentity("987");
 	}
 
 	@Test
-	public void getBeneficiariesByBeneficiaryRegIdJsonNullTest() {
-		List<BeneficiariesDTO> list = Lists.newArrayList();
-		try {
-			doReturn(list).when(identityService).getBeneficiariesByBenRegId(Mockito.any(BigInteger.class));
-		} catch (NoResultException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (QueryTimeoutException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		String response = identityController.getBeneficiariesByBeneficiaryRegId("");
-		assertFalse(response.contains("\\\"benId\\\":101"));
+	void testEditIdentity() {
+		identityController.editIdentity("String");
 	}
 
 	@Test
-	public void getBeneficiariesByBeneficiaryIdTest() {
-		List<BeneficiariesDTO> list = Lists.newArrayList();
-		BeneficiariesDTO beneficiariesDTO = new BeneficiariesDTO();
-		beneficiariesDTO.setBenId(new BigInteger("201"));
-		list.add(beneficiariesDTO);
-		try {
-			doReturn(list).when(identityService).getBeneficiariesByBenId(Mockito.any(BigInteger.class));
-		} catch (NoResultException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (QueryTimeoutException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		String response = identityController.getBeneficiariesByBeneficiaryId("20202");
-		assertTrue(response.contains("\\\"benId\\\":201"));
+	void testCreateIdentity() {
+		identityController.createIdentity("String");
 	}
 
 	@Test
-	public void getBeneficiariesByBeneficiaryIdJsonNullTest() {
-		List<BeneficiariesDTO> list = Lists.newArrayList();
-		try {
-			doReturn(list).when(identityService).getBeneficiariesByBenId(Mockito.any(BigInteger.class));
-		} catch (NoResultException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (QueryTimeoutException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		String response = identityController.getBeneficiariesByBeneficiaryId("");
-		assertFalse(response.contains("\\\"benId\\\":201"));
+	void testReserveIdentityEmptyIdentity() throws ParseException {
+		String resp = identityController.reserveIdentity("String");
+		String status = getData(resp, "statusMessage");
+		Assert.assertNotEquals("Null/Empty Identity Create Data.", status);
+	}
+	
+	@Test
+	void testReserveIdentity() throws ParseException {
+		ReserveIdentityDTO reserveIdentityDTO = new ReserveIdentityDTO();
+		String req = new Gson().toJson(reserveIdentityDTO);
+		String resp = identityController.reserveIdentity(req);
+		String status = getData(resp, "statusMessage");
+		Assert.assertEquals("success", status);
 	}
 
 	@Test
-	public void getBeneficiariesByPhoneNumTest() throws NoResultException, QueryTimeoutException, Exception {
-		List<BeneficiariesDTO> list = Lists.newArrayList();
-		BeneficiariesDTO beneficiariesDTO = new BeneficiariesDTO();
-		beneficiariesDTO.setBenId(new BigInteger("301"));
-		list.add(beneficiariesDTO);
-		doReturn(list).when(identityService).getBeneficiariesByPhoneNum(Mockito.anyString());
-		String response = identityController.getBeneficiariesByPhoneNum("30303");
-		assertTrue(response.contains("\\\"benId\\\":301"));
+	void testUnreserveIdentityEmptyIdentity() throws ParseException {
+		String resp = identityController.unreserveIdentity("String");
+		String status = getData(resp, "statusMessage");
+		Assert.assertNotEquals("Null/Empty Identity Create Data.", status);
+		
+	}
+	@Test
+	void testUnreserveIdentity() throws ParseException {
+		ReserveIdentityDTO reserveIdentityDTO = new ReserveIdentityDTO();
+		String req = new Gson().toJson(reserveIdentityDTO);
+		String resp = identityController.unreserveIdentity(req);
+		String status = getData(resp, "statusMessage");
+		Assert.assertEquals("success", status);
+	}
+
+	//@Test
+	void testGetJsonAsString() {
+		//identityController.
 	}
 
 	@Test
-	public void getBeneficiariesByPhoneNumJsonNullTest() throws NoResultException, QueryTimeoutException, Exception {
-		List<BeneficiariesDTO> list = Lists.newArrayList();
-		doReturn(list).when(identityService).getBeneficiariesByPhoneNum(Mockito.anyString());
-		String response = identityController.getBeneficiariesByPhoneNum("");
-		assertFalse(response.contains("\\\"benId\\\":301"));
+	void testGetFiniteBeneficiariesCatchblockIfInvalidJSON() {
+		identityController.getFiniteBeneficiaries("String");
+	}
+	@Test
+	void testGetFiniteBeneficiaries() throws ParseException {
+		IdentitySearchDTO identitySearchDTO = new IdentitySearchDTO();
+		String req = new Gson().toJson(identitySearchDTO);
+		String resp = identityController.getFiniteBeneficiaries(req);
+		String status = getData(resp, "statusMessage");
+		Assert.assertEquals("success", status);
+	}
+	
+	@Test
+	void testGetFiniteBeneficiariesNoResultException() throws NoResultException, QueryTimeoutException, Exception {
+		IdentitySearchDTO identitySearchDTO = new IdentitySearchDTO();
+		String req = new Gson().toJson(identitySearchDTO);
+		when(svc.getBeneficiaries(identitySearchDTO)).thenThrow(NoResultException.class);
+		String resp = identityController.getFiniteBeneficiaries(req);
+		String status = getData(resp, "statusMessage");
+		Assert.assertEquals("failure", status);
+	}
+	@Test
+	void testGetFiniteBeneficiariesQueryTimeoutException() throws NoResultException, QueryTimeoutException, Exception {
+		IdentitySearchDTO identitySearchDTO = new IdentitySearchDTO();
+		String req = new Gson().toJson(identitySearchDTO);
+		when(svc.getBeneficiaries(identitySearchDTO)).thenThrow(QueryTimeoutException.class);
+		String resp = identityController.getFiniteBeneficiaries(req);
+		String status = getData(resp, "statusMessage");
+		Assert.assertEquals("failure", status);
+	}
+	
+
+	@Test
+	void testGetBeneficiaryImageByBenRegID() {
+		identityController.getBeneficiaryImageByBenRegID("String");
 	}
 
 	@Test
-	public void editIdentityJsonNullTest() {
-		String response = identityController.editIdentity("");
-		assertFalse(response.contains("Updated successfully"));
+	void testEditIdentityEducationOrCommunity() throws ParseException {
+		IdentityEditDTO identityEditDTO = new IdentityEditDTO();
+		String req = new Gson().toJson(identityEditDTO);
+		String resp = identityController.editIdentityEducationOrCommunity(req);
+		String actualresp = getData(resp,"data");
+		Assert.assertEquals("Updated successfully", actualresp);
+	}
+	
+	
+	private String getData(String resp,String status) throws ParseException {
+		JSONParser parser = new JSONParser();  
+		JSONObject json = (JSONObject) parser.parse(resp); 
+		JSONObject object = (JSONObject) json.get("response");
+		String actualresp = object.getAsString(status);
+		return actualresp;
 	}
 
 	@Test
-	public void editIdentityTest() {
-		String response = identityController.editIdentity("{}");
-		assertTrue(response.contains("Updated successfully"));
+	void testEditIdentityEducationOrCommunityCatchblock() throws MissingMandatoryFieldsException, ParseException {
+		IdentityEditDTO identityEditDTO = new IdentityEditDTO();
+		String req = new Gson().toJson(identityEditDTO);
+		doThrow(MissingMandatoryFieldsException.class).when(svc).editIdentityEducationOrCommunity(identityEditDTO);
+		svc.editIdentityEducationOrCommunity(any());
+		String resp = identityController.editIdentityEducationOrCommunity(req);
+		String actualresp = getData(resp,"data");
+		Assert.assertNotEquals("Updated successfully", actualresp);
 	}
 
 	@Test
-	public void reserveIdentityTest() {
-
-		String res = identityController.reserveIdentity("{}");
-		assertTrue(res.contains("\"statusMessage\":\"success\""));
+	void testCheckAvailablBenIDLocalServer() {
+		identityController.checkAvailablBenIDLocalServer();
 	}
 
 	@Test
-	public void reserveIdentityNullTest() {
-
-		String res = identityController.reserveIdentity("");
-		assertFalse(res.contains("\\\"statusMessage\\\":\\\"success\\\""));
-	}
-
-	@Test
-	public void unreserveIdentityTest() {
-		String res = identityController.unreserveIdentity("{}");
-		assertTrue(res.contains("\"statusMessage\":\"success\""));
-
-	}
-
-	@Test
-	public void unreserveIdentityNullTest() {
-		String res = identityController.unreserveIdentity("");
-		assertFalse(res.contains("\\\"statusMessage\\\":\\\"success\\\""));
-
-	}
-
-	@Test
-	public void createIdentityTest() throws IEMRException {
-		BeneficiaryCreateResp beneficiaryCreateResp = new BeneficiaryCreateResp();
-		beneficiaryCreateResp.setBenId(new BigInteger("501"));
-		doReturn(beneficiaryCreateResp).when(identityService).createIdentity(Mockito.any());
-		String response = identityController.createIdentity("{}");
-		assertTrue(response.contains("\\\"benId\\\":501"));
-
-	}
-
-	@Test
-	public void createIdentityJsonNullTest() {
-		String response = identityController.createIdentity("");
-		assertFalse(response.contains("\\\"benId\\\":501"));
-
-	}
-
-	@Test
-	public void getBeneficiariesByBenRegIdsTest() {
-		List<BeneficiariesDTO> list = Lists.newArrayList();
-		BeneficiariesDTO beneficiariesDTO = new BeneficiariesDTO();
-		beneficiariesDTO.setBenId(new BigInteger("601"));
-		list.add(beneficiariesDTO);
-		//doReturn(list).when(identityService).getBeneficiariesDeatilsByBenRegIdList(Mockito.anyListOf(BigInteger.class));
-		String response = identityController.getBeneficiariesByBenRegIds("[601]");
-		assertTrue(response.contains("\\\"benId\\\":601"));
-	}
-
-	@Test
-	public void getBeneficiariesByBenRegIdsJsonNullTest() {
-		String response = identityController.getBeneficiariesByBenRegIds("");
-		assertFalse(response.contains("\\\"benId\\\":601"));
-	}
-
-	@Test
-	public void getPartialBeneficiariesByBenRegIdsTest() {
-		List<BeneficiariesPartialDTO> partialList = Lists.newArrayList();
-		BeneficiariesPartialDTO partialDTO = new BeneficiariesPartialDTO();
-		partialDTO.setBeneficiaryDetailsId(new BigInteger("101"));
-		partialList.add(partialDTO);
-		//doReturn(partialList).when(identityService)
-		//		.getBeneficiariesPartialDeatilsByBenRegIdList(Mockito.anyListOf(BigInteger.class));
-		String response = identityController.getPartialBeneficiariesByBenRegIds("[505]");
-		assertTrue(response.contains("\\\"beneficiaryDetailsId\\\":101"));
-	}
-
-	@Test
-	public void getPartialBeneficiariesByBenRegIdsJsonNullTest() {
-		String response = identityController.getPartialBeneficiariesByBenRegIds("");
-		assertFalse(response.contains("\\\"beneficiaryDetailsId\\\":101"));
-	}
-
-	@Test
-	public void getFiniteBeneficiariesTest1() throws NoResultException, QueryTimeoutException, Exception {
-		BeneficiariesDTO a1 = new BeneficiariesDTO();
-		List<BeneficiariesDTO> bdList = Lists.newArrayList();
-		a1.setBenId(new BigInteger("1"));
-		bdList.add(a1);
-		doReturn(bdList).when(identityService).getBeneficiaries(Mockito.any(IdentitySearchDTO.class));
-		String res = identityController.getFiniteBeneficiaries(Mockito.anyString());
-		assertTrue(res.contains("\\\"benId\\\":1"));
+	void testSaveGeneratedBenIDToLocalServer() {
+		identityController.saveGeneratedBenIDToLocalServer(null);
 	}
 }

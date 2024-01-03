@@ -44,6 +44,8 @@ import org.mockito.Mockito;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.google.common.collect.Lists;
+import com.google.gson.Gson;
+import com.iemr.common.identity.data.rmnch.RMNCHCBACdetails;
 import com.iemr.common.identity.domain.Address;
 import com.iemr.common.identity.domain.Identity;
 import com.iemr.common.identity.domain.MBeneficiaryAccount;
@@ -81,6 +83,7 @@ import com.iemr.common.identity.repo.BenRegIdMappingRepo;
 import com.iemr.common.identity.repo.BenServiceMappingRepo;
 import com.iemr.common.identity.repo.MBeneficiaryAccountRepo;
 import com.iemr.common.identity.repo.MBeneficiaryImageRepo;
+import com.iemr.common.identity.repo.V_BenAdvanceSearchRepo;
 import com.iemr.common.identity.utils.exception.IEMRException;
 import com.iemr.common.identity.utils.mapper.OutputMapper;
 
@@ -164,6 +167,8 @@ public class IdentityServiceTest {
 	MBeneficiaryImageRepo imageRepo;
 	@Mock
 	BenMappingRepo mappingRepo;
+	@Mock
+	private V_BenAdvanceSearchRepo v_BenAdvanceSearchRepo;
 	
 
 	@Test
@@ -509,10 +514,15 @@ public class IdentityServiceTest {
 			identityEditDTO.setChangeInIdentities(true);
 			identityEditDTO.setChangeInFamilyDetails(true);	
 			identityEditDTO.setChangeInBankDetails(true);
+			identityEditDTO.setChangeInBenImage(true);
 			MBeneficiarymapping benMapping = new MBeneficiarymapping();
 			benMapping.setMBeneficiarydetail(beneficiarydetail);
 			benMapping.setMBeneficiaryaddress(beneficiaryaddress);
 			benMapping.setMBeneficiarycontact(mBeneficiarycontact);
+			MBeneficiaryImage img=new MBeneficiaryImage();
+			benMapping.setMBeneficiaryImage(img);
+			MBeneficiaryAccount mBeneficiaryAccount = new MBeneficiaryAccount();
+			benMapping.setMBeneficiaryAccount(mBeneficiaryAccount);;
 			MBeneficiarydetail mbDetl = new MBeneficiarydetail();
 			mbDetl.setFamilyId("123");			
 			mbDetl.setHeadOfFamily_RelationID(456);
@@ -527,12 +537,22 @@ public class IdentityServiceTest {
 			List<MBeneficiaryidentity> identities = new ArrayList<>();
 			identities.add(mbenIdentity);
 			List<MBeneficiaryidentity> idList = new ArrayList<>();
-			
 			MBeneficiaryfamilymapping mbenFamilyMapping = new MBeneficiaryfamilymapping();
+			mbenFamilyMapping.setBenFamilyMapId(BigInteger.valueOf(9));
 			List<MBeneficiaryfamilymapping> fbMaps = new ArrayList<>();
 			fbMaps.add(mbenFamilyMapping);
 			List<MBeneficiaryfamilymapping> fmList = new ArrayList<>();
 			fmList.add(mbenFamilyMapping);
+			
+			MBeneficiaryAccount beneficiaryAccount = new MBeneficiaryAccount();
+			when(editMapper.identityEditDTOToMBeneficiaryImage(any(IdentityEditDTO.class))).thenReturn(img);
+			when(imageRepo.findIdByVanSerialNoAndVanID(any(),any())).thenReturn(Long.valueOf(987));
+			when(accountRepo.save(any())).thenReturn(beneficiaryAccount);
+			when(editMapper.identityEditDTOToMBeneficiaryAccount(any(IdentityEditDTO.class))).thenReturn(beneficiaryAccount);
+			
+			when(accountRepo.findIdByVanSerialNoAndVanID(any(), any())).thenReturn(BigInteger.valueOf(987));
+			
+			when(familyMapRepo.save(any())).thenReturn(mbenFamilyMapping);
 			when(editMapper.identityEditDTOListToMBeneficiaryfamilymappingList(any())).thenReturn(fbMaps);
 
 			
@@ -685,5 +705,26 @@ public class IdentityServiceTest {
 		public void testgetBeneficiaries() {
 			IdentityDTO identityDTO = new IdentityDTO();
 			identityService.getBeneficiaries(identityDTO);
+		}
+		@Test
+		public void testgetBeneficiaryByHealthIDAbhaAddress() throws NoResultException, QueryTimeoutException, Exception {
+			
+			List<BigInteger> list=new ArrayList<>();
+			list.add(BigInteger.valueOf(987));
+			
+			
+			List<String> mappinglist=new ArrayList<>();
+			List<MBeneficiarymapping> mBeneficiarymappinglist=new ArrayList<>();
+			MBeneficiarymapping mBeneficiarymapping = new MBeneficiarymapping();
+			mBeneficiarymapping.setBenAccountID(Long.valueOf(987));
+			mBeneficiarymappinglist.add(mBeneficiarymapping);
+			String mappingJson = new Gson().toJson(mBeneficiarymapping);
+			mappinglist.add(mappingJson);
+			List<Object[]> listOdObject =new ArrayList<>();
+			MBeneficiarymapping[] benMap = new MBeneficiarymapping[1];
+			when(mappingRepo.getBenMappingByRegID(any())).thenReturn(listOdObject );
+			when(v_BenAdvanceSearchRepo.getBenRegIDByHealthIDAbhaAddress("123")).thenReturn(list);
+			identityService.getBeneficiaryByHealthIDAbhaAddress("123");
+			
 		}
 }

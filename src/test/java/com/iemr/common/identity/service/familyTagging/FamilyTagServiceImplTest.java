@@ -1,6 +1,7 @@
 package com.iemr.common.identity.service.familyTagging;
 
 import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import java.math.BigInteger;
@@ -21,6 +22,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.google.gson.Gson;
 import com.iemr.common.identity.data.familyTagging.BenFamilyMapping;
+import com.iemr.common.identity.domain.MBeneficiarydetail;
 import com.iemr.common.identity.domain.MBeneficiarymapping;
 import com.iemr.common.identity.exception.IEMRException;
 import com.iemr.common.identity.repo.BenDetailRepo;
@@ -30,7 +32,7 @@ import com.iemr.common.identity.repo.familyTag.FamilyTagRepo;
 import junit.framework.TestCase;
 @ExtendWith(MockitoExtension.class)
 
-class FamilyTagServiceImplTest extends TestCase {
+class FamilyTagServiceImplTest {
 	
 	@InjectMocks
 	private FamilyTagServiceImpl familyTagServiceImpl;
@@ -194,7 +196,7 @@ class FamilyTagServiceImplTest extends TestCase {
 		Assert.assertThrows(IEMRException.class, () -> familyTagServiceImpl.createFamily(null));
 	}
 	@Test
-	void testCreateFamily() throws IEMRException {
+	void testCreateFamilyFamilyTaggedIDNull() throws IEMRException {
 		BenFamilyMapping benFamilyMapping = new BenFamilyMapping();
 		benFamilyMapping.setFamilyId(null);
 		benFamilyMapping.setIsHeadOfTheFamily(true);
@@ -205,7 +207,7 @@ class FamilyTagServiceImplTest extends TestCase {
 		String json = new Gson().toJson(benFamilyMapping);
 	
 		when(familyTagRepo.getUserId("Admin")).thenReturn(123);
-		when(familyTagRepo.save(benFamilyMapping)).thenReturn(benFamilyMapping);
+		when(familyTagRepo.save(any())).thenReturn(benFamilyMapping);
 		MBeneficiarymapping mBeneficiarymapping = new MBeneficiarymapping();
 		mBeneficiarymapping.setBenDetailsId(BigInteger.valueOf(987));
 		mBeneficiarymapping.setVanID(765);
@@ -214,7 +216,30 @@ class FamilyTagServiceImplTest extends TestCase {
 		
 		Assert.assertThrows(IEMRException.class, () -> familyTagServiceImpl.createFamily(json));
 	}
+	@Test
+	void testCreateFamily() throws IEMRException {
+		BenFamilyMapping benFamilyMapping = new BenFamilyMapping();
+		benFamilyMapping.setFamilyId(null);
+		benFamilyMapping.setIsHeadOfTheFamily(true);
+		benFamilyMapping.setMemberName("memberName");
+		benFamilyMapping.setFamilyHeadName("familyHeadName");
+		benFamilyMapping.setCreatedBy("Admin");
+		benFamilyMapping.setBeneficiaryRegId(Long.valueOf(1234));
+		benFamilyMapping.setBenFamilyTagId(Long.valueOf(987));
+		String json = new Gson().toJson(benFamilyMapping);
 	
+		when(familyTagRepo.getUserId("Admin")).thenReturn(123);
+		when(familyTagRepo.save(any())).thenReturn(benFamilyMapping);
+		MBeneficiarymapping mBeneficiarymapping = new MBeneficiarymapping();
+		mBeneficiarymapping.setBenDetailsId(BigInteger.valueOf(987));
+		mBeneficiarymapping.setVanID(765);
+		when(benMappingRepo
+		.getBenDetailsId(BigInteger.valueOf(benFamilyMapping.getBeneficiaryRegId()))).thenReturn(mBeneficiarymapping);
+		
+		String resp = familyTagServiceImpl.createFamily(json);
+		Assert.assertNotNull(resp);
+	}
+
 
 	@Test
 	void testGetFamilyId() throws IEMRException {
@@ -230,11 +255,20 @@ class FamilyTagServiceImplTest extends TestCase {
 	void testGetFamilyDetails() throws IEMRException {
 		BenFamilyMapping benFamilyMapping = new BenFamilyMapping();
 		benFamilyMapping.setFamilyId(null);
+		benFamilyMapping.setFamilyId("123");
 		benFamilyMapping.setIsHeadOfTheFamily(true);
 		benFamilyMapping.setMemberName("memberName");
 		benFamilyMapping.setFamilyHeadName("familyHeadName");
 		benFamilyMapping.setCreatedBy("Admin");
 		benFamilyMapping.setBeneficiaryRegId(Long.valueOf(1234));
 		String json = new Gson().toJson(benFamilyMapping);
+		
+		List<MBeneficiarydetail> list=new ArrayList<>();
+		MBeneficiarydetail mBeneficiarydetail = new MBeneficiarydetail();
+		mBeneficiarydetail.setOther("other");
+		list.add(mBeneficiarydetail);
+		when(benMappingRepo.getBenRegId(any(), any())).thenReturn(BigInteger.valueOf(987));
+		when(benDetailRepo.getFamilyDetails(any())).thenReturn(list);
+		familyTagServiceImpl.getFamilyDetails(json);
 	}
 }
