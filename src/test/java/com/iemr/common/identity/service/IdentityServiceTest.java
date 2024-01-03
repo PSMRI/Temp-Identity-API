@@ -24,9 +24,11 @@ package com.iemr.common.identity.service;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyList;
+
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
@@ -36,6 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Assert;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -441,6 +444,7 @@ public class IdentityServiceTest {
 		*/
 		
 		@Test
+
 		public void getBeneficiariesPartialDeatilsByBenRegIdListTest1() {
 			List<BigInteger> BenRegIds = new ArrayList<>();
 			BenRegIds.add(BigInteger.valueOf(987));
@@ -465,6 +469,7 @@ public class IdentityServiceTest {
 			List<BeneficiariesPartialDTO> dtoList = identityService
 					.getBeneficiariesPartialDeatilsByBenRegIdList(BenRegIds);
 			Assert.assertTrue(dtoList.size() > 0);
+
 		}
 		@Test
 		public void getBeneficiariesPartialDeatilsByBenRegIdListTest()
@@ -601,7 +606,9 @@ public class IdentityServiceTest {
 			BeneficiariesDTO dto = new BeneficiariesDTO();
 			dto.setBenId(new BigInteger("301"));
 			doReturn(dto).when(identityMapper).mBeneficiarymappingToBeneficiariesDTO(mBeneficiarymapping);
+
 			List<BeneficiariesDTO> dtoList=identityService.getBeneficiariesDeatilsByBenRegIdList(benRegIds);
+
 			//assertTrue(dtoList.size() > 0);
 		}
 		@Test
