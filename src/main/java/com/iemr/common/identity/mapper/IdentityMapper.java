@@ -397,28 +397,22 @@ public interface IdentityMapper {
 			@Mapping(target = "beneficiaryDetails.healthCareWorkerId", source = "map.MBeneficiarydetail.healthCareWorkerId"),
 			@Mapping(target = "beneficiaryDetails.healthCareWorker", source = "map.MBeneficiarydetail.healthCareWorker"),
 			@Mapping(target = "beneficiaryDetails.preferredLanguage", source = "map.MBeneficiarydetail.preferredLanguage"),
-			// @Mapping(target="beneficiaryDetails.",
-			// source="map.MBeneficiarydetail.processed"),
 			@Mapping(target = "beneficiaryDetails.religion", source = "map.MBeneficiarydetail.religion"),
 			@Mapping(target = "beneficiaryDetails.remarks", source = "map.MBeneficiarydetail.remarks"),
-			// @Mapping(target="beneficiaryDetails.",
-			// source="map.MBeneficiarydetail.reserved"),
-			// @Mapping(target="beneficiaryDetails.",
-			// source="map.MBeneficiarydetail.reservedById"),
-			// @Mapping(target="beneficiaryDetails.",
-			// source="map.MBeneficiarydetail.reservedFor"),
-			// @Mapping(target="beneficiaryDetails.",
-			// source="map.MBeneficiarydetail.reservedOn"),
 			@Mapping(target = "beneficiaryDetails.servicePointId", source = "map.MBeneficiarydetail.servicePointId"),
 			@Mapping(target = "beneficiaryDetails.sourceOfInfo", source = "map.MBeneficiarydetail.sourceOfInfo"),
 			@Mapping(target = "beneficiaryDetails.spouseName", source = "map.MBeneficiarydetail.spouseName"),
 			@Mapping(target = "beneficiaryDetails.status", source = "map.MBeneficiarydetail.status"),
 			@Mapping(target = "beneficiaryDetails.title", source = "map.MBeneficiarydetail.title"),
 			@Mapping(target = "beneficiaryDetails.zoneId", source = "map.MBeneficiarydetail.zoneId"),
-			@Mapping(target = "contacts", expression = "java( Phone.createContactList(map.getMBeneficiarycontact(), "
-					+ "benRegId.toString(), map.getMBeneficiarydetail().getFirstName() + \" \" + "
-					+ "map.getMBeneficiarydetail().getMiddleName() + \" \" + "
-					+ "map.getMBeneficiarydetail().getLastName()))"),
+			@Mapping(target = "contacts", expression = "java( map != null && map.getMBeneficiarycontact() != null && "
+		            + "map.getMBeneficiarydetail() != null ? "
+		            + "Phone.createContactList(map.getMBeneficiarycontact(), "
+		            + "(benRegId != null ? benRegId.toString() : null), "
+		            + "(map.getMBeneficiarydetail().getFirstName() != null ? map.getMBeneficiarydetail().getFirstName() : \"\") + \" \" + "
+		            + "(map.getMBeneficiarydetail().getMiddleName() != null ? map.getMBeneficiarydetail().getMiddleName() : \"\") + \" \" + "
+		            + "(map.getMBeneficiarydetail().getLastName() != null ? map.getMBeneficiarydetail().getLastName() : \"\") "
+		            + ") : null)"),
 
 			/*
 			 * New columns added for MMU integration 09-04-2018
@@ -452,12 +446,14 @@ public interface IdentityMapper {
 			@Mapping(target = "ifscCode", source = "map.MBeneficiaryAccount.ifscCode"),
 			@Mapping(target = "accountNo", source = "map.MBeneficiaryAccount.accountNo"),
 			@Mapping(target = "benAccountID", source = "map.benAccountID"),
-			@Mapping(target = "ageAtMarriage", expression = "java(MBeneficiarydetail.getAgeAtMarriageCalc("
-					+ "map.getMBeneficiarydetail().getDob(), map.getMBeneficiarydetail().getMarriageDate(), "
-					+ "map.getMBeneficiarydetail().getAgeAtMarriage()))"),
-			@Mapping(target = "marriageDate", expression = "java(MBeneficiarydetail.getMarriageDateCalc("
-					+ "map.getMBeneficiarydetail().getDob(), map.getMBeneficiarydetail().getMarriageDate(), "
-					+ "map.getMBeneficiarydetail().getAgeAtMarriage()))"),
+			@Mapping(target = "ageAtMarriage", expression = "java(map != null && map.getMBeneficiarydetail() != null ? "
+		            + "MBeneficiarydetail.getAgeAtMarriageCalc(map.getMBeneficiarydetail().getDob(), "
+		            + "map.getMBeneficiarydetail().getMarriageDate(), "
+		            + "map.getMBeneficiarydetail().getAgeAtMarriage()) : null)"),
+			@Mapping(target = "marriageDate", expression = "java(map != null && map.getMBeneficiarydetail() != null ? "
+		            + "MBeneficiarydetail.getMarriageDateCalc(map.getMBeneficiarydetail().getDob(), "
+		            + "map.getMBeneficiarydetail().getMarriageDate(), "
+		            + "map.getMBeneficiarydetail().getAgeAtMarriage()) : null)"),
 
 			@Mapping(target = "literacyStatus", source = "map.MBeneficiarydetail.literacyStatus"),
 			@Mapping(target = "motherName", source = "map.MBeneficiarydetail.motherName"),
@@ -483,8 +479,8 @@ public interface IdentityMapper {
 			@Mapping(target = "beneficiaryDetails.headOfFamily_Relation", source = "map.MBeneficiarydetail.headOfFamily_Relation"),
 
 			// Start 1097
-			@Mapping(expression = "java(MBeneficiarydetail.calculateAge(map.getMBeneficiarydetail().getDob()))", target = "beneficiaryAge"),
-			// End 1097
+			@Mapping(expression = "java(map != null && map.getMBeneficiarydetail() != null ? MBeneficiarydetail.calculateAge(map.getMBeneficiarydetail().getDob()) : null)", target = "beneficiaryAge")// End 1097
+			
 
 	})
 	BeneficiariesDTO mBeneficiarymappingToBeneficiariesDTO(MBeneficiarymapping map);

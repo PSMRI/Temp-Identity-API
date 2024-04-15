@@ -1424,7 +1424,6 @@ public class IdentityService {
 						identity.getEducationId());
 			}
 		}
-
 	}
 
 	public int importBenIdToLocalServer(List<BenIdImportDTO> benIdImportDTOList) {
@@ -1457,7 +1456,6 @@ public class IdentityService {
 			return i.length;
 		} else
 			return 0;
-
 	}
 
 	public Long checkBenIDAvailabilityLocal() {
