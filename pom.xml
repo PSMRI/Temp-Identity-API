@@ -238,7 +238,7 @@
 	</profiles>
 
 	<build>
-		<finalName>identity-0.0.1</finalName>
+		<finalName>identity-v3.0.0</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.owasp</groupId>
