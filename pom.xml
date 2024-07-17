@@ -228,8 +228,6 @@
 			<id>1097_identity</id>
 			<properties>
 				<final-name>1097identityapi-v1.0</final-name>
-				<target-properties>target/classes/application.properties</target-properties>
-				<source-properties>target/classes/1097_${environment}.properties</source-properties>
 			</properties>
 			<build>
 				<finalName>1097identityapi-v1.0</finalName>
@@ -344,6 +342,20 @@
 									<fileset file="${source-properties}">
 									</fileset>
 								</concat>
+							</target>
+						</configuration>
+					</execution>
+					<execution>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<id>clean-property-files</id>
+						<configuration>
+							<target>
+								<delete>
+									<file file="${source-properties}" />
+								</delete>
 							</target>
 						</configuration>
 					</execution>
