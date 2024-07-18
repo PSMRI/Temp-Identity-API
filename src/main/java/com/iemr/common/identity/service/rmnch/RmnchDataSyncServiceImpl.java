@@ -183,20 +183,20 @@ public class RmnchDataSyncServiceImpl implements RmnchDataSyncService {
 									benDetailsList.add(rmnchmBeneficiarydetail);
 								}
 
-								RMNCHMBeneficiarydetail rmnchmBeneficiarydetail =
-										rMNCHBenDetailsRepo.getByBenRegID(BigInteger.valueOf(obj.getBenRegId()));
-								if (rmnchmBeneficiarydetail != null) {
-									rmnchmBeneficiarydetail.setFirstName(obj.getFirstName());
-									rmnchmBeneficiarydetail.setLastName(obj.getLastName());
-									rmnchmBeneficiarydetail.setFatherName(obj.getFatherName());
-									rmnchmBeneficiarydetail.setMotherName(obj.getMotherName());
-									rmnchmBeneficiarydetail.setDob(obj.getDob());
-									rmnchmBeneficiarydetail.setSpousename(obj.getSpousename());
-									rmnchmBeneficiarydetail.setGender(obj.getGender());
-									rmnchmBeneficiarydetail.setGenderId(obj.getGenderId());
-									rmnchmBeneficiarydetail.setMaritalstatus(obj.getMaritalstatus());
-									rmnchmBeneficiarydetail.setMaritalstatusId(obj.getMaritalstatusId());
-									benDetailsList.add(rmnchmBeneficiarydetail);
+								RMNCHMBeneficiarydetail rmnchmBeneficiarydetail1 =
+										rMNCHBenDetailsRepo.getByBenRegID(obj.getBenRegId());
+								if (rmnchmBeneficiarydetail1 != null) {
+									rmnchmBeneficiarydetail1.setFirstName(obj.getFirstName());
+									rmnchmBeneficiarydetail1.setLastName(obj.getLastName());
+									rmnchmBeneficiarydetail1.setFatherName(obj.getFatherName());
+									rmnchmBeneficiarydetail1.setMotherName(obj.getMotherName());
+									rmnchmBeneficiarydetail1.setDob(obj.getDob());
+									rmnchmBeneficiarydetail1.setSpousename(obj.getSpousename());
+									rmnchmBeneficiarydetail1.setGender(obj.getGender());
+									rmnchmBeneficiarydetail1.setGenderId(obj.getGenderId());
+									rmnchmBeneficiarydetail1.setMaritalstatus(obj.getMaritalstatus());
+									rmnchmBeneficiarydetail1.setMaritalstatusId(obj.getMaritalstatusId());
+									benDetailsList.add(rmnchmBeneficiarydetail1);
 								}
 							}
 
