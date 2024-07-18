@@ -2,12 +2,12 @@ name: CodeQL
 
 on:
   push:
-    branches: [ "feature/version/upgrade" ]
+    branches: [ "develop" ]
     paths-ignore:
      - target/**
      
   pull_request:
-    branches: [ "feature/version/upgrade" ]
+    branches: [ "develop" ]
     paths-ignore:
      - target/**
 
