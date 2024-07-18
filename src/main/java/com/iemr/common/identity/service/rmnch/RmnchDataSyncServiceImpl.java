@@ -139,6 +139,7 @@ public class RmnchDataSyncServiceImpl implements RmnchDataSyncService {
 							.fromJson(jsnOBJ.get("beneficiaryDetails"), RMNCHBeneficiaryDetailsRmnch[].class);
 					List<RMNCHBeneficiaryDetailsRmnch> benDetailsExtraList = Arrays.asList(objArr);
 					List<RMNCHMBeneficiarydetail> benDetailsList = new ArrayList<>();
+
 					if (benDetailsExtraList != null && benDetailsExtraList.size() > 0) {
 //						benRegID = rMNCHMBenRegIdMapRepo.getRegID(benDetailsExtraList.get(0).getBenficieryid());
 //
@@ -165,6 +166,7 @@ public class RmnchDataSyncServiceImpl implements RmnchDataSyncService {
 									}
 									obj.setRelatedBeneficiaryIdsDB(sb.toString());
 								}
+
 								RMNCHMBeneficiarydetail rmnchmBeneficiarydetail =
 										rMNCHBenDetailsRepo.getByBenRegID(obj.getBenRegId());
 								if (rmnchmBeneficiarydetail != null) {
@@ -181,6 +183,21 @@ public class RmnchDataSyncServiceImpl implements RmnchDataSyncService {
 									benDetailsList.add(rmnchmBeneficiarydetail);
 								}
 
+								RMNCHMBeneficiarydetail rmnchmBeneficiarydetail =
+										rMNCHBenDetailsRepo.getByBenRegID(BigInteger.valueOf(obj.getBenRegId()));
+								if (rmnchmBeneficiarydetail != null) {
+									rmnchmBeneficiarydetail.setFirstName(obj.getFirstName());
+									rmnchmBeneficiarydetail.setLastName(obj.getLastName());
+									rmnchmBeneficiarydetail.setFatherName(obj.getFatherName());
+									rmnchmBeneficiarydetail.setMotherName(obj.getMotherName());
+									rmnchmBeneficiarydetail.setDob(obj.getDob());
+									rmnchmBeneficiarydetail.setSpousename(obj.getSpousename());
+									rmnchmBeneficiarydetail.setGender(obj.getGender());
+									rmnchmBeneficiarydetail.setGenderId(obj.getGenderId());
+									rmnchmBeneficiarydetail.setMaritalstatus(obj.getMaritalstatus());
+									rmnchmBeneficiarydetail.setMaritalstatusId(obj.getMaritalstatusId());
+									benDetailsList.add(rmnchmBeneficiarydetail);
+								}
 							}
 
 							benDetailsExtraList = (ArrayList<RMNCHBeneficiaryDetailsRmnch>) rMNCHBeneficiaryDetailsRmnchRepo

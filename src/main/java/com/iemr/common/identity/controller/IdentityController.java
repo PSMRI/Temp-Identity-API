@@ -298,10 +298,12 @@ public class IdentityController {
 
 	// search beneficiary by lastModDate and districtID
 	@CrossOrigin(origins = { "*commonapi*" })
+
 	@Operation(summary ="Search beneficiary by villageId and last modified date-time")
 	@PostMapping(path = "/searchByVillageIdAndLastModifiedDate")
 	public String searchBeneficiaryByVillageIdAndLastModDate(
 			@Param(value = "\"String\"") @RequestBody String object) {
+
 		logger.info("IdentityController.getBeneficiary - start. search object = " + object);
 		String response;
 		try {
