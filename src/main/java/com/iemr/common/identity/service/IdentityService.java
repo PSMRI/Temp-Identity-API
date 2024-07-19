@@ -513,11 +513,11 @@ public class IdentityService {
 			// find benmap ids
 			List<MBeneficiarymapping> benMappingsList = mappingRepo.findByBeneficiaryDetailsByVillageIDAndLastModifyDate(villageIDs, lastModifiedDate);
 			if (benMappingsList != null && !benMappingsList.isEmpty()){
+
 				for (MBeneficiarymapping benMapOBJ : benMappingsList) {
 					beneficiaryList.add(this.getBeneficiariesDTO(benMapOBJ));
 				}
 			}
-
 		} catch (Exception e) {
 			logger.error(
 					"error in beneficiary search to sync to CHO App with villageIDs: {} " , villageIDs + " error : " + e.getLocalizedMessage());
@@ -535,6 +535,7 @@ public class IdentityService {
 		}
 		return beneficiaryCount;
 	}
+
 	public List<BeneficiariesDTO> searhBeneficiaryByGovIdentity(String identity)
 			throws NoResultException, QueryTimeoutException {
 		List<BeneficiariesDTO> beneficiaryList = new ArrayList<>();
@@ -1543,7 +1544,6 @@ public class IdentityService {
 						identity.getEducationId());
 			}
 		}
-
 	}
 
 	public int importBenIdToLocalServer(List<BenIdImportDTO> benIdImportDTOList) {
@@ -1576,7 +1576,6 @@ public class IdentityService {
 			return i.length;
 		} else
 			return 0;
-
 	}
 
 	public Long checkBenIDAvailabilityLocal() {
