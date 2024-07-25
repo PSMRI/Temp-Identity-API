@@ -573,14 +573,13 @@ public class IdentityService {
 	}
 
 	private MBeneficiarymapping getBeneficiariesDTONew(Object[] benMapArr) {
-		MBeneficiarymapping benMapOBJ = mappingRepo.getMapping(getBigIntegerValueFromObject(benMapArr[9]),
-				(Integer) benMapArr[8]);
-
-		benMapOBJ.setBenMapId(getBigIntegerValueFromObject(benMapArr[0]));
-		benMapOBJ.setCreatedBy(String.valueOf(benMapArr[10]));
-		benMapOBJ.setCreatedDate((Timestamp) benMapArr[11]);
-
+		MBeneficiarymapping benMapOBJ = new MBeneficiarymapping();
+		
 		if (benMapArr != null && benMapArr.length == 12 && benMapArr[8] != null && benMapArr[9] != null) {
+			benMapOBJ.setBenMapId(getBigIntegerValueFromObject(benMapArr[0]));
+			benMapOBJ.setCreatedBy(String.valueOf(benMapArr[10]));
+			benMapOBJ.setCreatedDate((Timestamp) benMapArr[11]);
+			benMapOBJ = mappingRepo.getMapping(getBigIntegerValueFromObject(benMapArr[9]), (Integer) benMapArr[8]);
 
 			RMNCHBeneficiaryDetailsRmnch obj = rMNCHBeneficiaryDetailsRmnchRepo
 					.getByRegID(((BigInteger) benMapArr[5]).longValue());
