@@ -136,4 +136,6 @@ public interface BenMappingRepo extends CrudRepository<MBeneficiarymapping, BigI
 			+ "or m.mBeneficiarydetail.lastModDate > :lastModDate ) order by m.benMapId Desc")
 	Long getBeneficiaryCountsByVillageIDAndLastModifyDate(@Param("villageIDs") List<Integer> villageID, @Param("lastModDate") Timestamp lastModifiedDate);
 
+	@Query("SELECT t FROM MBeneficiarymapping t WHERE t.vanSerialNo =:vanSerialNo AND t.vanID=:vanID")
+	MBeneficiarymapping getMapping(@Param("vanSerialNo") BigInteger vanSerialNo,@Param("vanID") Integer vanID);
 }

@@ -573,7 +573,8 @@ public class IdentityService {
 	}
 
 	private MBeneficiarymapping getBeneficiariesDTONew(Object[] benMapArr) {
-		MBeneficiarymapping benMapOBJ = new MBeneficiarymapping();
+		MBeneficiarymapping benMapOBJ = mappingRepo.getMapping(getBigIntegerValueFromObject(benMapArr[9]),
+				(Integer) benMapArr[8]);
 
 		benMapOBJ.setBenMapId(getBigIntegerValueFromObject(benMapArr[0]));
 		benMapOBJ.setCreatedBy(String.valueOf(benMapArr[10]));
@@ -591,26 +592,6 @@ public class IdentityService {
 				if (obj.getRchid() != null)
 					benMapOBJ.setRchID(obj.getRchid());
 			}
-
-			benMapOBJ.setMBeneficiaryaddress(addressRepo
-					.getWithVanSerialNoVanID(getBigIntegerValueFromObject(benMapArr[1]), (Integer) benMapArr[8]));
-			benMapOBJ.setMBeneficiaryconsent(consentRepo
-					.getWithVanSerialNoVanID(getBigIntegerValueFromObject(benMapArr[2]), (Integer) benMapArr[8]));
-			benMapOBJ.setMBeneficiarycontact(contactRepo
-					.getWithVanSerialNoVanID(getBigIntegerValueFromObject(benMapArr[3]), (Integer) benMapArr[8]));
-			benMapOBJ.setMBeneficiarydetail(detailRepo
-					.getWith_vanSerialNo_vanID(getBigIntegerValueFromObject(benMapArr[4]), (Integer) benMapArr[8]));
-			benMapOBJ.setMBeneficiaryregidmapping(regIdRepo
-					.getWithVanSerialNoVanID(getBigIntegerValueFromObject(benMapArr[5]), (Integer) benMapArr[8]));
-			benMapOBJ.setMBeneficiaryImage(
-					imageRepo.getWithVanSerialNoVanID((Long) benMapArr[6], (Integer) benMapArr[8]));
-			benMapOBJ.setMBeneficiaryAccount(accountRepo
-					.getWithVanSerialNoVanID(getBigIntegerValueFromObject(benMapArr[7]), (Integer) benMapArr[8]));
-
-			benMapOBJ.setMBeneficiaryfamilymappings(familyMapRepo.findByBenMapIdAndVanIDOrderByBenFamilyMapIdAsc(
-					getBigIntegerValueFromObject(benMapArr[9]), (Integer) benMapArr[8]));
-			benMapOBJ.setMBeneficiaryidentities(identityRepo
-					.findByBenMapIdAndVanID(getBigIntegerValueFromObject(benMapArr[9]), (Integer) benMapArr[8]));
 
 		}
 		return benMapOBJ;
