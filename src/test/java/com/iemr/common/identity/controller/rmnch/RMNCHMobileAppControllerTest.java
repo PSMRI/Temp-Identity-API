@@ -11,6 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.annotation.Description;
 
 import com.iemr.common.identity.service.rmnch.RmnchDataSyncService;
 
@@ -25,6 +26,7 @@ class RMNCHMobileAppControllerTest {
 	RmnchDataSyncService rmnchDataSyncService;
 
 	@Test
+	@Description("Tests the synchronization of data to the Amrit system. (TC_SyncDataToAmrit_Success_001)")
 	void testSyncDataToAmrit() throws Exception {
 		String req = "requestObj";
 		when(rmnchDataSyncService.syncDataToAmrit(any())).thenReturn("resp");
@@ -32,6 +34,7 @@ class RMNCHMobileAppControllerTest {
 		assertNotNull(syncDataToAmrit);
 	}
 	@Test
+	@Description("Tests the behavior of the syncDataToAmrit method when provided with a null request object. (TC_SyncDataToAmritNullReq_002)")
 	void testSyncDataToAmritNullReq() throws Exception {
 		String req = null;
 		String syncDataToAmrit = rmnchMobileAppController.syncDataToAmrit(req);
@@ -39,6 +42,7 @@ class RMNCHMobileAppControllerTest {
 		assertEquals("Invalid/NULL request obj", data);
 	}
 	@Test
+	@Description("Tests the exception handling within the syncDataToAmrit method. (TC_SyncDataToAmritException_003)")
 	void testSyncDataToAmritException() throws Exception {
 		String req = "requestObj";
 		when(rmnchDataSyncService.syncDataToAmrit(any())).thenThrow(Exception.class);
@@ -48,6 +52,7 @@ class RMNCHMobileAppControllerTest {
 	}
 
 	@Test
+	@Description("Tests successful retrieval of beneficiary data. (TC_GetBeneficiaryData_Success_001)")
 	void testGetBeneficiaryData() throws Exception {
 		String req = "requestObj";
 		String auth = "authorization";
@@ -56,6 +61,7 @@ class RMNCHMobileAppControllerTest {
 		assertNotNull(beneficiaryData);
 	}
 	@Test
+	@Description("Tests the handling of a null response when retrieving beneficiary data. (TC_GetBeneficiaryDataNullResp_002)")
 	void testGetBeneficiaryDataNullResp() throws Exception {
 		String req = "requestObj";
 		String auth = "authorization";
@@ -65,6 +71,7 @@ class RMNCHMobileAppControllerTest {
 		assertTrue(data.contains("No record found"));
 	}
 	@Test
+	@Description("Tests the handling of a null response when retrieving beneficiary data. (TC_GetBeneficiaryDataNullResp_003)")
 	void testGetBeneficiaryDataNullReq() throws Exception {
 		String req = null;
 		String auth = "authorization";
@@ -73,6 +80,7 @@ class RMNCHMobileAppControllerTest {
 		assertEquals("Invalid/NULL request obj", data);
 	}
 	@Test
+	@Description("Tests exception handling within the getBeneficiaryData method. (TC_GetBeneficiaryDataException_004)")
 	void testGetBeneficiaryDataException() throws Exception {
 		String req = "requestObj";
 		String auth = "authorization";
@@ -83,6 +91,7 @@ class RMNCHMobileAppControllerTest {
 	}
 
 	@Test
+	@Description("Tests successful retrieval of beneficiary data by Asha worker ID. (TC_GetBeneficiaryDataByAsha_Success_001)")
 	void testGetBeneficiaryDataByAsha() throws Exception {
 		String req = "requestObj";
 		String auth = "authorization";
@@ -92,6 +101,7 @@ class RMNCHMobileAppControllerTest {
 	}
 	
 	@Test
+	@Description("Tests the handling of a null response when retrieving beneficiary data by Asha worker ID. (TC_GetBeneficiaryDataByAshaNullResp_002)")
 	void testGetBeneficiaryDataByAshaNullResp() throws Exception {
 		String req = "requestObj";
 		String auth = "authorization";
@@ -101,6 +111,7 @@ class RMNCHMobileAppControllerTest {
 		assertTrue(data.contains("No record found"));
 	}
 	@Test
+	@Description("Tests the behavior of the getBeneficiaryDataByAsha method when a null request object is provided. (TC_GetBeneficiaryDataByAshaNullReq_003)")
 	void testGetBeneficiaryDataByAshaNullReq() throws Exception {
 		String req = null;
 		String auth = "authorization";
@@ -110,6 +121,7 @@ class RMNCHMobileAppControllerTest {
 	}
 	
 	@Test
+	@Description("Tests exception handling within the getBeneficiaryDataByAsha method. (TC_GetBeneficiaryDataByAshaException_004)")
 	void testGetBeneficiaryDataByAshaException() throws Exception {
 		String req = "requestObj";
 		String auth = "authorization";
