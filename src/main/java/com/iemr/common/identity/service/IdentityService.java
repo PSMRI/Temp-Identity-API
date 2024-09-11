@@ -28,6 +28,7 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -35,6 +36,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.sql.DataSource;
 
@@ -1602,6 +1604,14 @@ public class IdentityService {
 	 */
 	private BeneficiariesDTO getBeneficiariesDTO(MBeneficiarymapping benMap) {
 		BeneficiariesDTO bdto = mapper.mBeneficiarymappingToBeneficiariesDTO(benMap);
+		if (null != benMap && null != benMap.getMBeneficiarydetail()
+				&& null != benMap.getMBeneficiarydetail().getFaceEmbedding()) {
+			String faceEmbedding = benMap.getMBeneficiarydetail().getFaceEmbedding();
+			List<Float> collect = Arrays.stream(faceEmbedding.split(",")).map(String::trim).map(Float::parseFloat)
+					.collect(Collectors.toList());
+			bdto.setFaceEmbedding(collect);
+		}
+		
 		// bdto.setOtherFields(benMap.getMBeneficiarydetail().getOtherFields());
 		bdto.setBeneficiaryFamilyTags(
 				mapper.mapToMBeneficiaryfamilymappingWithBenFamilyDTOList(benMap.getMBeneficiaryfamilymappings()));
