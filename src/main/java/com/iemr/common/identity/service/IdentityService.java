@@ -27,11 +27,13 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.persistence.NoResultException;
 import javax.persistence.QueryTimeoutException;
@@ -1034,7 +1036,7 @@ public class IdentityService {
 		int i2 = contactRepo.updateVanSerialNo(mContc.getBenContactsID());
 
 		logger.info("IdentityService.createIdentity - saving Details");
-		MBeneficiarydetail mDetl = mapper.identityDTOToMBeneficiarydetail(identity);
+		MBeneficiarydetail mDetl = convertIdentityDTOToMBeneficiarydetail(identity);
 		if (mDetl.getCreatedDate() == null) {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
 			String DateToStoreInDataBase = sdf.format(new Date());
@@ -1184,6 +1186,65 @@ public class IdentityService {
 		return partialMapper.mBeneficiarymappingToBeneficiaryCreateResp(benMapping);
 	}
 
+	private MBeneficiarydetail convertIdentityDTOToMBeneficiarydetail(IdentityDTO dto) {
+		MBeneficiarydetail beneficiarydetail = new MBeneficiarydetail();
+		beneficiarydetail.setAreaId(dto.getAreaId());
+		if (null != dto.getBeneficiaryRegId())
+			beneficiarydetail.setBeneficiaryRegID(BigInteger.valueOf(dto.getBeneficiaryRegId()));
+		beneficiarydetail.setCommunity(dto.getCommunity());
+		beneficiarydetail.setCommunityId(dto.getCommunityId());
+		beneficiarydetail.setDob(dto.getDob());
+		beneficiarydetail.setEducation(dto.getEducation());
+		beneficiarydetail.setEducationId(dto.getEducationId());
+		beneficiarydetail.setEmergencyRegistration(dto.getEmergencyRegistration());
+		beneficiarydetail.setHealthCareWorkerId(dto.getHealthCareWorkerId());
+		beneficiarydetail.setHealthCareWorker(dto.getHealthCareWorker());
+		beneficiarydetail.setFatherName(dto.getFatherName());
+		beneficiarydetail.setMotherName(dto.getMotherName());
+		beneficiarydetail.setFirstName(dto.getFirstName());
+		beneficiarydetail.setGender(dto.getGender());
+		beneficiarydetail.setGenderId(dto.getGenderId());
+		beneficiarydetail.setIncomeStatus(dto.getIncomeStatus());
+		beneficiarydetail.setMonthlyFamilyIncome(dto.getMonthlyFamilyIncome());
+		beneficiarydetail.setIncomeStatusId(dto.getIncomeStatusId());
+		beneficiarydetail.setLastName(dto.getLastName());
+		beneficiarydetail.setMaritalStatusId(dto.getMaritalStatusId());
+		beneficiarydetail.setMaritalStatus(dto.getMaritalStatus());
+		beneficiarydetail.setMiddleName(dto.getMiddleName());
+		beneficiarydetail.setOccupation(dto.getOccupation());
+		beneficiarydetail.setOccupationId(dto.getOccupationId());
+		beneficiarydetail.setPhcId(dto.getPhcId());
+		beneficiarydetail.setPlaceOfWork(dto.getPlaceOfWork());
+		beneficiarydetail.setPreferredLanguage(dto.getPreferredLanguage());
+		beneficiarydetail.setReligion(dto.getReligion());
+		if (dto.getFaceEmbedding() != null)
+			beneficiarydetail.setFaceEmbedding(dto.getFaceEmbedding().toString());
+		if (dto.getReligionId() != null)
+			beneficiarydetail.setReligionId(BigInteger.valueOf(dto.getReligionId()));
+		beneficiarydetail.setRemarks(dto.getRemarks());
+		if (dto.getServicePointId() != null)
+			beneficiarydetail.setServicePointId(BigInteger.valueOf(dto.getServicePointId()));
+		beneficiarydetail.setSourceOfInfo(dto.getSourceOfInfo());
+		beneficiarydetail.setSpouseName(dto.getSpouseName());
+		beneficiarydetail.setStatus(dto.getStatus());
+		beneficiarydetail.setTitle(dto.getTitle());
+		beneficiarydetail.setTitleId(dto.getTitleId());
+		beneficiarydetail.setZoneId(dto.getZoneId());
+		beneficiarydetail.setCreatedBy(dto.getAgentName());
+		beneficiarydetail.setCreatedDate(dto.getCreatedDate());
+		beneficiarydetail.setIsHIVPositive(MBeneficiarydetail.setIsHIVPositive(dto.getIsHIVPositive()));
+		beneficiarydetail.setAgeAtMarriage(
+				MBeneficiarydetail.getAgeAtMarriageCalc(dto.getDob(), dto.getMarriageDate(), dto.getAgeAtMarriage()));
+		beneficiarydetail.setMarriageDate(
+				MBeneficiarydetail.getMarriageDateCalc(dto.getDob(), dto.getMarriageDate(), dto.getAgeAtMarriage()));
+		beneficiarydetail.setVanID(dto.getVanID());
+		beneficiarydetail.setParkingPlaceID(dto.getParkingPlaceId());
+		
+		if(dto.getLiteracyStatus() != null)
+			beneficiarydetail.setLiteracyStatus(dto.getLiteracyStatus());
+		return beneficiarydetail;
+	}
+
 	public String getReservedIdList() {
 
 		return "success";
@@ -1297,6 +1358,13 @@ public class IdentityService {
 	private BeneficiariesDTO getBeneficiariesDTO(MBeneficiarymapping benMap) {
 
 		BeneficiariesDTO bdto = mapper.mBeneficiarymappingToBeneficiariesDTO(benMap);
+		if (null != benMap && null != benMap.getMBeneficiarydetail()
+				&& null != benMap.getMBeneficiarydetail().getFaceEmbedding()) {
+			String faceEmbedding = benMap.getMBeneficiarydetail().getFaceEmbedding();
+			List<Float> collect = Arrays.stream(faceEmbedding.split(",")).map(String::trim).map(Float::parseFloat)
+					.collect(Collectors.toList());
+			bdto.setFaceEmbedding(collect);
+		}
 		bdto.setBeneficiaryFamilyTags(
 				mapper.mapToMBeneficiaryfamilymappingWithBenFamilyDTOList(benMap.getMBeneficiaryfamilymappings()));
 		bdto.setBeneficiaryIdentites(

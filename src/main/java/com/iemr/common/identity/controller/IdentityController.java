@@ -628,7 +628,7 @@ public class IdentityController {
 			+ "  \"marriageDate\": \"Timestamp\",\r\n" + "  \"literacyStatus\": \"String\",\r\n"
 			+ "  \"isHIVPositive\": \"String\",\r\n" + "  \"sexualOrientationID\": \"Integer\",\r\n"
 			+ "  \"sexualOrientationType\": \"String\",\r\n" + "  \"vanID\": \"Integer\",\r\n"
-			+ "  \"createdDate\": \"Timestamp\"\r\n" + "}") @RequestBody String identityData) {
+			+ "  \"createdDate\": \"Timestamp\"\r\n" + "  \"faceEmbedding\": [\"Float\"]\r\n" + "}") @RequestBody String identityData) {
 		logger.info("IdentityController.createIdentity - start");
 		JsonElement json = new JsonParser().parse(identityData);
 

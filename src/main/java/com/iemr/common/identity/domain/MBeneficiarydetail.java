@@ -108,6 +108,9 @@ public class MBeneficiarydetail implements Serializable {
 
 	@Column(length = 20)
 	private String lastName;
+	
+	@Column(name = "faceEmbedding")
+	private String faceEmbedding;
 
 	@Column(length = 20)
 	private String maritalStatus;

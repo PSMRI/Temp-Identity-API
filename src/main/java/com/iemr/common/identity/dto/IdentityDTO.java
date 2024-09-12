@@ -88,6 +88,7 @@ public class IdentityDTO {
 	private Integer titleId;
 	private String title;
 	private Integer zoneId;
+	private List<Float> faceEmbedding;
 
 	private Address currentAddress;
 	private Address permanentAddress;
@@ -124,6 +125,7 @@ public class IdentityDTO {
 
 	@Expose
 	private Integer vanID;
+	
 
 
 	@Expose

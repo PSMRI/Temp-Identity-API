@@ -207,58 +207,7 @@ public interface IdentityMapper {
 	})
 	MBeneficiarycontact identityDTOToMBeneficiarycontact(IdentityDTO dto);
 
-	@Mappings({ @Mapping(source = "dto.areaId", target = "areaId"),
-			@Mapping(source = "dto.beneficiaryRegId", target = "beneficiaryRegID"),
-			@Mapping(source = "dto.community", target = "community"),
-			@Mapping(source = "dto.communityId", target = "communityId"), @Mapping(source = "dto.dob", target = "dob"),
-			@Mapping(source = "dto.education", target = "education"),
-			@Mapping(source = "dto.educationId", target = "educationId"),
-			@Mapping(source = "dto.emergencyRegistration", target = "emergencyRegistration"),
-			@Mapping(source = "dto.healthCareWorkerId", target = "healthCareWorkerId"),
-			@Mapping(source = "dto.healthCareWorker", target = "healthCareWorker"),
-			@Mapping(source = "dto.fatherName", target = "fatherName"),
-			@Mapping(source = "dto.motherName", target = "motherName"),
-			@Mapping(source = "dto.firstName", target = "firstName"),
-			@Mapping(source = "dto.gender", target = "gender"), @Mapping(source = "dto.genderId", target = "genderId"),
-			@Mapping(source = "dto.incomeStatus", target = "incomeStatus"),
-			@Mapping(source = "dto.monthlyFamilyIncome", target = "monthlyFamilyIncome"),
-			@Mapping(source = "dto.incomeStatusId", target = "incomeStatusId"),
-			@Mapping(source = "dto.lastName", target = "lastName"),
-			@Mapping(source = "dto.maritalStatusId", target = "maritalStatusId"),
-			@Mapping(source = "dto.maritalStatus", target = "maritalStatus"),
-			@Mapping(source = "dto.middleName", target = "middleName"),
-			@Mapping(source = "dto.occupation", target = "occupation"),
-			@Mapping(source = "dto.occupationId", target = "occupationId"),
-			@Mapping(source = "dto.phcId", target = "phcId"),
-			@Mapping(source = "dto.placeOfWork", target = "placeOfWork"),
-			@Mapping(source = "dto.preferredLanguage", target = "preferredLanguage"),
-			@Mapping(source = "dto.religion", target = "religion"),
-			@Mapping(source = "dto.religionId", target = "religionId"),
-			@Mapping(source = "dto.remarks", target = "remarks"),
-			@Mapping(source = "dto.servicePointId", target = "servicePointId"),
-			@Mapping(source = "dto.sourceOfInfo", target = "sourceOfInfo"),
-			@Mapping(source = "dto.spouseName", target = "spouseName"),
-			@Mapping(source = "dto.status", target = "status"), @Mapping(source = "dto.title", target = "title"),
-			@Mapping(source = "dto.titleId", target = "titleId"), @Mapping(source = "dto.zoneId", target = "zoneId"),
-			@Mapping(source = "dto.agentName", target = "createdBy"),
-			@Mapping(source = "dto.createdDate", target = "createdDate"),
-			@Mapping(target = "isHIVPositive", expression = "java(MBeneficiarydetail.setIsHIVPositive(dto.getIsHIVPositive()))"),
-			// Start MMU specific code
-			@Mapping(target = "ageAtMarriage", expression = "java(MBeneficiarydetail.getAgeAtMarriageCalc(dto.getDob(), dto.getMarriageDate(), "
-					+ "dto.getAgeAtMarriage()))"),
-			@Mapping(target = "marriageDate", expression = "java(MBeneficiarydetail.getMarriageDateCalc(dto.getDob(), dto.getMarriageDate(), "
-					+ "dto.getAgeAtMarriage()))"),
-
-			// End MMU specific code
-
-			// new mapping added for data sync(van ID & parking place ID)
-			// 17-09-2018
-			@Mapping(source = "dto.vanID", target = "vanID"),
-			@Mapping(source = "dto.parkingPlaceId", target = "parkingPlaceID"),
-			// End
-	})
-	MBeneficiarydetail identityDTOToMBeneficiarydetail(IdentityDTO dto);
-
+	
 	@Mappings({ @Mapping(source = "benFamilyDTO.isEmergencyContact", target = "isEmergencyContact"),
 			@Mapping(source = "benFamilyDTO.relationshipToSelf", target = "relationshipToSelf"),
 			@Mapping(source = "benFamilyDTO.associatedBenRegId", target = "associatedBenRegId"),

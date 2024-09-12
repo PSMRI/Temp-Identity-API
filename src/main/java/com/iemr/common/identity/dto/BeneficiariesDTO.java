@@ -55,7 +55,7 @@ public class BeneficiariesDTO implements Comparable<BeneficiariesDTO> {
 	private List<BenIdentityDTO> beneficiaryIdentites;
 	private List<BenServiceDTO> beneficiaryServiceMap;
 	private List<Phone> contacts;
-
+	private List<Float> faceEmbedding;
 // ABHA address
 	List<AbhaAddressDTO> abhaDetails;
 
