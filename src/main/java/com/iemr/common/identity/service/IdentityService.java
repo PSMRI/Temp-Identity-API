@@ -1361,6 +1361,7 @@ public class IdentityService {
 		if (null != benMap && null != benMap.getMBeneficiarydetail()
 				&& null != benMap.getMBeneficiarydetail().getFaceEmbedding()) {
 			String faceEmbedding = benMap.getMBeneficiarydetail().getFaceEmbedding();
+
 			String trimmedInput = faceEmbedding.replaceAll("[\\[\\]]", "");
 			String[] stringNumbers = trimmedInput.split(",\\s*");
 			List<Float> floatList = new ArrayList<>();
