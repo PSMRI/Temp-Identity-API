@@ -1361,9 +1361,13 @@ public class IdentityService {
 		if (null != benMap && null != benMap.getMBeneficiarydetail()
 				&& null != benMap.getMBeneficiarydetail().getFaceEmbedding()) {
 			String faceEmbedding = benMap.getMBeneficiarydetail().getFaceEmbedding();
-			List<Float> collect = Arrays.stream(faceEmbedding.split(",")).map(String::trim).map(Float::parseFloat)
-					.collect(Collectors.toList());
-			bdto.setFaceEmbedding(collect);
+			String trimmedInput = faceEmbedding.replaceAll("[\\[\\]]", "");
+			String[] stringNumbers = trimmedInput.split(",\\s*");
+			List<Float> floatList = new ArrayList<>();
+			for (String str : stringNumbers) {
+				floatList.add(Float.parseFloat(str));
+			}
+			bdto.setFaceEmbedding(floatList);
 		}
 		bdto.setBeneficiaryFamilyTags(
 				mapper.mapToMBeneficiaryfamilymappingWithBenFamilyDTOList(benMap.getMBeneficiaryfamilymappings()));
